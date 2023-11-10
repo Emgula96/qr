@@ -4,4 +4,3 @@
 - Node version 16>
 - storybook@latest
 - react@latest
-
