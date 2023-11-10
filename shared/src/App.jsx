@@ -4,7 +4,9 @@ import './assets/styles/main.scss'
 function App() {
   return (
       <>
-        <Page />
+        <Page>
+          <div>TEST</div>
+        </Page>
       </>
     )
   }

@@ -1,8 +1,9 @@
 .page-wrapper {
     display: flex;
+    flex-direction: column;
 }
 
-.page {
+.page-banner {
     color: red;
     padding: 0 15px;
 
