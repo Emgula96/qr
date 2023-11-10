@@ -1,8 +1,11 @@
+import Page from './components/Page'
 import './assets/styles/main.scss'
 
 function App() {
   return (
-      <div>QR Check-in Shared Component Library</div>
+      <>
+        <Page />
+      </>
     )
   }
 
