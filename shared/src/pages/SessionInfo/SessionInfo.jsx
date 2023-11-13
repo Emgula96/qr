@@ -1,7 +1,8 @@
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
+import PropTypes from 'prop-types'
 import './session-info.scss'
 
 function SessionInfo() {
@@ -20,6 +21,11 @@ function SessionInfo() {
                     <p className='session-info-label'><strong>Campus: </strong>Stafford High School</p>
                     <p className='session-info-label'><strong>Session Title: </strong>STEMulating Design Challenges in Science, Grades 9-12</p>
                     <p className='session-info-label'><strong>Location: </strong>MCC102</p>
+                    <div className='qr-button qr-button-center'>
+                        <Link to="/print-badge">
+                            <button>Print Badge</button>
+                        </Link>
+                    </div>
                 </div>
             </Content>
         </Page>
