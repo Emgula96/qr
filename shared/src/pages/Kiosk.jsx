@@ -1,6 +1,7 @@
 import Page from '../components/Page'
 import TimeStamp from '../components/TimeStamp'
 import Content from '../components/Content'
+import './kiosk.scss'
 
 function Kiosk() {
     return (
@@ -10,6 +11,7 @@ function Kiosk() {
                 <div className='kiosk-qr-image'>
                     <img src='https://www.esc4.net/mjsandbox/kiosk%20test/QR%20sample.jpg' />
                 </div>
+                <button className='kiosk-button'>Find Session</button>
             </Content>
         </Page>
       )
