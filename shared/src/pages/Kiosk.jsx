@@ -6,7 +6,11 @@ function Kiosk() {
     return (
         <Page>
             <TimeStamp />
-            <Content>Content Goes Here</Content>
+            <Content>
+                <div className='kiosk-qr-image'>
+                    <img src='https://www.esc4.net/mjsandbox/kiosk%20test/QR%20sample.jpg' />
+                </div>
+            </Content>
         </Page>
       )
 }
