@@ -32,8 +32,8 @@ function TimeStamp() {
 
     return (
         <div className='timestamp-wrapper'>
-            <div>{dateString}</div>
-            <div>{timeString}</div>
+            <div className='timestamp-date'>{dateString}</div>
+            <div className='timestamp-time'>{timeString}</div>
         </div>
       )
 }
