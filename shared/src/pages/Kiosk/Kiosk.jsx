@@ -1,6 +1,7 @@
-import Page from '../components/Page'
-import TimeStamp from '../components/TimeStamp'
-import Content from '../components/Content'
+import { Link } from 'react-router-dom'
+import Page from '../../components/Page'
+import TimeStamp from '../../components/TimeStamp'
+import Content from '../../components/Content'
 import './kiosk.scss'
 
 function Kiosk() {
@@ -13,7 +14,9 @@ function Kiosk() {
                         <img src='https://www.esc4.net/mjsandbox/kiosk%20test/QR%20sample.jpg' />
                     </div>
                     <div className='kiosk-button'>
-                        <button>Find Session</button>
+                        <Link to="/find-session">
+                            <button>Find Session</button>
+                        </Link>
                     </div>
                 </div>
             </Content>
