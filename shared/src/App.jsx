@@ -1,18 +1,14 @@
-import Page from './components/Page'
-import TimeStamp from './components/TimeStamp'
-import Content from './components/Content'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Kiosk from './pages/Kiosk'
 import './assets/styles/main.scss'
 
 function App() {
   return (
-      <>
-        <Page>
-          <TimeStamp />
-          <Content>
-            Content goes here
-          </Content>
-        </Page>
-      </>
+    <Router>
+      <Routes>
+          <Route exact path='/kiosk' Component={Kiosk} />
+      </Routes>
+    </Router>
     )
   }
 
