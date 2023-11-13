@@ -1,9 +1,12 @@
-.find-session-wrapper {
-    width: 100%;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 0.25rem;
-    background-color: rgb(242, 241, 241);
-    padding: 16px;
+.find-session-form-heading {
+    font-weight: 500;
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+
+.find-session-submission {
+    display: flex;
+    justify-content: end;
 }
 
 .find-session-note {
