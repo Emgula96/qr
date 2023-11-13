@@ -1,24 +1,39 @@
 import { useState, useEffect } from 'react'
 import './timestamp.scss'
-// import PropTypes from 'prop-types'
 
 const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 function TimeStamp() {
-    const [date, setDate] = useState("")
+    const [date, setDate] = useState(new Date())
+    const [dateString, setDateString] = useState("")
+    const [timeString, setTimeString] = useState("")
 
     // On mount, set up timers, get current date, etc.
     useEffect(() => {
-        const today = new Date()
+        // Set the timer
+        const timer = setInterval(() => {
+            setDate(new Date())
+        }, 1000)
 
-        const dateString = `${weekday[today.getDay()]}, ${month[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()}`
-        setDate(dateString)
+        // Set the date
+        const d = new Date()
+        const dateString = `${weekday[d.getDay()]}, ${month[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+        setDateString(dateString)
+
+        return () => { clearInterval(timer) }
     }, [])
+
+    // Set time based on interval started on mount, every second
+    useEffect(() => {
+        const timeString = date.toLocaleTimeString('en', { hour: 'numeric', hour12: true, minute: 'numeric', second: 'numeric' });
+        setTimeString(timeString)
+    }, [date])
 
     return (
         <div className='timestamp-wrapper'>
-            {date}
+            <div>{dateString}</div>
+            <div>{timeString}</div>
         </div>
       )
 }
