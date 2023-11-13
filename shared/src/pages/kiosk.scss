@@ -1,6 +1,7 @@
 .kiosk-qr-image {
     display: flex;
     justify-content: center;
+    padding: 20px 0px;
 
     img {
         width: 500px;
@@ -8,7 +9,18 @@
 }
 
 .kiosk-button {
-    cursor: pointer;
-    padding: 1rem;
-    font-weight: 400;
+    display: flex;
+    justify-content: center;
+
+    button {
+        cursor: pointer;
+        padding: 1rem;
+        font-weight: 400;
+        color: #fff;
+        background-color: #6c757d;
+        border-color: #6c757d;
+        border-radius: 0.25rem;
+        line-height: 1.5;
+        border: 1px solid transparent;
+    }
 }

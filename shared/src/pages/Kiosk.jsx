@@ -8,10 +8,14 @@ function Kiosk() {
         <Page>
             <TimeStamp />
             <Content>
-                <div className='kiosk-qr-image'>
-                    <img src='https://www.esc4.net/mjsandbox/kiosk%20test/QR%20sample.jpg' />
+                <div className='kiosk-wrapper'>
+                    <div className='kiosk-qr-image'>
+                        <img src='https://www.esc4.net/mjsandbox/kiosk%20test/QR%20sample.jpg' />
+                    </div>
+                    <div className='kiosk-button'>
+                        <button>Find Session</button>
+                    </div>
                 </div>
-                <button className='kiosk-button'>Find Session</button>
             </Content>
         </Page>
       )
