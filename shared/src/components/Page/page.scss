@@ -11,3 +11,11 @@
         width: 100%;
     }
 }
+
+.page-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+}
