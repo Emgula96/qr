@@ -2,8 +2,8 @@
     "containerDefinitions": [
       {
         "essential": true,
-        "name": "app",
-        "image": "nelsoncode/react-app:latest",
+        "name": "kiosk",
+        "image": "471808368523.dkr.ecr.us-east-1.amazonaws.com/kiosk:latest",
         "portMappings": [
           {
             "containerPort": 80,
