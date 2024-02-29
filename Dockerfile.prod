@@ -7,7 +7,7 @@ RUN npm install
 COPY ./shared /app
 RUN npm run build
 
-# Kick the tires
+# Kick them tires
 FROM nginx:latest
 COPY --from=build /app/dist /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
