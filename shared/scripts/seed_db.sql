@@ -1,11 +1,22 @@
--- CreateTable
-CREATE TABLE IF NOT EXISTS users (
-  "id" TEXT NOT NULL,
-  "name" TEXT NOT NULL,
-  "email" TEXT NOT NULL,
+CREATE SCHEMA IF NOT EXISTS test;
 
-  PRIMARY KEY ("id")
+DROP TABLE IF EXISTS test.attendee;
+
+-- CreateTable
+CREATE TABLE test.attendee (
+  "attendee_id" TEXT NOT NULL,
+  "user_id" TEXT NOT NULL,
+  "event_id" TEXT NOT NULL,
+  "schedule_id" TEXT NOT NULL,
+  "status" SMALLINT NOT NULL,
+  "checked_in" BOOL NOT NULL,
+  "checked_in_timestamp" TIMESTAMP NULL,
+  "checked_out" BOOL NOT NULL,
+  "checked_out_timestamp" TIMESTAMP NULL,
+  "checked_out_created_by" VARCHAR(35) NULL,
+
+  PRIMARY KEY ("attendee_id")
 );
 
 -- Seed
-INSERT INTO users (id, name, email) VALUES ('userid', 'Gopher', 'hello@gopher.com');
+INSERT INTO test.attendee ("attendee_id", user_id, event_id, schedule_id, status, checked_in, checked_out) VALUES ('1', 'attendee_1', 'test_event', 'test_schedule', 1, false, false);
