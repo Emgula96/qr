@@ -1,19 +1,46 @@
 version: '3.8'
 services:
+  web:
+    build: .
+    volumes:
+      - ./src:/app/src
+    ports:
+      - 3000:3000
+      - 5173:5173
+  
+  server:
+    build: ./server
+    ports:
+      - 3030:3030
+
   db:
-    image: db
-    container_name: db
-    build:
-      dockerfile: ./db/Dockerfile
-      target: db
+    build: ./db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
     ports:
       - 5432:5432
-    volumes: 
-      - ${PWD}/db/data:/var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 volumes:
-  db:
-    driver: local
+  pgdata:
+    
+
+#   db:
+#     image: db
+#     container_name: db
+#     build:
+#       dockerfile: ./db/Dockerfile
+#       target: db
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#       - POSTGRES_DB=postgres
+#     ports:
+#       - 5432:5432
+#     volumes: 
+#       - ${PWD}/db/data:/var/lib/postgresql/data
+# volumes:
+#   db:
+#     driver: local
