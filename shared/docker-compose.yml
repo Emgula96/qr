@@ -12,6 +12,8 @@ services:
     build: ./server
     ports:
       - 3030:3030
+    volumes:
+      - ./server:/server
 
   db:
     build: ./db

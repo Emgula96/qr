@@ -5,10 +5,10 @@ const port = 3030
 // const pgp = require('pg-promise')({});
 // const db = pgp('postgres://postgres:root@localhost:5432/postgres')
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/api/test', (req, res) => {
+  res.json({"data": "Region 4!"})
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Kiosk Front-End Server Listening on Port: ${port}`)
 })
