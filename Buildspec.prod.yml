@@ -1,7 +1,7 @@
 version: 0.2
 env:
   secrets-manager:
-    VITE_FRONT_END_AWS_GATEWAY_API_KEY: arn:aws:secretsmanager:us-east-1:471808368523:secret:prod/kiosk/apikey-OjfwSl
+    VITE_FRONT_END_AWS_GATEWAY_API_KEY: arn:aws:secretsmanager:us-east-1:471808368523:secret:prod/kiosk/apikey-OjfwSl:VITE_FRONT_END_AWS_GATEWAY_API_KEY
 phases:
   pre_build:
     commands:
