@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
@@ -6,27 +7,46 @@ import PropTypes from 'prop-types'
 import './session-info.scss'
 
 function SessionInfo({ name, email, phone, region, district, campus, sessionTitle, location}) {
+    const [user, setUser] = useState()
+
+    useEffect(() => {
+        async function fetchData() {
+            const resp = await fetch(`${import.meta.env.VITE_FRONT_END_SERVER_URL}/v1/users`, {
+                method: "GET",
+                headers: {
+                    "x-api-key": import.meta.env.VITE_FRONT_END_AWS_GATEWAY_API_KEY
+                }
+            })
+            const header = await resp.json()
+            setUser(header.data.user_profile)
+        }
+        fetchData()
+    }, [])
+
     return (
         <Page>
             <TimeStamp />
             <Content>
-                <div className='qr-inner-content-wrapper'>
-                    <h2 className='qr-inner-content-heading'>Session Information</h2>
-                    <em>Review information below for accuracy.</em>
-                    <p className='session-info-label'><strong>Name: </strong>{name}</p>
-                    <p className='session-info-label'><strong>E-mail: </strong>{email}</p>
-                    <p className='session-info-label'><strong>Phone: </strong>{phone}</p>
-                    <p className='session-info-label'><strong>Region: </strong>{region}</p>
-                    <p className='session-info-label'><strong>District: </strong>{district}</p>
-                    <p className='session-info-label'><strong>Campus: </strong>{campus}</p>
-                    <p className='session-info-label'><strong>Session Title: </strong>{sessionTitle}</p>
-                    <p className='session-info-label'><strong>Location: </strong>{location}</p>
-                    <div className='qr-button qr-button-center'>
-                        <Link to="/print-badge">
-                            <button>Print Badge</button>
-                        </Link>
+                {!!user && (
+                    <div className='qr-inner-content-wrapper'>
+                        <h2 className='qr-inner-content-heading'>Session Information</h2>
+                        <em>Review information below for accuracy.</em>
+                        <p className='session-info-label'><strong>Name: </strong>{user.first_name} {user.last_name}</p>
+                        <p className='session-info-label'><strong>E-mail: </strong>{user.email}</p>
+                        <p className='session-info-label'><strong>Phone: </strong>{user.phone}</p>
+                        <p className='session-info-label'><strong>Region: </strong>{user.region}</p>
+                        <p className='session-info-label'><strong>District: </strong>{user.district}</p>
+                        <p className='session-info-label'><strong>Campus: </strong>{user.campus}</p>
+                        <p className='session-info-label'><strong>Session Title: </strong>{user.sessionTitle}</p>
+                        <p className='session-info-label'><strong>Location: </strong>{user.location}</p>
+                        <div className='qr-button qr-button-center'>
+                            <Link to="/print-badge">
+                                <button>Print Badge</button>
+                            </Link>
+                        </div>
                     </div>
-                </div>
+                )}
+                
             </Content>
         </Page>
       )
