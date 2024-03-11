@@ -10,7 +10,7 @@ function Kiosk() {
 
     useEffect(() => {
         async function fetchData() {
-            const resp = await fetch(`${import.meta.env.VITE_FRONT_END_SERVER_URL}/api/test`)
+            const resp = await fetch(`${import.meta.env.VITE_FRONT_END_SERVER_URL}`)
             const header = await resp.json()
             setHeader(header.data)
         }

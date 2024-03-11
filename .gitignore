@@ -25,3 +25,4 @@ db/data
 *.njsproj
 *.sln
 *.sw?
+*.zip
