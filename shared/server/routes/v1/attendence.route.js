@@ -2,14 +2,11 @@ const express = require('express')
 const pg = require('pg');
 
 const pool = new pg.Pool({
-  user: "postgres",
-  password: "kioskdev",
-  host: "kiosk.ce8uwnpsqkhc.us-east-1.rds.amazonaws.com",
-  database: "kiosk",
-  port: "5432",
-  ssl: {
-      rejectUnauthorized: false
-  }
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  host: process.env.POSTGRES_HOST,
+  database: process.env.POSTGRES_DB,
+  port: process.env.POSTGRES_PORT,
 });
 
 async function queryDatabase(query) {
@@ -23,7 +20,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-      const result = await queryDatabase('SELECT * FROM kiosk.attendees');
+      const result = await queryDatabase('SELECT * FROM attendee');
       res.status(200).json({"data": result.rows});
     } catch (error) {
       console.error('An error ocurred:', error);

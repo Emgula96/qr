@@ -1,9 +1,7 @@
-CREATE SCHEMA IF NOT EXISTS test;
-
-DROP TABLE IF EXISTS test.attendee;
+DROP TABLE IF EXISTS attendee;
 
 -- CreateTable
-CREATE TABLE test.attendee (
+CREATE TABLE attendee (
   "attendee_id" TEXT NOT NULL,
   "user_id" TEXT NOT NULL,
   "event_id" TEXT NOT NULL,
@@ -19,4 +17,4 @@ CREATE TABLE test.attendee (
 );
 
 -- Seed
-INSERT INTO test.attendee ("attendee_id", user_id, event_id, schedule_id, status, checked_in, checked_out) VALUES ('1', 'attendee_1', 'test_event', 'test_schedule', 1, false, false);
+INSERT INTO attendee ("attendee_id", user_id, event_id, schedule_id, status, checked_in, checked_out) VALUES ('1', 'attendee_1', 'test_event', 'test_schedule', 1, false, false);
