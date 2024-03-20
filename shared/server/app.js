@@ -18,11 +18,4 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send();
 });
 
-// const pgp = require('pg-promise')({});
-// const db = pgp('postgres://postgres:root@localhost:5432/postgres')
-
-// app.get('/kiosk-express', (req, res) => {
-//   res.json({"data": "Welcome to Region 4!"})
-// })
-
 module.exports = app;
