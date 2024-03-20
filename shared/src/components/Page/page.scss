@@ -20,5 +20,10 @@
     justify-content: center;
     position: fixed;
     bottom: 0;
-    background-color: #D9D8D6;
+    background-color: #FFFFFF;
+
+    img {
+        object-fit: contain;
+        height: 100px;
+    }
 }

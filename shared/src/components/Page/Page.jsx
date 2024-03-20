@@ -11,14 +11,17 @@ function Page({ children }) {
                 {children}
             </div>
             <div className='page-footer'>
-            <img src="/footer.png" />
+            <img className='page-footer' src="https://kiosk-assets-public.s3.amazonaws.com/brand-logo.png" />
             </div>
         </div>
       )
 }
 
 Page.propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.element),
+        PropTypes.element
+    ]).isRequired
 }
   
 export default Page

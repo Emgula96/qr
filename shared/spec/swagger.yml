@@ -1,0 +1,192 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/bryan.wheeler@esc4.net/Kiosk/1.0.0
+info:
+  version: 1.0.0
+  title: Kiosk Front-End Facade/Adapter Layer
+  description: Kiosk API
+paths:
+  /kiosk/user/{id}:
+    get:
+      tags:
+        - Kiosk User Info
+      description: Fetch data for the main kiosk display
+      parameters:
+        - in: path
+          required: true
+          name: id
+          description: User ID being currently displayed
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionTitle:
+                    type:
+                      string
+                  sessionSubtitle:
+                    type:
+                      string
+                  firstName:
+                    type:
+                      string
+                  lastName:
+                    type: 
+                      string
+                  sessionDescription:
+                    type:
+                      string
+                  qrImageURL:
+                    type:
+                      string
+                  sessionDate:
+                    type:
+                      string
+                  brandImageURL:
+                    type:
+                      string
+                  ctaTitle:
+                    type:
+                      string
+                  ctaButtonText:
+                    type:
+                      string
+                      
+  /kiosk/session/{id}:
+    get:
+      tags:
+        - Session 
+      description: Get session information
+      parameters:
+        - in: path
+          required: true
+          name: id
+          description: ID of the session
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionInfo'
+  /kiosk/session/user:
+    get:
+      tags:
+        - Session 
+      description: Get session information
+      parameters:
+        - in: query
+          required: true
+          name: email
+          description: User email
+          schema:
+            type: string
+        - in: query
+          required: true
+          name: firstName
+          description: First name
+          schema:
+            type: string
+        - in: query
+          required: true
+          name: lastName
+          description: Last name
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionInfo'
+  /panel/session/{id}:
+    get:
+      tags:
+        - Panel 
+      description: Get session information
+      parameters:
+        - in: path
+          required: true
+          name: id
+          description: ID of the session
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  roomNum:
+                    type: string
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  credits:
+                    type: string
+                  start_time:
+                    type: string
+                  time_zone:
+                    type: string
+                  notes:
+                    type: array
+                    items:
+                      type:
+                        string
+                  maxAttendees:
+                    type: integer
+                  currentCheckedIn:
+                    type: integer
+components:
+  schemas:
+    SessionInfo:
+      type: object
+      properties:
+        sessionHeader:
+          type:
+            string
+        sessionSubtitle:
+          type:
+            string
+        firstName:
+          type:
+            string
+        lastName:
+          type: 
+            string
+        email:
+          type:
+            string
+        phoneNumber:
+          type:
+            string
+        region:
+          type:
+            string
+        district:
+          type:
+            string
+        campus:
+          type:
+            string
+        sessionTitle:
+          type:
+            string
+        location:
+          type:
+            string
