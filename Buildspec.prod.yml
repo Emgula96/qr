@@ -16,7 +16,7 @@ phases:
       - echo ${VITE_FRONT_END_AWS_GATEWAY_API_KEY}
   post_build:
     commands:
-      - docker push $REPOSITORY_URI:latest
+      - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - printf '[{"name":"kiosk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
