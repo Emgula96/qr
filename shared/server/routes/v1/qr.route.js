@@ -5,12 +5,12 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const {userId, eventId, scheduleId} = req.query
-        if (!userId || !eventId || !scheduleId) {
-            throw "required query params not set"
+        const {userId} = req.query
+        if (!userId) {
+            throw "userID not set"
         }
 
-        const url = `${process.env.HOST_URL}/kiosk-express/v1/attendence/check-in?userId=${req.query.userId}&eventId=${req.query.eventId}&scheduleId=${req.query.scheduleId}`
+        const url = `${process.env.HOST_URL}/kiosk-express/v1/attendence/check-in?userId=${req.query.userId}}`
         QRCode.toDataURL(url, { version: 10 }, function (err, url) {
             if (err) {
                 throw err
