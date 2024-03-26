@@ -5,7 +5,7 @@ env:
 phases:
   install:
     runtime-versions:
-      node: 20.9.0
+      nodejs: 20.9.0
     commands:
       - echo "Installing application server dependencies"
       - cd shared/server
