@@ -7,7 +7,7 @@ phases:
     runtime-versions:
       nodejs: 20
     commands:
-      - echo "Installing application server dependencies"
+      - echo "Installing application server dependencies..."
       - cd shared/server
       - npm install
       - cd ../..
@@ -19,6 +19,10 @@ phases:
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
+      - echo "Zipping the application server..."
+      - cd shared/server
+      - zip -r kiosk-express.zip .
+      - cd ../..
       - echo "Buiding web application docker container"
       - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg VITE_FRONT_END_SERVER_URL=${VITE_FRONT_END_SERVER_URL} --build-arg VITE_FRONT_END_AWS_GATEWAY_API_KEY=${VITE_FRONT_END_AWS_GATEWAY_API_KEY} .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
