@@ -10,6 +10,7 @@ phases:
       - echo "Installing application server dependencies"
       - cd shared/server
       - npm install
+      - cd ../..
   pre_build:
     commands:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 471808368523.dkr.ecr.us-east-1.amazonaws.com/kiosk:latest
