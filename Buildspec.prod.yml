@@ -23,16 +23,16 @@ phases:
       - cd shared/server
       - zip -r kiosk-express.zip .
       - cd ../..
-      - echo "Buiding web application docker container"
-      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg VITE_FRONT_END_SERVER_URL=${VITE_FRONT_END_SERVER_URL} --build-arg VITE_FRONT_END_AWS_GATEWAY_API_KEY=${VITE_FRONT_END_AWS_GATEWAY_API_KEY} .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-      - echo ${VITE_FRONT_END_AWS_GATEWAY_API_KEY}
+      # - echo "Buiding web application docker container"
+      # - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg VITE_FRONT_END_SERVER_URL=${VITE_FRONT_END_SERVER_URL} --build-arg VITE_FRONT_END_AWS_GATEWAY_API_KEY=${VITE_FRONT_END_AWS_GATEWAY_API_KEY} .
+      # - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      # - echo ${VITE_FRONT_END_AWS_GATEWAY_API_KEY}
   post_build:
     commands:
-      - echo "Pushing the Docker images..."
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - printf '[{"name":"kiosk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      # - echo "Pushing the Docker images..."
+      # - docker push $REPOSITORY_URI:$IMAGE_TAG
+      # - printf '[{"name":"kiosk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo "Uploading the lambda serverless API..."
-      - aws lambda update-function-code --function-name kiosk-express --zip-file fileb://kiosk-express.zip
+      - aws lambda update-function-code --function-name kiosk-express --zip-file fileb://shared/server/kiosk-express.zip
 artifacts:
   files: imagedefinitions.json
