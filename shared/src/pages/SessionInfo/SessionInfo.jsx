@@ -13,9 +13,6 @@ function SessionInfo({ name, email, phone, region, district, campus, sessionTitl
         async function fetchData() {
             const resp = await fetch(`${import.meta.env.VITE_FRONT_END_SERVER_URL}/v1/users`, {
                 method: "GET",
-                headers: {
-                    "x-api-key": import.meta.env.VITE_FRONT_END_AWS_GATEWAY_API_KEY
-                }
             })
             const header = await resp.json()
             setUser(header.data.user_profile)
