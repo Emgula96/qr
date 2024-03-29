@@ -9,18 +9,6 @@ const routes =  require('./routes')
 const app = express()
 app.use(cors())
 
-app.use((req, res, next) => {
-  if (!req.headers.Authorization) {
-    console.debug("Unauthorized, attempting to fetch an access token...")
-    getAccessToken().then((token) => {
-      res.set("Authorization", token)
-      next()
-    })
-  } else {
-    next()
-  }
-})
-
 app.use('/kiosk-express', routes)
 
 app.use((req, res, next) => {

@@ -26,7 +26,6 @@ phases:
       - echo "Buiding web application docker container"
       - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg VITE_FRONT_END_SERVER_URL=${VITE_FRONT_END_SERVER_URL} .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-      - echo ${VITE_FRONT_END_AWS_GATEWAY_API_KEY}
   post_build:
     commands:
       - echo "Pushing the Docker images..."
