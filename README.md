@@ -7,8 +7,14 @@ POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
 POSTGRES_PORT=5432
+POSTGRES_HOST=localhost
 
-VITE_FRONT_END_SERVER_URL=http://localhost:3030
+# VITE_FRONT_END_SERVER_URL=http://localhost:3030/kiosk-express
+VITE_FRONT_END_SERVER_URL=https://qlfz9ox1dk.execute-api.us-east-1.amazonaws.com/development/kiosk-express
+
+CLIENT_ID=
+CLIENT_SECRET=
+API_AUTH_TOKEN_URL=https://kiosk.auth.us-east-1.amazoncognito.com/oauth2/token
 ```
 
 Add the following .env under /shared/server
@@ -20,10 +26,6 @@ POSTGRES_HOST=db
 POSTGRES_PORT=5432
 
 HOST_URL=http://localhost:3030
-
-CLIENT_ID=
-CLIENT_SECRET=
-API_AUTH_TOKEN_URL=https://kiosk.auth.us-east-1.amazoncognito.com/oauth2/token
 ```
 
 ## Starting the services
