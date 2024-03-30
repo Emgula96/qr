@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors')
-const getAccessToken = require('./oauth2/token')
 const dotenv = require('dotenv')
 dotenv.config()
 

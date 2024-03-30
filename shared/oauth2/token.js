@@ -25,8 +25,8 @@ const getAccessToken = async () => {
         body: formBody
     })
 
-    respJson = await resp.json()
+    const respJson = await resp.json()
     return respJson.access_token
 }
 
-module.exports = getAccessToken
+export default getAccessToken
