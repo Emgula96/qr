@@ -23,6 +23,10 @@ phases:
       - cd shared/server
       - zip -r kiosk-express.zip .
       - cd ../..
+      - echo "Zipping the api token server..."
+      - cd shared/oauth2
+      - zip -r kiosk-token-fetcher.zip .
+      - cd ../..
       - echo "Buiding web application docker container"
       - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg VITE_FRONT_END_SERVER_URL=${VITE_FRONT_END_SERVER_URL} .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
@@ -33,5 +37,6 @@ phases:
       - printf '[{"name":"kiosk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo "Uploading the lambda serverless API..."
       - aws lambda update-function-code --function-name kiosk-express --zip-file fileb://shared/server/kiosk-express.zip
+      - aws lambda update-function-code --function-name kiosk-token-fetcher --zip-file fileb://shared/oauth2/kiosk-token-fetcher.zip
 artifacts:
   files: imagedefinitions.json
