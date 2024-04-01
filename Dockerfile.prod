@@ -5,10 +5,10 @@ ENV PATH /app/node_modules/.bin:$PATH
 ARG VITE_FRONT_END_SERVER_URL
 ENV VITE_FRONT_END_SERVER_URL ${VITE_FRONT_END_SERVER_URL}
 
-COPY ./shared/package.json /app/
-COPY ./shared/package-lock.json /app/
+COPY ./shared/package.json .
+COPY ./shared/package-lock.json .
 RUN npm install
-COPY ./shared /app
+COPY ./shared .
 RUN npm run build
 
 FROM nginx:latest

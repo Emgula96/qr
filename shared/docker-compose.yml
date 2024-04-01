@@ -32,5 +32,12 @@ services:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  token:
+    build: ./oauth2
+    ports:
+      - 3040:3040
+    volumes:
+      - ./oauth2:/oauth2
 volumes:
   pgdata:
