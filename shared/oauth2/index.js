@@ -1,4 +1,4 @@
-import awsServerlessExpress from require('aws-serverless-express')
+import awsServerlessExpress from 'aws-serverless-express'
 import app from './app.js'
 const server = awsServerlessExpress.createServer(app)
 
