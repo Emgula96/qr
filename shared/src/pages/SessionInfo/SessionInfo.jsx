@@ -11,15 +11,8 @@ function SessionInfo({ name, email, phone, region, district, campus, sessionTitl
 
     useEffect(() => {
         async function fetchData() {
-            const tokenResp = await fetch('/token', { method: "GET" })
-            const tokenJson = await tokenResp.json()
-            console.log(tokenJson)
-
-            const resp = await fetch(`${import.meta.env.VITE_FRONT_END_SERVER_URL}/v1/users`, { 
+            const resp = await fetch(`/api/session-info`, { 
                 method: "GET",
-                headers: {
-                    Authorization: tokenJson.token
-                }
             })
             const header = await resp.json()
             setUser(header.data.user_profile)
