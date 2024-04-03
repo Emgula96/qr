@@ -4,6 +4,7 @@ import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
 import PropTypes from 'prop-types'
+import service from '../../service'
 import './session-info.scss'
 
 function SessionInfo({ name, email, phone, region, district, campus, sessionTitle, location}) {
@@ -11,11 +12,8 @@ function SessionInfo({ name, email, phone, region, district, campus, sessionTitl
 
     useEffect(() => {
         async function fetchData() {
-            const resp = await fetch(`/api/session-info`, { 
-                method: "GET",
-            })
-            const header = await resp.json()
-            setUser(header.data.user_profile)
+            const userInfo = await service.getUserInfo()
+            setUser(userInfo.data.user_profile)
         }
         fetchData()
     }, [])
