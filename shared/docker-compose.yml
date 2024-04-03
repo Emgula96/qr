@@ -33,23 +33,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-  token:
-    build: ./oauth2
-    depends_on:
-      - cache
-    ports:
-      - 3040:3040
-    volumes:
-      - ./oauth2:/oauth2
-
-  cache:
-    image: redis:6.2-alpine
-    restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server --save 20 1 --loglevel warning
-    volumes: 
-      - cache:/data
 volumes:
   pgdata:
   cache:

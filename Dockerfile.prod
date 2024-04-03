@@ -2,8 +2,8 @@ FROM node:20-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
-ARG VITE_FRONT_END_SERVER_URL
-ENV VITE_FRONT_END_SERVER_URL ${VITE_FRONT_END_SERVER_URL}
+ARG API_URL
+ENV API_URL ${API_URL}
 
 COPY ./shared/package.json .
 COPY ./shared/package-lock.json .
