@@ -1,6 +1,5 @@
 import fs from 'node:fs/promises'
 import express from 'express'
-import getAccessToken from './oauth2/token.js'
 import NodeCache from 'node-cache'
 const myCache = new NodeCache()
 import dotenv from 'dotenv'
