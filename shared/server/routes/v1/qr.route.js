@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
             throw "userID not set"
         }
 
-        const url = `${process.env.HOST_URL}/kiosk-express/v1/attendence/check-in?userId=${req.query.userId}}`
+        const url = `${process.env.HOST_URL}/v1/attendence/check-in?userId=${req.query.userId}}`
         QRCode.toDataURL(url, { version: 10 }, function (err, url) {
             if (err) {
                 throw err
