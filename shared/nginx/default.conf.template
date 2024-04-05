@@ -2,6 +2,15 @@ server {
   server_name ${SERVER_NAME};
   listen 80;
 
+  location /api/oauth2/token {
+    proxy_pass https://kiosk.auth.us-east-1.amazoncognito.com/oauth2/token;
+  }
+
+  location /api/v1/qr {
+    proxy_set_header Authorization $http_x_amzn_oidc_accesstoken;
+    proxy_pass ${API_URL}/v1/qr;
+  }
+
   location /api/v1/users {
     proxy_set_header Authorization $http_x_amzn_oidc_accesstoken;
     proxy_pass ${API_URL}/v1/users;
