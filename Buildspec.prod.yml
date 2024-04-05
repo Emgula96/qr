@@ -21,7 +21,7 @@ phases:
       - zip -r kiosk-express.zip .
       - cd ../..
       - echo "Buiding web application docker container"
-      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg API_URL=${API_URL} --build-arg SERVER=${SERVER} --build-arg VITE_ENVIRONMENT=${VITE_ENVIRONMENT} .
+      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg API_URL=${API_URL} --build-arg SERVER=${SERVER} --build-arg VITE_ENVIRONMENT=${VITE_ENVIRONMENT} --build-arg VITE_MODE_DEBUG_LOCAL_PROD=${VITE_MODE_DEBUG_LOCAL_PROD} .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
   post_build:
     commands:
