@@ -1,4 +1,3 @@
-/* eslint-disable comma-dangle */
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
