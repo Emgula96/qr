@@ -46,7 +46,11 @@ CREATE TABLE users_events(
 
 -- Seed
 INSERT INTO users (first_name, last_name, email, phone) VALUES ('Bryan', 'Wheeler', 'bryan.wheeler@esc4.net', '555-555-5555');
+INSERT INTO users (first_name, last_name, email, phone) VALUES ('John', 'Doe', 'john.doe@esc4.net', '555-555-5555');
+
 INSERT INTO events (region, district, campus, title, location, start_time) VALUES ('South Houston', 'District 9', 'Cool Campus', 'Super Cool Training Session', 'Some Location', NOW());
 INSERT INTO events (region, district, campus, title, location, start_time) VALUES ('South Houston', 'District 9', 'Cool Campus', 'Super Cool Training Session 2', 'Some Location', NOW() + '1 day');
+
 INSERT INTO users_events (user_id, event_id) VALUES (1, 1);
 INSERT INTO users_events (user_id, event_id) VALUES (1, 2);
+INSERT INTO users_events (user_id, event_id) VALUES (2, 2);

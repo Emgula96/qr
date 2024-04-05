@@ -1,5 +1,6 @@
+/* eslint-disable comma-dangle */
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
@@ -14,14 +15,14 @@ function SessionInfo() {
   
   // Get the query params
   const queryParams = new URLSearchParams(location.search);
-  const email = queryParams.get("email")
-  const firstName = queryParams.get("firstName")
-  const lastName = queryParams.get("lastName")
+  const email = queryParams.get('email')
+  const firstName = queryParams.get('firstName')
+  const lastName = queryParams.get('lastName')
   
   useEffect(() => {
     async function fetchData() {
       const userInfo = await service.getUserAndFirstEvent(email, firstName, lastName)
-      setUser(userInfo.data[0])
+      setUser(userInfo)
     }
 
     fetchData()
@@ -45,7 +46,10 @@ function SessionInfo() {
               <p className='session-info-label'><strong>Session Title: </strong>{user.title}</p>
               <p className='session-info-label'><strong>Location: </strong>{user.location}</p>
               <div className='qr-button qr-button-center'>
-                <Link to="print-badge">
+                <Link to={{
+                  pathname: '/print-badge',
+                  search: `id=${user.id}`
+                }}>
                   <button>Print Badge</button>
                 </Link>
               </div>

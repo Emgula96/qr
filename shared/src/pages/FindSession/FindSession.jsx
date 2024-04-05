@@ -7,9 +7,9 @@ import FormField from './FormField'
 import './find-session.scss'
 
 function FindSession() {
-  const [email, setEmail] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
  
   return (
     <Page>

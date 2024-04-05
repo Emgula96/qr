@@ -7,10 +7,17 @@ async function getUserInfo(email, firstName, lastName) {
 }
 
 async function getUserAndFirstEvent(email, firstName, lastName) {
-  return await rest.get(`${host}/v1/users?email=${email}&first_name=${firstName}&last_name=${lastName}`)
+  const { data } = await rest.get(`${host}/v1/users?email=${email}&first_name=${firstName}&last_name=${lastName}`)
+  return data[0]
+}
+
+async function generateQrCode(id) {
+  const { data } = await rest.get(`${host}/v1/qr?id=${id}`)
+  return data
 }
 
 export default {
   getUserInfo,
   getUserAndFirstEvent,
+  generateQrCode,
 }
