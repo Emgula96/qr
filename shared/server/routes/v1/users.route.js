@@ -1,24 +1,27 @@
-const express = require('express')
-
-const router = express.Router();
-
-const mockResp = {
-    "user_profile": {
-        "first_name":"Joe",
-        "last_name":"Anderson",
-        "email":"joe.anderson@esc4.net",
-        "user_id":"123",
-        "tenant_id":"123"
-    }
-}
+import express from 'express'
+const router = express.Router()
+import { query } from '../../db.js'
 
 router.get('/', async (req, res) => {
     try {
-      res.status(200).json({"data": mockResp});
+      const { email, first_name, last_name } = req.query
+
+      const sqlQuery = `
+        SELECT * FROM users
+        INNER JOIN users_events ue ON users.id = ue.user_id
+        INNER JOIN events e ON ue.event_id = e.id
+        WHERE users.email = $1 AND users.first_name = $2 AND users.last_name = $3
+        ORDER BY e.start_time asc
+        LIMIT 1;
+      `
+
+      const { rows } = await query(sqlQuery, [email, first_name, last_name])
+
+      res.status(200).json({ "data": rows })
     } catch (error) {
-      console.error('An error ocurred:', error);
-      res.status(500).json(error);
+      console.error('An error ocurred:', error)
+      res.status(500).json(error)
     }
   });
 
-  module.exports = router;
+  export default router

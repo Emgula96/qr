@@ -1,5 +1,5 @@
-const express = require('express')
-var QRCode = require('qrcode')
+import express from 'express'
+import QRCode from 'qrcode'
 
 const router = express.Router();
 
@@ -16,12 +16,12 @@ router.get('/', async (req, res) => {
                 throw err
             }
 
-            res.status(200).json({"data": url});
+            res.status(200).json({"data": url})
         })
     } catch (error) {
-      console.error('An error ocurred:', error);
-      res.status(500).json(error);
+      console.error('An error ocurred:', error)
+      res.status(500).json(error)
     }
-  });
+  })
 
-  module.exports = router;
+  export default router
