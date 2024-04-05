@@ -28,7 +28,7 @@ router.get('/check-in', async (req, res) => {
 
     // const checkInSql = checkInStmt(req.query.userId, 1, true, false)
     // const checkInResult = await queryDatabase(checkInSql);
-    res.status(200).json({"data": []})
+    res.status(200).json({ 'data': [] })
   } catch (error) {
     console.error('An error ocurred:', error)
     res.status(500).json(error)
@@ -38,11 +38,11 @@ router.get('/check-in', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     // const result = await queryDatabase('SELECT * FROM attendee');
-    res.status(200).json({"data": []})
+    res.status(200).json({ 'data': [] })
   } catch (error) {
     console.error('An error ocurred:', error)
     res.status(500).json(error)
   }
 });
 
-  export default router
+export default router

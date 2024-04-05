@@ -1,19 +1,33 @@
+import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom';
 import Page from '../../components/Page'
-import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
+import service from '../../service'
 import './print-badge.scss'
 
 function PrintBadge() {
+  const [qrSrc, setQrSrc] = useState('')
+  const location = useLocation()
+
+  // Get the query params
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get('id')
+
+  useEffect(() => {
+    async function fetchData() {
+      const qrSrc = await service.generateQrCode(id)
+      setQrSrc(qrSrc)
+    }
+
+    fetchData()
+  }, [id])
+
   return (
     <Page>
-      <TimeStamp />
       <Content>
-        <h2>Here is a map to your session.</h2>
-        <p>Your badge is being printed. See map below for your session location.</p>
+        <h2>DEMO QR CODE</h2>
         <div className='print-badge-map-container'>
-          <div className='print-badge-map'>
-            <img src='https://esc4.net/mjsandbox/kiosk%20test/images/Map%20to%20102%20copy.jpg' />
-          </div>
+          <img src={qrSrc} />
         </div>
       </Content>
     </Page>

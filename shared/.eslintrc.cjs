@@ -7,6 +7,16 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
+    "object-curly-spacing": ["error", "always"],
+    "comma-dangle": ["error", {
+      "arrays": "only-multiline",
+      "objects": "only-multiline",
+      "imports": "never",
+      "exports": "never",
+      "functions": "never"
+    }],
+    "quotes": [2, "single", { "avoidEscape": true }],
+    'indent': ["error", 2],
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
