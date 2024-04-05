@@ -17,7 +17,7 @@ const Router = () => {
 
   React.useEffect(() => {
     async function getTokens() {
-      if (code) {
+      if (code && import.meta.env.VITE_ENVIRONMENT === 'development') {
         const tokens = await service.getAccessToken(code)
         if (tokens.access_token) {
           localStorage.setItem('access_token', tokens.access_token)
