@@ -1,7 +1,5 @@
 import fs from 'node:fs/promises'
 import express from 'express'
-import NodeCache from 'node-cache'
-const myCache = new NodeCache()
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -14,9 +12,10 @@ const base = process.env.BASE || '/'
 const templateHtml = isProduction
   ? await fs.readFile('./dist/client/index.html', 'utf-8')
   : ''
-const ssrManifest = isProduction
-  ? await fs.readFile('./dist/client/ssr-manifest.json', 'utf-8')
-  : undefined
+
+// const ssrManifest = isProduction
+//   ? await fs.readFile('./dist/client/ssr-manifest.json', 'utf-8')
+//   : undefined
 
 // Create http server
 const app = express()
@@ -37,25 +36,6 @@ if (!isProduction) {
   app.use(compression())
   app.use(base, sirv('./dist/client', { extensions: [] }))
 }
-
-app.use('/token', async (req, res, next) => {
-  try {
-    const cachedAccessToken = myCache.get("access-token")
-    if (cachedAccessToken) {
-      console.debug("Cached access token found... ", cachedAccessToken)
-      res.status(200).json({token: cachedAccessToken})
-    } else {
-      const token = await getAccessToken()
-      myCache.set('access-token', token, 20000)
-      console.debug("Caching access token... ", token)
-      res.status(200).json({token: cachedAccessToken})
-    }
-  } catch (err) {
-    vite?.ssrFixStacktrace(e)
-    console.log(e.stack)
-    res.status(500).json({error: err})
-  }
-})
 
 // Serve HTML
 app.use('*', async (req, res, next) => {
