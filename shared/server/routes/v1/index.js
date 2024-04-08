@@ -1,12 +1,12 @@
-const express = require('express')
-const users = require('./users.route')
-const attendence = require('./attendence.route')
-const qr = require('./qr.route')
+import express from 'express'
+import users from './users.route.js'
+import attendence from './attendence.route.js'
+import qr from './qr.route.js'
 
-const router = express.Router();
+const router = express.Router()
 
-router.use('/users', users);
-router.use('/attendence', attendence);
-router.use('/qr', qr);
+router.use('/users', users)
+router.use('/attendence', attendence)
+router.use('/qr', qr)
 
-module.exports = router;
+export default router

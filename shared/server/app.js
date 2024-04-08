@@ -1,21 +1,21 @@
-const express = require('express')
-const cors = require('cors')
-const dotenv = require('dotenv')
+import express from 'express'
+import cors from 'cors'
+import dotenv from 'dotenv'
 dotenv.config()
 
-const routes =  require('./routes')
+import routes from './routes/index.js'
 
 const app = express()
 app.use(cors())
-app.use(express.json())
+
 app.use('/kiosk-express', routes)
 
-app.use((req, res, next) => {
+app.use((req, res) => {
   res.status(404).send();
 });
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   res.status(err.status || 500).send();
 });
 
-module.exports = app;
+export default app;

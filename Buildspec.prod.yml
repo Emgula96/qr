@@ -1,8 +1,13 @@
 version: 0.2
-env:
-  secrets-manager:
-    VITE_FRONT_END_AWS_GATEWAY_API_KEY: arn:aws:secretsmanager:us-east-1:471808368523:secret:prod/kiosk/apikey-OjfwSl:VITE_FRONT_END_AWS_GATEWAY_API_KEY
 phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo "Installing application server dependencies..."
+      - cd shared/server
+      - npm install
+      - cd ../..
   pre_build:
     commands:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 471808368523.dkr.ecr.us-east-1.amazonaws.com/kiosk:latest
@@ -11,13 +16,19 @@ phases:
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
-      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg VITE_FRONT_END_SERVER_URL=${VITE_FRONT_END_SERVER_URL} --build-arg VITE_FRONT_END_AWS_GATEWAY_API_KEY=${VITE_FRONT_END_AWS_GATEWAY_API_KEY} .
+      - echo "Zipping the application server..."
+      - cd shared/server
+      - zip -r kiosk-express.zip .
+      - cd ../..
+      - echo "Buiding web application docker container"
+      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg API_URL=${API_URL} --build-arg SERVER=${SERVER} --build-arg VITE_ENVIRONMENT=${VITE_ENVIRONMENT} --build-arg VITE_MODE_DEBUG_LOCAL_PROD=${VITE_MODE_DEBUG_LOCAL_PROD} .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-      - echo ${VITE_FRONT_END_AWS_GATEWAY_API_KEY}
   post_build:
     commands:
-      - docker push $REPOSITORY_URI:latest
+      - echo "Pushing the Docker images..."
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - printf '[{"name":"kiosk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - echo "Uploading the lambda serverless API..."
+      - aws lambda update-function-code --function-name kiosk-express --zip-file fileb://shared/server/kiosk-express.zip
 artifacts:
   files: imagedefinitions.json
