@@ -18,12 +18,13 @@
     "compression": "^1.7.4",
     "dotenv": "^16.4.5",
     "express": "^4.18.3",
+    "jest": "^29.7.0",
     "node-cache": "^5.1.2",
     "pg-promise": "^11.5.4",
-    "jest": "^29.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.18.0",
+    "react-simple-keyboard": "^3.7.108",
     "sirv": "^2.0.4"
   },
   "devDependencies": {
