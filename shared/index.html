@@ -57,7 +57,7 @@
         console.log(comps);
 
         // Find all active barcode scanner components
-        var accItems = _.filter(comps, function (c) {
+        var accItems = comps.filter(function (c) {
           return c.ComponentTypeName === "Barcode_Scanner" && c.IsActive;
         });
         accItems = accItems || [];	// Do an 'OR' operation to assign an empty array if no components were found.
@@ -85,6 +85,38 @@
       console.error(JSON.stringify(err));
       $("#barcode-conn-status").css({ 'color': 'red' })
     });
+
+    function defineEvents() {
+
+      // Detach the event handlers. This is done here because if defineEvents() is called again, then these events won't be registered multiple times and cause duplicate event firings.
+      proxy.off('onBarcodeScannerConnected_Event');
+      proxy.off('onBarcodeScannerConnectedError_Event');
+      proxy.off('onBarcodeScanned_Event');
+      proxy.off('onBarcodeScannerTriggerTimeout_Event');
+
+      // Attach the event handlers
+      proxy.on('onBarcodeScannerConnected_Event', function (evt) {
+        $("#barcode-conn-status").css({ 'color': 'green' })
+        console.log('Connected');
+        console.log(JSON.stringify(evt));
+      });
+
+      proxy.on('onBarcodeScannerConnectedError_Event', function (evt) {
+        $("#barcode-conn-status").css({ 'color': 'red' })
+        console.log('Connection Error');
+        console.log(evt.Payload);
+      });
+
+      proxy.on('onBarcodeScanned_Event', function (evt) {
+        console.log('Barcode Scanned');
+        console.log(evt.Payload);
+      });
+
+      proxy.on('onBarcodeScannerTriggerTimeout_Event', function (evt) {
+        console.log('Scan Timeout');
+        console.log(evt.Payload);
+      });
+    }
   </script>
 </body>
 
