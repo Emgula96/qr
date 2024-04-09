@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Page from '../../components/Page'
 import Content from '../../components/Content'
 import service from '../../service'
@@ -28,6 +28,13 @@ function PrintBadge() {
         <h2>DEMO QR CODE</h2>
         <div className='print-badge-map-container'>
           <img src={qrSrc} />
+        </div>
+        <div className='qr-button qr-button-center'>
+          <Link to={{
+            pathname: '/find-session',
+          }}>
+            <button>Find Session</button>
+          </Link>
         </div>
       </Content>
     </Page>
