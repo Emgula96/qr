@@ -1,12 +1,90 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <title>QR Check-In Lib</title>
-  </head>
-  <body>
-    <div id='app'><!--outlet--></div>
-    <script type='module' src='/src/entry-client.jsx'></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <script src="scripts/jquery-1.6.4.min.js" type="text/javascript"></script>
+  <script src="scripts/jquery.signalR-2.0.3.min.js" type="text/javascript"></script>
+  <title>QR Check-In Lib</title>
+</head>
+
+<body>
+  <div>BARCODE SCANNER DEBUG</div>
+  <div id="barcode-conn-status">CONNECTED</div>
+
+  <div id='app'><!--outlet--></div>
+  <script type='module' src='/src/entry-client.jsx'></script>
+  <script>
+    var devMgrConnStr = "http://localhost:60559/signalr";
+    var scannerIdx = 0;
+
+    var conn = $.hubConnection(devMgrConnStr);
+
+    conn.reconnecting(function () {
+      console.log("Attempting to reconnect to signalR");
+    })
+
+    conn.reconnected(function () {
+      console.log("signalR reconnected");
+    })
+
+    conn.disconnected(function () {
+      console.error("signalR disconnected");
+      $("#barcode-conn-status").css({ 'color': 'red' })
+
+      setTimeout(function () {
+        conn.start().done(function () {
+          console.log("signalR connected");
+          $("#barcode-conn-status").css({ 'color': 'green' })
+        }).fail(function (err) {
+          console.error(JSON.stringify(err));
+          $("#barcode-conn-status").css({ 'color': 'red' })
+        });
+      }, 5000)
+    });
+
+    var proxy = conn.createHubProxy("deviceManagerHub");
+
+    conn.start().done(function () {
+      console.log("signalR is connected");
+      $("#barcode-conn-status").css({ 'color': 'green' })
+
+      // Get all of the device components
+      proxy.invoke('GetAllComponents').done(function (comps) {
+
+        console.log(comps);
+
+        // Find all active barcode scanner components
+        var accItems = _.filter(comps, function (c) {
+          return c.ComponentTypeName === "Barcode_Scanner" && c.IsActive;
+        });
+        accItems = accItems || [];	// Do an 'OR' operation to assign an empty array if no components were found.
+
+        if (accItems.length > 0) {
+          // Use the first barcode scanner component.
+          var scannerItem = accItems[0];
+          scannerIdx = scannerItem.CompIdx;
+          scannerDevInterface = scannerItem.DeviceManagerInterface;
+
+          // This is the recommended approach to obtaining the idx and interface variables. Setting these manually will
+          // require a code change; but this approach is dynamic.
+
+          defineEvents();
+        }
+        else {
+          console.error("A barcode scanner component wasn't found in the configuration.");
+        }
+
+      }).fail(function (err) {
+        console.error(JSON.stringify(err));
+      });
+
+    }).fail(function (err) {
+      console.error(JSON.stringify(err));
+      $("#barcode-conn-status").css({ 'color': 'red' })
+    });
+  </script>
+</body>
+
 </html>
