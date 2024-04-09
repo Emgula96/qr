@@ -43,20 +43,18 @@ function FindSession() {
   }
 
   const onChangeInput = event => {
+    keyboard.current.setInput(event.target.value)
+
     if (currentInput === 'email-field') {
       setEmail(event.target.value)
-      keyboard.current.setInput(event.target.value)
     } else if (currentInput === 'fname-field') {
       setFirstName(event.target.value)
-      keyboard.current.setInput(event.target.value)
     } else if (currentInput === 'lname-field') {
       setLastName(event.target.value)
-      keyboard.current.setInput(event.target.value)
     }
   }
 
   const onFocusInput = (id) => { 
-    console.log('refocusing input', id)
     setCurrentInput(id)
 
     if (id === 'email-field') {

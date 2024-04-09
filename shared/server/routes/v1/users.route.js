@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
         SELECT * FROM users
         INNER JOIN users_events ue ON users.id = ue.user_id
         INNER JOIN events e ON ue.event_id = e.id
-        WHERE users.email = $1 AND users.first_name = $2 AND users.last_name = $3
+        WHERE users.email = $1 AND LOWER(users.first_name) = LOWER($2) AND LOWER(users.last_name) = LOWER($3)
         ORDER BY e.start_time ASC
         LIMIT 1;
       `

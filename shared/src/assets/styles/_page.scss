@@ -34,6 +34,14 @@ body {
     }
 }
 
+.qr-button-start {
+    justify-content: start;
+}
+
+.qr-button-multi {
+    justify-content: space-between;
+}
+
 .qr-button-center {
     justify-content: center;
 }
@@ -46,6 +54,7 @@ body {
     width: 100%;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
-    background-color: #F2F1F1;;
+    background-color: #F2F1F1;
+    ;
     padding: 16px;
 }
