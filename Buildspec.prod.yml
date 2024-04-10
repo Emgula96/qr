@@ -16,7 +16,7 @@ phases:
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
-      - echo "Zipping the application server..."
+      - echo "Zipping up the application server..."
       - cd shared/server
       - zip -r kiosk-express.zip .
       - cd ../..
