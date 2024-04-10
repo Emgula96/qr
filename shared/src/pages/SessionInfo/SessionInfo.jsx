@@ -47,15 +47,15 @@ function SessionInfo() {
               <p className='session-info-label'><strong>Location: </strong>{user.location}</p>
               <div className='qr-button qr-button-multi'>
                 <Link to={{
+                  pathname: '/find-session',
+                }}>
+                  <button>Find Session</button>
+                </Link>
+                <Link to={{
                   pathname: '/print-badge',
                   search: `id=${user.id}`
                 }}>
                   <button>Print Badge</button>
-                </Link>
-                <Link to={{
-                  pathname: '/find-session',
-                }}>
-                  <button>Session Info</button>
                 </Link>
               </div>
             </div>
