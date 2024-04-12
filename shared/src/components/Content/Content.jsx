@@ -12,8 +12,8 @@ function Content({ children, heading, subHeading }) {
 }
 
 Content.defaultProps = {
-  heading: 'Welcome to Region 4!!!',
-  subHeading: 'Scan or Print QR Code Badge or Go to Session Room to Check-in.',
+  heading: '',
+  subHeading: '',
 }
 
 Content.propTypes = {

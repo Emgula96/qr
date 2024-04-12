@@ -63,29 +63,32 @@ function CheckIn() {
   return (
     <Page>
       <TimeStamp />
-      <Content heading='Session Information' subHeading={''}>
+      <Content>
         {!!event && !!attendence && (
           <>
-            <div className='scanner'>
-              <div className='scanner-content'>
-                <span>Scan QR Code to Check-In</span>
-                <p><em>Scan QR Code by holding printed badge under camera located at the bottom of this device.</em></p>
-              </div>
-            </div>
             <div className='check-in-wrapper'>
-              <div className='attendee-container'>
-                <h2>Attendee Count</h2>
-                <div className='count'>
-                  <p>{attendence.length}</p>
-                  <span>of</span>
-                  <p>{event.max_attendees}</p>
-                  <span>checked in</span>
+              <div className='left'>
+                <div className='scanner'>
+                  <div className='scanner-content'>
+                    <span>Scan QR Code to Check-In</span>
+                    <p><em>Scan QR Code by holding printed badge under camera located at the bottom of this device.</em></p>
+                  </div>
                 </div>
-                <div className='bottom'>
-                  <div>Max Attendee Count: {event.max_attendees}</div>
+                <div className='attendee-container'>
+                  <h2>Attendee Count</h2>
+                  <div className='count'>
+                    <p>{attendence.length}</p>
+                    <span>of</span>
+                    <p>{event.max_attendees}</p>
+                    <span>checked in</span>
+                  </div>
+                  <div className='bottom'>
+                    <div>Max Attendee Count: {event.max_attendees}</div>
+                  </div>
                 </div>
               </div>
-              <div className='check-in-wrapper-inner'>
+              <div className='right'>
+                <h2>Session Information</h2>
                 <div className='check-in-wrapper-item'>
                   <p><b>Session ID:</b></p>
                   <p>{event.id}</p>
