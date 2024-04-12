@@ -42,12 +42,12 @@ function CheckIn() {
                 <div className='count'>
                   <p>24</p>
                   <span>of</span>
-                  <p>30</p>
+                  <p>{event.max_attendees}</p>
                   <span>checked in</span>
                 </div>
                 <div className='bottom'>
                   <span>Max Attendee Count:</span>
-                  <span>30</span>
+                  <span>{event.max_attendees}</span>
                 </div>
               </div>
               <div className='check-in-wrapper-inner'>
