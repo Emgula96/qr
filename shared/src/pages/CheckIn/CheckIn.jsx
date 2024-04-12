@@ -31,7 +31,7 @@ function CheckIn() {
     <Page>
       <TimeStamp />
       <Content heading='Session Information' subHeading={''}>
-        {!!event && !!attendence (
+        {!!event && !!attendence && (
           <>
             <div className='scanner'>
               <div className='scanner-content'>
