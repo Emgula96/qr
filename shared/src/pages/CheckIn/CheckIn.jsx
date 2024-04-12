@@ -7,6 +7,26 @@ import TimeStamp from '../../components/TimeStamp'
 import service from '../../service'
 import './check-in.scss'
 
+const getDate = (timestamp) => {
+  // Create a new Date object from the timestamp
+  const date = new Date(timestamp)
+
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+
+  // Convert the hours to 12 hour format
+  const hours12 = hours % 12
+
+  // Add an AM or PM indicator
+  const ampm = hours >= 12 ? 'p.m.' : 'a.m.'
+
+  // Create a string representing the time in 12 hour format
+  const time12 = `${hours12}:${minutes} ${ampm}`
+
+  // Return the time string
+  return time12
+}
+
 const Notes = ({ items }) => {
   const lis = items.split('|')
   return (
@@ -96,7 +116,7 @@ function CheckIn() {
                   <p>{event.credits}</p>
                 </div>
                 <div className='check-in-wrapper-item'>
-                  <p><b>{event.start_time}</b></p>
+                  <p><b>Session begins at {getDate(event.start_time)}</b></p>
                 </div>
                 <Notes items={event.notes} />
               </div>
