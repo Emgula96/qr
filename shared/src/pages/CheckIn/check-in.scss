@@ -1,0 +1,68 @@
+.check-in-wrapper-item {
+  display: inline-flex;
+
+  p {
+    margin-left: 5px;
+  }
+}
+
+.check-in-wrapper-list {
+  li {
+    margin-bottom: 1rem;
+  }
+}
+
+.check-in-wrapper-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.attendee-container {
+  background-color: #EBF0F2;
+  height: 250px;
+  min-width: 420px;
+  margin-right: 40px;
+  text-align: center;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+
+  .count{ 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-height: 100px;
+    padding: 45px;
+  }
+
+  .bottom {
+    text-align: end;
+    margin-right: 30px;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 5em;
+    font-family: Open Sans, sans-serif;
+    font-weight: bold;
+  }
+
+  span {
+    margin: auto;
+  }
+}
+
+.check-in-wrapper {
+  display: flex;
+}
+
+.scanner {
+  display: flex;
+
+  .scanner-content {
+    max-width: 300px;
+  }
+
+  span {
+    font-weight: lighter;
+    font-size: 1.3em;
+  }
+}

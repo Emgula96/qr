@@ -12,6 +12,11 @@ async function getUserAndFirstEvent(email, firstName, lastName) {
   return data[0]
 }
 
+async function getEventById(id) {
+  const { data } = await rest.get(`${host}/v1/attendence/event?eventId=${id}`)
+  return data[0]
+}
+
 async function generateQrCode(id) {
   const { data } = await rest.get(`${host}/v1/qr?id=${id}`)
   return data
@@ -51,4 +56,5 @@ export default {
   getUserAndFirstEvent,
   generateQrCode,
   getAccessToken,
+  getEventById,
 }
