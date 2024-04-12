@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Page from '../../components/Page'
@@ -5,6 +6,20 @@ import Content from '../../components/Content'
 import TimeStamp from '../../components/TimeStamp'
 import service from '../../service'
 import './check-in.scss'
+
+const Notes = ({ items }) => {
+  const lis = items.split('|')
+  return (
+    <div>
+      <p><b>Note:</b></p>
+      <ul className='check-in-wrapper-list'>
+        {lis.map((i, key) => {
+          return <li key={key}>{i}</li>
+        })}
+      </ul>
+    </div>
+  )
+}
 
 function CheckIn() {
   const [event, setEvent] = useState()
@@ -83,13 +98,7 @@ function CheckIn() {
                 <div className='check-in-wrapper-item'>
                   <p><b>{event.start_time}</b></p>
                 </div>
-                <div>
-                  <p><b>Note:</b></p>
-                  <ul className='check-in-wrapper-list'>
-                    <li>This session has a restricted access window. Check in will not be permitted after 9:30 a.m.  </li>
-                    <li>This session requires check out in order to receive credit.  Please scan your QR code once the session has ended  </li>
-                  </ul>
-                </div>
+                <Notes items={event.notes} />
               </div>
             </div>
           </>
