@@ -14,6 +14,18 @@ const checkInStmt = `
 
 const hasAttendenceRecordStmt = 'SELECT EXISTS(SELECT 1 FROM attendees WHERE user_id=$1 AND event_id=$2)'
 
+const getEventStmt = 'SELECT * FROM events WHERE id=$1 LIMIT 1'
+
+router.get('/event', async (req, res) => {
+  try {
+    const { rows } = await query(getEventStmt, [req.query.eventId])
+    res.status(200).json({ 'data': rows })
+  } catch (error) {
+    console.error('An error ocurred:', error)
+    res.status(500).json(error)
+  }
+})
+
 router.get('/check-in', async (req, res) => {
   try {
     const hasRecordResult = await query(hasAttendenceRecordStmt, [req.query.userId, req.query.eventId])

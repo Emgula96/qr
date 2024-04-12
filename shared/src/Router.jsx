@@ -5,6 +5,7 @@ const  Kiosk = React.lazy(() => import('./pages/Kiosk'))
 const  FindSession = React.lazy(() => import('./pages/FindSession'))
 const  SessionInfo = React.lazy(() => import('./pages/SessionInfo'))
 const  PrintBadge = React.lazy(() => import('./pages/PrintBadge'))
+const  CheckIn = React.lazy(() => import('./pages/CheckIn'))
 import service from './service'
 import './assets/styles/main.scss'
 
@@ -36,6 +37,7 @@ const Router = () => {
         <Route path="/find-session" element={<FindSession />} />
         <Route path="/session-info" element={<SessionInfo />} />
         <Route path="/print-badge" element={<PrintBadge />} />
+        <Route path="/check-in" element={<CheckIn />} />
       </Routes>
     </React.Suspense>
   );
