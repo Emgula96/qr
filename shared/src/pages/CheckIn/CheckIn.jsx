@@ -8,6 +8,7 @@ import './check-in.scss'
 
 function CheckIn() {
   const [event, setEvent] = useState()
+  const [attendence, setAttendence] = useState()
   
   const location = useLocation()
   
@@ -17,9 +18,10 @@ function CheckIn() {
   
   useEffect(() => {
     async function fetchData() {
-      console.log('fetching')
       const event = await service.getEventById(id)
+      const attendence = await service.getAttendence(id)
       setEvent(event)
+      setAttendence(attendence)
     }
 
     fetchData()
@@ -29,7 +31,7 @@ function CheckIn() {
     <Page>
       <TimeStamp />
       <Content heading='Session Information' subHeading={''}>
-        {!!event && (
+        {!!event && !!attendence (
           <>
             <div className='scanner'>
               <div className='scanner-content'>
@@ -40,7 +42,7 @@ function CheckIn() {
               <div className='attendee-container'>
                 <h2>Attendee Count</h2>
                 <div className='count'>
-                  <p>24</p>
+                  <p>{attendence.length}</p>
                   <span>of</span>
                   <p>{event.max_attendees}</p>
                   <span>checked in</span>
