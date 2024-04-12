@@ -19,7 +19,7 @@
 
 .attendee-container {
   background-color: #EBF0F2;
-  height: 250px;
+  max-height: 250px;
   min-width: 420px;
   margin-right: 40px;
   text-align: center;
@@ -34,9 +34,12 @@
   }
 
   .bottom {
-    text-align: end;
-    margin-right: 30px;
+    display: flex;
     font-weight: bold;
+    justify-content: end;
+    margin-right: 20px;
+    min-height: 66px;
+    align-items: end;
   }
 
   p {
@@ -56,7 +59,8 @@
 
 .scanner {
   display: flex;
-
+  margin-top: 30px;
+  
   .scanner-content {
     max-width: 300px;
   }

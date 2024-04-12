@@ -33,9 +33,7 @@ const Notes = ({ items }) => {
     <div>
       <p><b>Note:</b></p>
       <ul className='check-in-wrapper-list'>
-        {lis.map((i, key) => {
-          return <li key={key}>{i}</li>
-        })}
+        {lis.map((i, key) => <li key={key}>{i}</li>)}
       </ul>
     </div>
   )
@@ -73,7 +71,8 @@ function CheckIn() {
                 <span>Scan QR Code to Check-In</span>
                 <p><em>Scan QR Code by holding printed badge under camera located at the bottom of this device.</em></p>
               </div>
-            </div><div className='check-in-wrapper'>
+            </div>
+            <div className='check-in-wrapper'>
               <div className='attendee-container'>
                 <h2>Attendee Count</h2>
                 <div className='count'>
@@ -83,8 +82,7 @@ function CheckIn() {
                   <span>checked in</span>
                 </div>
                 <div className='bottom'>
-                  <span>Max Attendee Count:</span>
-                  <span>{event.max_attendees}</span>
+                  <div>Max Attendee Count: {event.max_attendees}</div>
                 </div>
               </div>
               <div className='check-in-wrapper-inner'>
