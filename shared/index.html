@@ -13,12 +13,14 @@
 <body>
   <div>BARCODE SCANNER DEBUG</div>
   <div id="barcode-conn-status">CONNECTED</div>
+  <div id="log"></div>
 
   <div id='app'><!--outlet--></div>
   <script type='module' src='/src/entry-client.jsx'></script>
   <script>
     var devMgrConnStr = "http://localhost:60559/signalr";
     var scannerIdx = 0;
+    var scannerDevInterface = undefined;
 
     var conn = $.hubConnection(devMgrConnStr);
 
@@ -47,6 +49,10 @@
 
     var proxy = conn.createHubProxy("deviceManagerHub");
 
+    // If we want to receive events prior to making method calls, then we must register an event before connection.start() is called.
+    // Register a dummy event called: '_a'
+    proxy.on('_a', function () { });
+
     conn.start().done(function () {
       console.log("signalR is connected");
       $("#barcode-conn-status").css({ 'color': 'green' })
@@ -54,7 +60,7 @@
       // Get all of the device components
       proxy.invoke('GetAllComponents').done(function (comps) {
 
-        console.log(comps);
+        console.log("COMPS", comps);
 
         // Find all active barcode scanner components
         var accItems = comps.filter(function (c) {
@@ -70,19 +76,24 @@
 
           // This is the recommended approach to obtaining the idx and interface variables. Setting these manually will
           // require a code change; but this approach is dynamic.
+          console.log("CALLING DEFINE EVENTS");
 
-          defineEvents();
+          proxy.invoke("BarcodeScanner_Connect", scannerIdx, scannerDevInterface).done(function () {
+            console.log("SUCCESS CONNECTION TO BARCODE SCANNER");
+            defineEvents();
+          }).fail(function (err) {
+            console.error(err);
+          })
         }
         else {
           console.error("A barcode scanner component wasn't found in the configuration.");
         }
 
       }).fail(function (err) {
-        console.error(JSON.stringify(err));
+        console.error(err);
       });
-
     }).fail(function (err) {
-      console.error(JSON.stringify(err));
+      console.error(err);
       $("#barcode-conn-status").css({ 'color': 'red' })
     });
 
@@ -110,6 +121,8 @@
       proxy.on('onBarcodeScanned_Event', function (evt) {
         console.log('Barcode Scanned');
         console.log(evt.Payload);
+        $("#log").append(evt.Payload)
+        window.location.href = evt.Payload;
       });
 
       proxy.on('onBarcodeScannerTriggerTimeout_Event', function (evt) {
