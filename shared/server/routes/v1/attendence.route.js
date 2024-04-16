@@ -34,10 +34,10 @@ router.get('/check-in', async (req, res) => {
       
       if (checkInResult.rowCount > 0) {
         console.log('Check in success')
-        return res.status(200).json({ 'data': {} })
+        return res.status(200).json({ data: {} })
       }
 
-      return res.status(500).json({ 'message': 'db error at check in' })
+      return res.status(500).json({ message: 'db error at check in' })
     } else {
       console.log('User has existing check-in record')
       
