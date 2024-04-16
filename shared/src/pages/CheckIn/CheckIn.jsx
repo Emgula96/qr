@@ -42,23 +42,27 @@ const Notes = ({ items }) => {
 function CheckIn() {
   const [event, setEvent] = useState()
   const [attendence, setAttendence] = useState()
+  const [checkedIn, setCheckedIn] = useState()
   
   const location = useLocation()
   
   // Get the query params
   const queryParams = new URLSearchParams(location.search)
-  const id = queryParams.get('eventId')
+  const eventId = queryParams.get('eventId')
+  const userId = queryParams.get('userId')
   
   useEffect(() => {
     async function fetchData() {
-      const event = await service.getEventById(id)
-      const attendence = await service.getAttendence(id)
+      const event = await service.getEventById(eventId)
+      const attendence = await service.getAttendence(eventId)
+      const checkedIn = await service.checkInUser(eventId, userId)
+      setCheckedIn(!!checkedIn)
       setEvent(event)
       setAttendence(attendence)
     }
 
     fetchData()
-  }, [id])  
+  }, [eventId, userId])
 
   return (
     <Page>
@@ -88,6 +92,9 @@ function CheckIn() {
                 </div>
               </div>
               <div className='right'>
+                {checkedIn && (
+                  <div>USER CHECKED IN</div>
+                )}
                 <h2>Session Information</h2>
                 <div className='check-in-wrapper-item'>
                   <p><b>Session ID:</b></p>

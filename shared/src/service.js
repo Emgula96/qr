@@ -22,8 +22,13 @@ async function getAttendence(id) {
   return data
 }
 
-async function generateQrCode(id) {
-  const { data } = await rest.get(`${host}/v1/qr?id=${id}`)
+async function generateQrCode(eventId, userId) {
+  const { data } = await rest.get(`${host}/v1/qr?userId=${userId}&eventId=${eventId}`)
+  return data
+}
+
+async function checkInUser(eventId, userId) {
+  const { data } = await rest.get(`${host}/v1/attendence/check-in?eventId=${eventId}&userId=${userId}`)
   return data
 }
 
@@ -63,4 +68,5 @@ export default {
   getAccessToken,
   getEventById,
   getAttendence,
+  checkInUser,
 }

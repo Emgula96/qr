@@ -53,7 +53,7 @@ function SessionInfo() {
                 </Link>
                 <Link to={{
                   pathname: '/print-badge',
-                  search: `id=${user.id}`
+                  search: `userId=${user.user_id}&eventId=${user.event_id}`
                 }}>
                   <button>Print Badge</button>
                 </Link>

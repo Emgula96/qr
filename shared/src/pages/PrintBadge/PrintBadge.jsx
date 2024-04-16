@@ -11,16 +11,17 @@ function PrintBadge() {
 
   // Get the query params
   const queryParams = new URLSearchParams(location.search);
-  const id = queryParams.get('id')
+  const userId = queryParams.get('userId')
+  const eventId = queryParams.get('eventId')
 
   useEffect(() => {
     async function fetchData() {
-      const qrSrc = await service.generateQrCode(id)
+      const qrSrc = await service.generateQrCode(eventId, userId)
       setQrSrc(qrSrc)
     }
 
     fetchData()
-  }, [id])
+  }, [eventId, userId])
 
   return (
     <Page>
