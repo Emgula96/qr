@@ -56,7 +56,30 @@ function CheckIn() {
       const event = await service.getEventById(eventId)
       const attendence = await service.getAttendence(eventId)
       const checkedIn = await service.checkInUser(eventId, userId)
-      setCheckedIn(!!checkedIn)
+      console.log(checkedIn)
+      if (!checkedIn || !checkedIn.code) {
+        setCheckedIn('Unhandled Error')
+      } else {
+        switch (checkedIn.code) {
+        case 'MULTCHECKIN':
+          setCheckedIn('User has already checked into another event')
+          break
+        case 'ALREADYCHECKIN':
+          setCheckedIn('User has already checked into this event')
+          break
+        case 'NONREGISTER':
+          setCheckedIn('User has not registered for this event')
+          break
+        case 'NOPAY':
+          setCheckedIn('User has not paid for this event')
+          break
+        case 'CHECKIN':
+          setCheckedIn('User has checked into this event')
+          break
+        default:
+          setCheckedIn('Unknown case encountered')
+        }
+      }
       setEvent(event)
       setAttendence(attendence)
     }
@@ -93,7 +116,7 @@ function CheckIn() {
               </div>
               <div className='right'>
                 {checkedIn && (
-                  <div>USER CHECKED IN</div>
+                  <div>{checkedIn}</div>
                 )}
                 <h2>Session Information</h2>
                 <div className='check-in-wrapper-item'>
