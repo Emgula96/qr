@@ -12,6 +12,32 @@
   }
 }
 
+.badge-wrapper {
+  display: flex;
+  align-items: center;
+  
+  .messages {
+    margin-left: 10px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .header {
+    font-size: 1.5em;
+    font-weight: bold;
+
+    &.fail {
+      color: #940609;
+    }
+  
+    &.success {
+      color: green;
+    }
+  }
+}
+
 .attendee-container {
   background-color: #EBF0F2;
   max-height: 250px;

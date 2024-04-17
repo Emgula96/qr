@@ -39,6 +39,27 @@ const Notes = ({ items }) => {
   )
 }
 
+const Badge = ({ header, message, success }) => {
+  const status = success ? 'Success': 'Error'
+  const cls = success ? 'header success' : 'header fail'
+  const imgSrc = success ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png' : 'https://www.esc4.net/mjsandbox/kiosk%20test/images/red%20arrow.png'
+  return (
+    <>
+      <h2>Check In Information</h2>
+      <div className='badge-wrapper'>
+        <img src={imgSrc} width='100' />
+        <div className='messages'>
+          <p className={cls}>Check-In {status} — {header}</p>
+          <p>{message}</p>
+          {!success && (
+            <p>Please contact the facilitator for more information</p>
+          )}
+        </div>
+      </div>
+    </>
+  )
+}
+
 function CheckIn() {
   const [event, setEvent] = useState()
   const [attendence, setAttendence] = useState()
@@ -53,33 +74,11 @@ function CheckIn() {
   
   useEffect(() => {
     async function fetchData() {
+      const checkedIn = await service.checkInUser(eventId, userId)
       const event = await service.getEventById(eventId)
       const attendence = await service.getAttendence(eventId)
-      const checkedIn = await service.checkInUser(eventId, userId)
       console.log(checkedIn)
-      if (!checkedIn || !checkedIn.code) {
-        setCheckedIn('Unhandled Error')
-      } else {
-        switch (checkedIn.code) {
-        case 'MULTCHECKIN':
-          setCheckedIn('User has already checked into another event')
-          break
-        case 'ALREADYCHECKIN':
-          setCheckedIn('User has already checked into this event')
-          break
-        case 'NONREGISTER':
-          setCheckedIn('User has not registered for this event')
-          break
-        case 'NOPAY':
-          setCheckedIn('User has not paid for this event')
-          break
-        case 'CHECKIN':
-          setCheckedIn('User has checked into this event')
-          break
-        default:
-          setCheckedIn('Unknown case encountered')
-        }
-      }
+      setCheckedIn(checkedIn)
       setEvent(event)
       setAttendence(attendence)
     }
@@ -115,8 +114,8 @@ function CheckIn() {
                 </div>
               </div>
               <div className='right'>
-                {checkedIn && (
-                  <div>{checkedIn}</div>
+                {!!checkedIn && (
+                  <Badge header={checkedIn.header} success={checkedIn.status} message={checkedIn.message} />
                 )}
                 <h2>Session Information</h2>
                 <div className='check-in-wrapper-item'>
