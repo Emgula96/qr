@@ -33,22 +33,22 @@ router.get('/check-in', async (req, res) => {
     // Fetch the attendence record for the user
     const { rows } = await query(attendenceRecordStmt, [req.query.userId, req.query.eventId]) 
     if (rows.length > 1) {
-      return res.status(400).json({ message: 'user has multiple check-in results' })
+      return res.status(200).json({ data: { code: 'MULTCHECKIN', message: 'user has multiple check-in results' } })
     } else if (rows.length !== 0 && rows[0].checked_in) {
-      return res.status(200).json({ data: rows[0], message: 'user already checked in' })
+      return res.status(200).json({ data: { code: 'ALREADYCHECKIN', message: 'user already checked in' } })
     }
 
     // Fetch the user event record
     const eventRecordResult = await query(getUserEventStmt, [req.query.userId, req.query.eventId])
     if (!eventRecordResult.rows.length) {
-      return res.status(400).json({ data: {}, message: 'user is not registered for the event' })
+      return res.status(200).json({ data: { code: 'NONREGISTER', message: 'user is not registered for the event' } })
     } else if (!eventRecordResult.rows[0].paid) {
-      return res.status(400).json({ data: rows[0], message: 'user has not paid for event' })
+      return res.status(200).json({ data: { code: 'NOPAY', message: 'user has not paid for event' } } )
     }
 
     // Check the user in
     const checkInResult = await query(checkInStmt, [req.query.userId, req.query.eventId, true, false])
-    res.status(200).json({ data: checkInResult.rows, message: 'user checked in successfully' })
+    res.status(200).json({ data: { rows: checkInResult.rows, code: 'CHECKIN', message: 'user checked in successfully' } })
   } catch (error) {
     console.error('An error ocurred:', error)
     res.status(500).json(error)
