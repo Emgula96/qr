@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import Page from '../../components/Page'
 import Content from '../../components/Content'
 import TimeStamp from '../../components/TimeStamp'
@@ -155,6 +155,13 @@ function CheckIn() {
             </div>
           </>
         )}
+        <div className='qr-button qr-button-start'>
+          <Link to={{
+            pathname: '/find-session',
+          }}>
+            <button>Find Session</button>
+          </Link>
+        </div>
       </Content>
     </Page>
   )
