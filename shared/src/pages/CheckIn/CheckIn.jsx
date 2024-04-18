@@ -42,7 +42,7 @@ const Notes = ({ items }) => {
 const Badge = ({ header, message, success }) => {
   const status = success ? 'Success': 'Error'
   const cls = success ? 'header success' : 'header fail'
-  const imgSrc = success ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png' : 'https://www.esc4.net/mjsandbox/kiosk%20test/images/red%20arrow.png'
+  const imgSrc = success ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png' : 'https://kiosk-assets-public.s3.amazonaws.com/x.png'
   return (
     <>
       <h2>Check In Information</h2>
@@ -50,10 +50,12 @@ const Badge = ({ header, message, success }) => {
         <img src={imgSrc} width='100' />
         <div className='messages'>
           <p className={cls}>Check-In {status} — {header}</p>
-          <p>{message}</p>
-          {!success && (
-            <p>Please contact the facilitator for more information</p>
-          )}
+          <div className='details'>
+            <p>{message}</p>
+            {!success && (
+              <p>Please contact the facilitator for more information</p>
+            )}
+          </div>
         </div>
       </div>
     </>
