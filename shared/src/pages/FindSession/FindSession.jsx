@@ -6,8 +6,8 @@ import Content from '../../components/Content'
 import FormField from './FormField'
 import './find-session.scss'
 
-import Keyboard from 'react-simple-keyboard';
-import 'react-simple-keyboard/build/css/index.css';
+import Keyboard from 'react-simple-keyboard'
+import 'react-simple-keyboard/build/css/index.css'
 
 function FindSession() {
   const [currentInput, setCurrentInput] = useState('')
@@ -31,15 +31,15 @@ function FindSession() {
   }
 
   const handleShift = () => {
-    const newLayoutName = layout === 'default' ? 'shift' : 'default';
-    setLayout(newLayoutName);
+    const newLayoutName = layout === 'default' ? 'shift' : 'default'
+    setLayout(newLayoutName)
   }
 
   const onKeyPress = button => {
     /**
      * If you want to handle the shift and caps lock buttons
      */
-    if (button === '{shift}' || button === '{lock}') handleShift();
+    if (button === '{shift}' || button === '{lock}') handleShift()
   }
 
   const onChangeInput = event => {

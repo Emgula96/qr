@@ -7,6 +7,7 @@ module.exports = {
   settings: { react: { version: '18.2' } },
   plugins: ['react-refresh'],
   rules: {
+    "semi": ["error", "never"],
     "object-curly-spacing": ["error", "always"],
     "comma-dangle": ["error", {
       "arrays": "only-multiline",

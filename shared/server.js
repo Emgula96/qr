@@ -56,7 +56,7 @@ app.use('*', async (req, res, next) => {
 
     const rendered = await render(url)
 
-    const html = template.replace(`<!--outlet-->`, rendered.html ?? '')
+    const html = template.replace('<!--outlet-->', rendered.html ?? '')
 
     res.status(200).set({ 'Content-Type': 'text/html' }).send(html)
   } catch (e) {

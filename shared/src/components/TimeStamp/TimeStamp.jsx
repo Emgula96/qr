@@ -26,7 +26,7 @@ function TimeStamp() {
 
   // Set time based on interval started on mount, every second
   useEffect(() => {
-    const timeString = date.toLocaleTimeString('en', { hour: 'numeric', hour12: true, minute: 'numeric', second: 'numeric' });
+    const timeString = date.toLocaleTimeString('en', { hour: 'numeric', hour12: true, minute: 'numeric', second: 'numeric' })
     setTimeString(timeString)
   }, [date])
 

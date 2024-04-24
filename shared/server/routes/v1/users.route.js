@@ -22,6 +22,6 @@ router.get('/', async (req, res) => {
     console.error('An error ocurred:', error)
     res.status(500).json(error)
   }
-});
+})
 
 export default router
