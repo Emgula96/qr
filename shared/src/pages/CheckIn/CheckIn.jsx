@@ -67,26 +67,31 @@ function CheckIn() {
   const [event, setEvent] = useState()
   const [attendence, setAttendence] = useState()
   const [checkedIn, setCheckedIn] = useState()
+  const [canScan, setCanScan] = useState(true)
 
   const onNewScanResult = (decodedText) => {
-    if (checkedIn) {
+    if (!canScan) {
       console.log('Checkin timeout', checkedIn)
+      return
     }
+
+    setCanScan(false)
 
     console.log(`Code matched = ${decodedText}`)
     const url = new URL(decodedText)
     const userId = url.searchParams.get('userId')
-    const eventId = url.searchParams.get('eventId')
 
     service.checkInUser(eventId, userId).then((checkedIn) => {
       setCheckedIn(checkedIn)
     }).catch((err) => {
       console.error(err)
       setCheckedIn(null)
+      setCanScan(true)
     })
 
     setTimeout(() => {
       setCheckedIn(null)
+      setCanScan(true)
     }, 4000)
   }
   
@@ -99,11 +104,8 @@ function CheckIn() {
   
   useEffect(() => {
     async function fetchData() {
-      // const checkedIn = await service.checkInUser(eventId, userId)
       const event = await service.getEventById(eventId)
       const attendence = await service.getAttendence(eventId)
-      // console.log(checkedIn)
-      // setCheckedIn(checkedIn)
       setEvent(event)
       setAttendence(attendence)
     }
