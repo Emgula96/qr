@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import Page from '../../components/Page'
 import Content from '../../components/Content'
 import TimeStamp from '../../components/TimeStamp'
 import QRCodeScanner from '../../components/QRCodeScanner'
 import service from '../../service'
+import beep from '../../assets/sounds/beep.wav'
 import './check-in.scss'
 
 const getDate = (timestamp) => {
@@ -26,6 +27,16 @@ const getDate = (timestamp) => {
 
   // Return the time string
   return time12
+}
+
+const debounce = (callback, wait) => {
+  let timeoutId = null
+  return (...args) => {
+    window.clearTimeout(timeoutId)
+    timeoutId = window.setTimeout(() => {
+      callback(...args)
+    }, wait)
+  }
 }
 
 const Notes = ({ items }) => {
@@ -68,48 +79,43 @@ function CheckIn() {
   const [attendence, setAttendence] = useState()
   const [checkedIn, setCheckedIn] = useState()
 
-  const onNewScanResult = (decodedText) => {
-    if (checkedIn) {
-      console.log('Checkin timeout', checkedIn)
-    }
-
-    console.log(`Code matched = ${decodedText}`)
-    const url = new URL(decodedText)
-    const userId = url.searchParams.get('userId')
-    const eventId = url.searchParams.get('eventId')
-
-    service.checkInUser(eventId, userId).then((checkedIn) => {
-      setCheckedIn(checkedIn)
-    }).catch((err) => {
-      console.error(err)
-      setCheckedIn(null)
-    })
-
-    setTimeout(() => {
-      setCheckedIn(null)
-    }, 4000)
-  }
-  
   const location = useLocation()
   
   // Get the query params
   const queryParams = new URLSearchParams(location.search)
   const eventId = queryParams.get('eventId')
-  const userId = queryParams.get('userId')
+
+  const beepSound = useMemo(() => {
+    return new Audio(beep)
+  }, [])
+
+  const onNewScanResult = debounce((decodedText) => {
+    console.log(`Code matched = ${decodedText}`)
+    const url = new URL(decodedText)
+    const userId = url.searchParams.get('userId')
+
+    service.checkInUser(eventId, userId).then((checkedIn) => {
+      setCheckedIn(checkedIn)
+      beepSound.play()
+    }).catch((err) => {
+      console.error(err)
+    }).finally(() => {
+      setTimeout(() => {
+        setCheckedIn(null)
+      }, 4000)
+    })
+  }, 500)
   
   useEffect(() => {
     async function fetchData() {
-      // const checkedIn = await service.checkInUser(eventId, userId)
       const event = await service.getEventById(eventId)
       const attendence = await service.getAttendence(eventId)
-      // console.log(checkedIn)
-      // setCheckedIn(checkedIn)
       setEvent(event)
       setAttendence(attendence)
     }
 
     fetchData()
-  }, [eventId, userId])
+  }, [eventId])
 
   return (
     <Page>
