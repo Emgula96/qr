@@ -10,7 +10,7 @@ import service from './service'
 import './assets/styles/main.scss'
 
 const Router = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   // Get the query params
   const queryParams = new URLSearchParams(location.search)
@@ -40,7 +40,7 @@ const Router = () => {
         <Route path="/check-in" element={<CheckIn />} />
       </Routes>
     </React.Suspense>
-  );
-};
+  )
+}
 
 export default Router

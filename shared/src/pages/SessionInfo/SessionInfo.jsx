@@ -1,6 +1,6 @@
-/* eslint-disable comma-dangle */
+ 
 import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'
 import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
@@ -11,10 +11,10 @@ import './session-info.scss'
 function SessionInfo() {
   const [user, setUser] = useState()
   
-  const location = useLocation();
+  const location = useLocation()
   
   // Get the query params
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = new URLSearchParams(location.search)
   const email = queryParams.get('email')
   const firstName = queryParams.get('firstName')
   const lastName = queryParams.get('lastName')

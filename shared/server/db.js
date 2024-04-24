@@ -16,6 +16,6 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-const pool = new pg.Pool(poolConfig);
+const pool = new pg.Pool(poolConfig)
 
-export const query = (text, params) => pool.query(text, params);
+export const query = (text, params) => pool.query(text, params)

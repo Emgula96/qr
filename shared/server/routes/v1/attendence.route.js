@@ -61,7 +61,7 @@ router.get('/check-in', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const { rows } = await query('SELECT * FROM attendees WHERE event_id=$1', [req.query.eventId]);
+    const { rows } = await query('SELECT * FROM attendees WHERE event_id=$1', [req.query.eventId])
     res.status(200).json({ 'data': rows })
   } catch (error) {
     console.error('An error ocurred:', error)

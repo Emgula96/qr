@@ -4,6 +4,7 @@ import { useLocation, Link } from 'react-router-dom'
 import Page from '../../components/Page'
 import Content from '../../components/Content'
 import TimeStamp from '../../components/TimeStamp'
+import QRCodeScanner from '../../components/QRCodeScanner'
 import service from '../../service'
 import './check-in.scss'
 
@@ -66,6 +67,28 @@ function CheckIn() {
   const [event, setEvent] = useState()
   const [attendence, setAttendence] = useState()
   const [checkedIn, setCheckedIn] = useState()
+
+  const onNewScanResult = (decodedText) => {
+    if (checkedIn) {
+      console.log('Checkin timeout', checkedIn)
+    }
+
+    console.log(`Code matched = ${decodedText}`)
+    const url = new URL(decodedText)
+    const userId = url.searchParams.get('userId')
+    const eventId = url.searchParams.get('eventId')
+
+    service.checkInUser(eventId, userId).then((checkedIn) => {
+      setCheckedIn(checkedIn)
+    }).catch((err) => {
+      console.error(err)
+      setCheckedIn(null)
+    })
+
+    setTimeout(() => {
+      setCheckedIn(null)
+    }, 4000)
+  }
   
   const location = useLocation()
   
@@ -76,11 +99,11 @@ function CheckIn() {
   
   useEffect(() => {
     async function fetchData() {
-      const checkedIn = await service.checkInUser(eventId, userId)
+      // const checkedIn = await service.checkInUser(eventId, userId)
       const event = await service.getEventById(eventId)
       const attendence = await service.getAttendence(eventId)
-      console.log(checkedIn)
-      setCheckedIn(checkedIn)
+      // console.log(checkedIn)
+      // setCheckedIn(checkedIn)
       setEvent(event)
       setAttendence(attendence)
     }
@@ -100,6 +123,12 @@ function CheckIn() {
                   <div className='scanner-content'>
                     <span>Scan QR Code to Check-In</span>
                     <p><em>Scan QR Code by holding printed badge under camera located at the bottom of this device.</em></p>
+                    <QRCodeScanner
+                      fps={10}
+                      qrbox={250}
+                      disableFlip={false}
+                      qrCodeSuccessCallback={onNewScanResult} 
+                    />
                   </div>
                 </div>
                 <div className='attendee-container'>

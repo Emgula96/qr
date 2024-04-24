@@ -11,11 +11,11 @@ app.use(cors())
 app.use('/kiosk-express', routes)
 
 app.use((req, res) => {
-  res.status(404).send();
-});
+  res.status(404).send()
+})
 
 app.use((err, req, res) => {
-  res.status(err.status || 500).send();
-});
+  res.status(err.status || 500).send()
+})
 
-export default app;
+export default app

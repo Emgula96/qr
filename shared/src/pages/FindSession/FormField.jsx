@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 function FormField({ label, note, htmlFor, placeholder, type, required, value, onChange, onFocus }) {
@@ -8,13 +8,13 @@ function FormField({ label, note, htmlFor, placeholder, type, required, value, o
     const currRef = inputRef.current
     const handleFocus = () => {
       onFocus(currRef.id)
-    };
+    }
 
     currRef.addEventListener('focus', handleFocus)
 
     return () => {
       currRef.removeEventListener('focus', handleFocus)
-    };
+    }
   }, [onFocus])
 
   return (

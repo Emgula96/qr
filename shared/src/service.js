@@ -1,4 +1,4 @@
-/* eslint-disable quotes */
+ 
 import rest from './util/rest.js' 
 
 const host = import.meta.env.VITE_ENVIRONMENT === 'development' ? import.meta.env.VITE_API_URL : '/api'
@@ -40,15 +40,15 @@ async function getAccessToken(code) {
     'grant_type': 'authorization_code',
     'code': code,
     'redirect_uri': 'http://localhost',
-  };
-
-  let formBody = [];
-  for (const property in details) {
-    const encodedKey = encodeURIComponent(property);
-    const encodedValue = encodeURIComponent(details[property]);
-    formBody.push(encodedKey + '=' + encodedValue);
   }
-  formBody = formBody.join('&');
+
+  let formBody = []
+  for (const property in details) {
+    const encodedKey = encodeURIComponent(property)
+    const encodedValue = encodeURIComponent(details[property])
+    formBody.push(encodedKey + '=' + encodedValue)
+  }
+  formBody = formBody.join('&')
 
   const resp = await fetch('/api/oauth2/token', {
     method: 'POST',

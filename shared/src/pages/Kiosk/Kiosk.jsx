@@ -11,7 +11,7 @@ function Kiosk() {
       <Content>
         <div className='kiosk-wrapper'>
           <div className='qr-button qr-button-center'>
-            <Link to="/find-session">
+            <Link to='/find-session'>
               <button>Find Session</button>
             </Link>
           </div>

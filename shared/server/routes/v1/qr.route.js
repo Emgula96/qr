@@ -1,7 +1,7 @@
 import express from 'express'
 import QRCode from 'qrcode'
 
-const router = express.Router();
+const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
