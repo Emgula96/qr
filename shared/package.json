@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "export PORT=4173 && export NODE_ENV=development && node server.js",
+    "dev": "set PORT=4174 && set NODE_ENV=development && node server.js",
     "prod": "export NODE_ENV=production && node server.js",
     "build": "npm run build:client && npm run build:server",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",

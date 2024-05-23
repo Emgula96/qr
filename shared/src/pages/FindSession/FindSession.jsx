@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
@@ -10,8 +10,12 @@ import Keyboard from 'react-simple-keyboard'
 import 'react-simple-keyboard/build/css/index.css'
 
 function FindSession() {
-  const [currentInput, setCurrentInput] = useState('')
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const deviceId = queryParams.get('deviceId')
 
+  const [currentInput, setCurrentInput] = useState('')
+  console.log(deviceId)
   const [email, setEmail] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -82,7 +86,7 @@ function FindSession() {
                 <div className='qr-button qr-button-end'>
                   <Link to={{
                     pathname: '/session-info',
-                    search: `email=${email}&firstName=${firstName}&lastName=${lastName}`
+                    search: `email=${email}&firstName=${firstName}&lastName=${lastName}&deviceId=${deviceId}`
                   }}>
                     <button>Find Session</button>
                   </Link>

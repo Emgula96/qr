@@ -4,14 +4,14 @@ import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
 import './kiosk.scss'
 
-function Kiosk() {
+function Kiosk(props) {
   return (
     <Page>
       <TimeStamp />
       <Content>
         <div className='kiosk-wrapper'>
           <div className='qr-button qr-button-center'>
-            <Link to='/find-session'>
+            <Link to={{pathname:'/find-session', search:`deviceId=${props.deviceId}`}}>
               <button>Find Session</button>
             </Link>
           </div>

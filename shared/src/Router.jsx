@@ -15,9 +15,11 @@ const Router = () => {
   // Get the query params
   const queryParams = new URLSearchParams(location.search)
   const code = queryParams.get('code')
+  const deviceId = queryParams.get('deviceId')
 
   React.useEffect(() => {
     async function getTokens() {
+      console.log(deviceId)
       if (code && import.meta.env.VITE_ENVIRONMENT === 'development') {
         const tokens = await service.getAccessToken(code)
         if (tokens.access_token) {
@@ -32,12 +34,12 @@ const Router = () => {
   return (
     <React.Suspense fallback={<Loading />}>
       <Routes>
-        <Route path="/" element={<Kiosk />} />
-        <Route path="/kiosk" element={<Kiosk />} />
-        <Route path="/find-session" element={<FindSession />} />
-        <Route path="/session-info" element={<SessionInfo />} />
-        <Route path="/print-badge" element={<PrintBadge />} />
-        <Route path="/check-in" element={<CheckIn />} />
+        <Route path="/" element={<Kiosk deviceId={deviceId}/>} />
+        <Route path="/kiosk" element={<Kiosk deviceId={deviceId}/>} />
+        <Route path="/find-session" element={<FindSession deviceId={deviceId}/>} />
+        <Route path="/session-info" element={<SessionInfo deviceId={deviceId}/>} />
+        <Route path="/print-badge" element={<PrintBadge deviceId={deviceId}/>} />
+        <Route path="/check-in" element={<CheckIn deviceId={deviceId}/>} />
       </Routes>
     </React.Suspense>
   )

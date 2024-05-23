@@ -18,6 +18,7 @@ function SessionInfo() {
   const email = queryParams.get('email')
   const firstName = queryParams.get('firstName')
   const lastName = queryParams.get('lastName')
+  const deviceId = queryParams.get('deviceId')
   
   useEffect(() => {
     async function fetchData() {
@@ -46,14 +47,12 @@ function SessionInfo() {
               <p className='session-info-label'><strong>Session Title: </strong>{user.title}</p>
               <p className='session-info-label'><strong>Location: </strong>{user.location}</p>
               <div className='qr-button qr-button-multi'>
-                <Link to={{
-                  pathname: '/find-session',
-                }}>
+                <Link to={{pathname:'/find-session', search:`deviceId=${deviceId}`}}>
                   <button>Find Session</button>
                 </Link>
                 <Link to={{
                   pathname: '/print-badge',
-                  search: `userId=${user.user_id}&eventId=${user.event_id}`
+                  search: `userId=${user.user_id}&eventId=${user.event_id}&deviceId=${deviceId}`
                 }}>
                   <button>Print Badge</button>
                 </Link>
@@ -68,15 +67,15 @@ function SessionInfo() {
 
 SessionInfo.defaultProps = {}
 
-SessionInfo.propTypes = {
-  name: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
-  region: PropTypes.string.isRequired,
-  district: PropTypes.string.isRequired,
-  campus: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-}
+// SessionInfo.propTypes = {
+//   name: PropTypes.string.isRequired,
+//   email: PropTypes.string.isRequired,
+//   phone: PropTypes.string.isRequired,
+//   region: PropTypes.string.isRequired,
+//   district: PropTypes.string.isRequired,
+//   campus: PropTypes.string.isRequired,
+//   title: PropTypes.string.isRequired,
+//   location: PropTypes.string.isRequired,
+// }
 
 export default SessionInfo
