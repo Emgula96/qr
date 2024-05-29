@@ -1,3 +1,16 @@
 .session-info-label {
     margin-bottom: 1.5rem;
 }
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    color: #40738E;
+    font-weight: bold;
+    font-size: 3em;
+}

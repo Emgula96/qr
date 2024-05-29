@@ -73,6 +73,10 @@ function FindSession() {
   return (
     <Page>
       <TimeStamp />
+      <div class="center-container">
+        <h1>Welcome to Region 4</h1>
+        <p><strong>Print QR Code here or go to session room to check-in.</strong></p>
+      </div>
       <Content>
         <div className='qr-inner-content-wrapper'>
           <form>

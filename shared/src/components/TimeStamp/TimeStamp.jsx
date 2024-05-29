@@ -4,10 +4,11 @@ import './timestamp.scss'
 const weekday = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']
 const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-function TimeStamp() {
+function TimeStamp(props) {
   const [date, setDate] = useState(new Date())
   const [dateString, setDateString] = useState('')
   const [timeString, setTimeString] = useState('')
+  const isVertical = props.isVertical || false;
 
   // On mount, set up timers, get current date, etc.
   useEffect(() => {
@@ -31,11 +32,11 @@ function TimeStamp() {
   }, [date])
 
   return (
-    <div className='timestamp-wrapper'>
-      <div className='timestamp-date'>{dateString}</div>
-      <div className='timestamp-time'>{timeString}</div>
+    <div className={isVertical ? "timestamp-wrapper-vertical" : "timestamp-wrapper-horizontal"}>
+        <div className={isVertical ? "timestamp-date-vertical" : "timestamp-date-horizontal"}>{dateString}</div>
+        <div className={isVertical ? "timestamp-time-vertical" : "timestamp-time-horizontal"}>{timeString}</div>
     </div>
-  )
+);
 }
   
 export default TimeStamp

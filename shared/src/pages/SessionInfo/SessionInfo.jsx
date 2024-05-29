@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 import Page from '../../components/Page'
 import TimeStamp from '../../components/TimeStamp'
 import Content from '../../components/Content'
-import PropTypes from 'prop-types'
 import service from '../../service'
 import './session-info.scss'
 
@@ -32,6 +31,10 @@ function SessionInfo() {
   return (
     <Page>
       <TimeStamp />
+      <div class="center-container">
+        <h1>Welcome to Region 4</h1>
+        <p><strong>Print QR Code here or go to session room to check-in.</strong></p>
+      </div>
       <Content>
         {
           !!user && (

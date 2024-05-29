@@ -108,7 +108,7 @@ function CheckIn() {
   
   useEffect(() => {
     async function fetchData() {
-      const event = await service.getEventById(eventId)
+      const event = await service.getEventById(1)
       const attendence = await service.getAttendence(eventId)
       setEvent(event)
       setAttendence(attendence)
@@ -118,9 +118,8 @@ function CheckIn() {
   }, [eventId])
 
   return (
-    <Page>
-      <TimeStamp />
-      <Content>
+    <>
+      <TimeStamp isVertical={true}/>
         {!!event && !!attendence && (
           <>
             <div className='check-in-wrapper'>
@@ -131,7 +130,7 @@ function CheckIn() {
                     <p><em>Scan QR Code by holding printed badge under camera located at the bottom of this device.</em></p>
                     <QRCodeScanner
                       fps={10}
-                      qrbox={250}
+                      qrbox={354}
                       disableFlip={false}
                       qrCodeSuccessCallback={onNewScanResult} 
                     />
@@ -150,7 +149,7 @@ function CheckIn() {
                   </div>
                 </div>
               </div>
-              <div className='right'>
+              <div className='center'>
                 {!!checkedIn && (
                   <Badge header={checkedIn.header} success={checkedIn.status} message={checkedIn.message} />
                 )}
@@ -187,18 +186,20 @@ function CheckIn() {
                 </div>
                 <Notes items={event.notes} />
               </div>
+              <div className="banner right">
+                <img src="sidebar.png" alt="Image 1" className="banner-image" />
+              </div>
             </div>
           </>
         )}
-        <div className='qr-button qr-button-start'>
+        {/* <div className='qr-button qr-button-start left'>
           <Link to={{
             pathname: '/find-session',
           }}>
             <button>Find Session</button>
           </Link>
-        </div>
-      </Content>
-    </Page>
+        </div> */}
+      </>
   )
 }
 

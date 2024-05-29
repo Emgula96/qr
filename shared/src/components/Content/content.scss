@@ -1,12 +1,12 @@
 .content-wrapper {
     margin-top: 3rem;
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: auto; /* Set left margin to auto to center horizontally */
+    margin-right: auto; /* Set right margin to auto to center horizontally */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 910px; /* Set the width to 910 pixels */
 }
-
 .content-heading {
     color: #40738E;
     font-weight: bold;

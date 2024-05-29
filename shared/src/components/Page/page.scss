@@ -1,29 +1,39 @@
 .page-wrapper {
     display: flex;
     flex-direction: column;
-    padding-bottom: 120px; // Allow room for the footer
+    min-height: 100vh; /* Ensure the page takes at least the full height of the viewport */
+    box-sizing: border-box;
 }
 
 .page-banner {
     color: red;
     padding: 0 15px;
+    display: flex;
+    justify-content: center;
 
     img {
-        width: 100%;
+        width: 250px;
         padding: 1rem 0;
     }
+
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.page-content {
+    flex: 1; /* Allow this section to grow and take available space */
+    padding-bottom: 120px; /* Allow room for the footer */
 }
 
 .page-footer {
     width: 100%;
     display: flex;
     justify-content: center;
-    position: fixed;
-    bottom: 0;
     background-color: #FFFFFF;
+    position: relative; /* Changed from fixed to relative */
 
     img {
         object-fit: contain;
-        height: 100px;
+        width: 1014px;
+        height: 210;
     }
 }

@@ -45,10 +45,11 @@
 .attendee-container {
   background-color: #EBF0F2;
   max-height: 250px;
-  min-width: 420px;
+  min-width: 354px;
   margin-right: 40px;
   text-align: center;
   padding: 10px;
+  margin: 20px 40px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 
   .count{ 
@@ -83,17 +84,15 @@
   display: flex;
   margin-top: 30px;
 
-  .right {
-      display: flex;
-      flex-direction: column;
-    }
 }
 
 .scanner {
   display: flex;
 
   .scanner-content {
-    max-width: 300px;
+    max-width: 354px;
+    margin: 20px 40px;
+    text-align: center; /* Center the text */
   }
 
   span {
