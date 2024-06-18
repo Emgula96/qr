@@ -61,22 +61,8 @@ router.get('/check-in', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const eventId = req.query.eventId;
-
-    if (!eventId) {
-      return res.status(400).json({ error: 'eventId is required' });
-    }
-
-    const { recordset } = await pool.request()
-      .input('EventId', sql.Int, eventId)
-      .query(`
-        SELECT *
-        FROM [dbo].[event.session]
-        WHERE [event_id] = @EventId;
-      `);
-
-    res.status(200).json({ data: recordset });
- 
+    const { rows } = await query('SELECT * FROM attendees WHERE event_id=$1', [req.query.eventId])
+    res.status(200).json({ 'data': rows })
   } catch (error) {
     console.error('An error ocurred:', error)
     res.status(500).json(error)
