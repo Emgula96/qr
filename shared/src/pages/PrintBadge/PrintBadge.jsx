@@ -6,11 +6,11 @@ import Content from '../../components/Content'
 import service from '../../service'
 import './print-badge.scss'
 
-const generateImageUrl = (deviceId, eventId) => {
+const generateImageUrl = (deviceId, zoneId) => {
     const bucketUrl = 'https://kiosk-maps.s3.us-east-2.amazonaws.com'
     const kiosk = `k${deviceId.trim()}`
-    const sanitizedEventId = eventId.replace(/\s+/g, '')
-    return `${bucketUrl}/${kiosk}-${sanitizedEventId}.png`
+    const sanitizedZoneId = zoneId.replace(/\s+/g, '')
+    return `${bucketUrl}/${kiosk}-${sanitizedZoneId}.png`
 }
 
 function PrintBadge() {
@@ -20,17 +20,17 @@ function PrintBadge() {
     // Get the query params
     const queryParams = new URLSearchParams(location.search)
     const userId = queryParams.get('userId')
-    const eventId = queryParams.get('eventId') // E.g., "MCC 103"
+    const zoneId = queryParams.get('zoneId') // E.g., "MCC 103"
     const deviceId = queryParams.get('deviceId') // E.g., "1" for Kiosk 1
 
     useEffect(() => {
         async function fetchData() {
-            const qrSrc = await service.generateQrCode(eventId, userId)
+            const qrSrc = await service.generateQrCode(zoneId, userId)
             setQrSrc(qrSrc)
         }
 
         fetchData()
-    }, [eventId, userId])
+    }, [zoneId, userId])
 
     const handleImageError = () => {
         setImageError(true)
@@ -51,10 +51,10 @@ function PrintBadge() {
                         </p>
                     ) : (
                         <img
-                            src={generateImageUrl(deviceId, eventId)}
+                            src={generateImageUrl(deviceId, zoneId)}
                             style={{ maxWidth: 500, maxHeight: 500 }}
                             onError={handleImageError}
-                            alt={`Map to ${eventId}`}
+                            alt={`Map to ${zoneId}`}
                         />
                     )}
                 </div>
