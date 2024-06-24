@@ -10,24 +10,25 @@ import beep from '../../assets/sounds/beep.wav'
 import './check-in.scss'
 
 const getDate = (timestamp) => {
-  // Create a new Date object from the timestamp
-  const date = new Date(timestamp)
+  // Create a new Date object from the timestamp (which is already in UTC)
+  const date = new Date(timestamp);
 
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
+  // Get hours and minutes in 12-hour format with AM/PM indicator
+  let hours = date.getUTCHours(); // Use getUTCHours() to get hours in UTC
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Use getUTCMinutes() for minutes in UTC
 
-  // Convert the hours to 12 hour format
-  const hours12 = hours % 12
+  // Convert the hours to 12-hour format and handle midnight and noon cases
+  const hours12 = hours % 12 || 12;
 
   // Add an AM or PM indicator
-  const ampm = hours >= 12 ? 'p.m.' : 'a.m.'
+  const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
 
-  // Create a string representing the time in 12 hour format
-  const time12 = `${hours12}:${minutes} ${ampm}`
+  // Create a string representing the time in 12-hour format
+  const time12 = `${hours12}:${minutes} ${ampm}`;
 
   // Return the time string
-  return time12
-}
+  return time12;
+};
 
 const debounce = (callback, wait) => {
   let timeoutId = null
@@ -108,7 +109,22 @@ function CheckIn() {
   
   useEffect(() => {
     async function fetchData() {
-      const event = await service.getEventById(1)
+      const queryParams = new URLSearchParams(location.search)
+      const roomName = queryParams.get('roomname') ? queryParams.get('roomname') : 'Classroom'
+      const mockEvent = {
+        id: '1836497',
+        room_number: roomName,
+        presenter: '',
+        facilitator: 'Amanda Galvan',
+        title: 'Region 4 All-Staff Meeting',
+        description: 'All-Staff Meeting',
+        credits: '(0) Contact Hours',
+        start_time: '2024-06-26T08:00:00Z',  // ISO 8601 format
+        notes: '',
+        max_attendees: 50
+      };
+      // const event = await service.getEventById(1)
+      const event = mockEvent
       const attendence = await service.getAttendence(eventId)
       setEvent(event)
       setAttendence(attendence)
@@ -184,7 +200,7 @@ function CheckIn() {
                 <div className='check-in-wrapper-item'>
                   <p><b>Session begins at {getDate(event.start_time)}</b></p>
                 </div>
-                <Notes items={event.notes} />
+                {event.notes && event.notes.trim() && <Notes items={event.notes} />}
               </div>
               <div className="banner right">
                 <img src="sidebar.png" alt="Image 1" className="banner-image" />
