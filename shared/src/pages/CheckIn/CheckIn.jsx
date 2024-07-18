@@ -149,7 +149,8 @@ function CheckIn() {
                       fps={10}
                       qrbox={354}
                       disableFlip={false}
-                      qrCodeSuccessCallback={onNewScanResult} 
+                      qrCodeSuccessCallback={onNewScanResult}
+                      verbose={true}
                     />
                   </div>
                 </div>
