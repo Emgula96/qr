@@ -126,6 +126,7 @@ function CheckIn() {
       // const event = await service.getEventById(1)
       const event = mockEvent
       const attendence = await service.getAttendence(eventId)
+      console.log(attendence)
       setEvent(event)
       setAttendence(attendence)
     }
