@@ -1,47 +1,47 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect, useMemo } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useState, useEffect, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import TimeStamp from '../../components/TimeStamp'
-import QRCodeScanner from '../../components/QRCodeScanner'
-import service from '../../service'
-import beep from '../../assets/sounds/beep.wav'
-import './check-in.scss'
-import Status from '../Status/Status'
+import TimeStamp from '../../components/TimeStamp';
+import QRCodeScanner from '../../components/QRCodeScanner';
+import service from '../../service';
+import beep from '../../assets/sounds/beep.wav';
+import './check-in.scss';
+import Status from '../Status/Status';
 
 const getDate = (timestamp) => {
   // Create a new Date object from the timestamp (which is already in UTC)
-  const date = new Date(timestamp)
+  const date = new Date(timestamp);
 
   // Get hours and minutes in 12-hour format with AM/PM indicator
-  let hours = date.getUTCHours() // Use getUTCHours() to get hours in UTC
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0') // Use getUTCMinutes() for minutes in UTC
+  let hours = date.getUTCHours(); // Use getUTCHours() to get hours in UTC
+  const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Use getUTCMinutes() for minutes in UTC
 
   // Convert the hours to 12-hour format and handle midnight and noon cases
-  const hours12 = hours % 12 || 12
+  const hours12 = hours % 12 || 12;
 
   // Add an AM or PM indicator
-  const ampm = hours >= 12 ? 'p.m.' : 'a.m.'
+  const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
 
   // Create a string representing the time in 12-hour format
-  const time12 = `${hours12}:${minutes} ${ampm}`
+  const time12 = `${hours12}:${minutes} ${ampm}`;
 
   // Return the time string
-  return time12
-}
+  return time12;
+};
 
 const debounce = (callback, wait) => {
-  let timeoutId = null
+  let timeoutId = null;
   return (...args) => {
-    window.clearTimeout(timeoutId)
+    window.clearTimeout(timeoutId);
     timeoutId = window.setTimeout(() => {
-      callback(...args)
-    }, wait)
-  }
-}
+      callback(...args);
+    }, wait);
+  };
+};
 
 const Notes = ({ items }) => {
-  const lis = items.split('|')
+  const lis = items.split('|');
   return (
     <div>
       <p>
@@ -53,15 +53,15 @@ const Notes = ({ items }) => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 const Badge = ({ header, message, success }) => {
-  const status = success ? 'Success' : 'Error'
-  const cls = success ? 'header success' : 'header fail'
+  const status = success ? 'Success' : 'Error';
+  const cls = success ? 'header success' : 'header fail';
   const imgSrc = success
     ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png'
-    : 'https://kiosk-assets-public.s3.amazonaws.com/x.png'
+    : 'https://kiosk-assets-public.s3.amazonaws.com/x.png';
   return (
     <>
       <h2>Check In Information</h2>
@@ -80,52 +80,52 @@ const Badge = ({ header, message, success }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
 function CheckIn() {
-  const [event, setEvent] = useState()
-  const [attendence, setAttendence] = useState()
-  const [checkedIn, setCheckedIn] = useState()
-  const [status, setStatus] = useState('Session Full')
+  const [event, setEvent] = useState();
+  const [attendence, setAttendence] = useState();
+  const [checkedIn, setCheckedIn] = useState();
+  const [status, setStatus] = useState('Session Full');
 
-  const location = useLocation()
+  const location = useLocation();
 
   // Get the query params
-  const queryParams = new URLSearchParams(location.search)
-  const eventId = queryParams.get('eventId')
+  const queryParams = new URLSearchParams(location.search);
+  const eventId = queryParams.get('eventId');
 
   const beepSound = useMemo(() => {
-    return new Audio(beep)
-  }, [])
+    return new Audio(beep);
+  }, []);
 
   const onNewScanResult = debounce((decodedText) => {
-    console.log(`Code matched = ${decodedText}`)
-    const url = new URL(decodedText)
-    const userId = url.searchParams.get('userId')
+    console.log(`Code matched = ${decodedText}`);
+    const url = new URL(decodedText);
+    const userId = url.searchParams.get('userId');
 
     service
       .checkInUser(eventId, userId)
       .then((checkedIn) => {
-        setCheckedIn(checkedIn)
-        beepSound.play()
+        setCheckedIn(checkedIn);
+        beepSound.play();
       })
       .catch((err) => {
-        console.error(err)
+        console.error(err);
       })
       .finally(() => {
         setTimeout(() => {
-          setCheckedIn(null)
-        }, 4000)
-      })
-  }, 500)
+          setCheckedIn(null);
+        }, 4000);
+      });
+  }, 500);
 
   useEffect(() => {
     async function fetchData() {
-      const queryParams = new URLSearchParams(location.search)
+      const queryParams = new URLSearchParams(location.search);
       const roomName = queryParams.get('roomname')
         ? queryParams.get('roomname')
-        : 'Classroom'
+        : 'Classroom';
       const mockEvent = {
         id: '1836497',
         room_number: roomName,
@@ -137,17 +137,17 @@ function CheckIn() {
         start_time: '2024-06-26T08:00:00Z', // ISO 8601 format
         notes: '',
         max_attendees: 50,
-      }
+      };
       // const event = await service.getEventById(1)
-      const event = mockEvent
-      const attendence = await service.getAttendence(eventId)
-      console.log(attendence)
-      setEvent(event)
-      setAttendence(attendence)
+      const event = mockEvent;
+      const attendence = await service.getAttendence(eventId);
+      console.log(attendence);
+      setEvent(event);
+      setAttendence(attendence);
     }
 
-    fetchData()
-  }, [eventId])
+    fetchData();
+  }, [eventId]);
 
   const cycleStatus = () => {
     const statuses = [
@@ -155,11 +155,11 @@ function CheckIn() {
       'Late Check-In',
       'No Payment',
       'Wrong Session',
-    ]
-    const currentIndex = statuses.indexOf(status)
-    const nextIndex = (currentIndex + 1) % statuses.length
-    setStatus(statuses[nextIndex])
-  }
+    ];
+    const currentIndex = statuses.indexOf(status);
+    const nextIndex = (currentIndex + 1) % statuses.length;
+    setStatus(statuses[nextIndex]);
+  };
 
   return (
     <>
@@ -277,7 +277,7 @@ function CheckIn() {
           </Link>
         </div> */}
     </>
-  )
+  );
 }
 
-export default CheckIn
+export default CheckIn;
