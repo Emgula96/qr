@@ -17,7 +17,7 @@ const DeviceManager = () => {
         jqueryScript.onload = async () => {
           setLoadingMessage('jQuery loaded, loading SignalR script...');
           const $ = window.jQuery;
-          
+
           // Load SignalR
           const signalRScript = document.createElement('script');
           signalRScript.src = '../../util/jquery.signalR-2.0.3.min.js';
@@ -37,12 +37,13 @@ const DeviceManager = () => {
             });
 
             conn.disconnected(() => {
-              setConnectionStatus('Disconnected');
+              setConnectionStatus('Disconnected after connecting');
               setTimeout(() => {
                 conn.start().done(() => {
                   setConnectionStatus('Connected');
                 }).fail((err) => {
                   setConnectionStatus(`Error: ${JSON.stringify(err)}`);
+                  console.error('Connection error:', err);
                 });
               }, 5000);
             });
@@ -69,9 +70,11 @@ const DeviceManager = () => {
                 }
               }).fail((err) => {
                 setLoadingMessage(`Error: ${JSON.stringify(err)}`);
+                console.error('GetAllComponents error:', err);
               });
             }).fail((err) => {
               setLoadingMessage(`Error: ${JSON.stringify(err)}`);
+              console.error('Initial connection error:', err);
             });
 
             const defineEvents = (proxy) => {
@@ -95,11 +98,13 @@ const DeviceManager = () => {
           };
           signalRScript.onerror = () => {
             setLoadingMessage('Error loading SignalR script');
+            console.error('Error loading SignalR script');
           };
           document.body.appendChild(signalRScript);
         };
         jqueryScript.onerror = () => {
           setLoadingMessage('Error loading jQuery script');
+          console.error('Error loading jQuery script');
         };
         document.body.appendChild(jqueryScript);
       }
@@ -125,6 +130,7 @@ const DeviceManager = () => {
       setLoadingMessage('SetDelayedACK invoked');
     }).fail((err) => {
       setLoadingMessage(`Error: ${JSON.stringify(err)}`);
+      console.error('SetDelayedACK error:', err);
     });
   };
 
@@ -135,6 +141,7 @@ const DeviceManager = () => {
       setLoadingMessage('GetLowPaperStatus invoked');
     }).fail((err) => {
       setLoadingMessage(`Error: ${JSON.stringify(err)}`);
+      console.error('GetLowPaperStatus error:', err);
     });
   };
 
@@ -146,6 +153,7 @@ const DeviceManager = () => {
       setLoadingMessage('PrintNoCut invoked');
     }).fail((err) => {
       setLoadingMessage(`Error: ${JSON.stringify(err)}`);
+      console.error('PrintNoCut error:', err);
     });
   };
 
@@ -157,6 +165,7 @@ const DeviceManager = () => {
       setLoadingMessage('PrintCut invoked');
     }).fail((err) => {
       setLoadingMessage(`Error: ${JSON.stringify(err)}`);
+      console.error('PrintCut error:', err);
     });
   };
 
