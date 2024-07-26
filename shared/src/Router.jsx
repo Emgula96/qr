@@ -40,6 +40,7 @@ const Router = () => {
         <Route path="/session-info" element={<SessionInfo deviceId={deviceId}/>} />
         <Route path="/print-badge" element={<PrintBadge deviceId={deviceId}/>} />
         <Route path="/check-in" element={<CheckIn deviceId={deviceId}/>} />
+        <Route path="/playground" element={<CheckIn deviceId={deviceId}/>} />
       </Routes>
     </React.Suspense>
   )
