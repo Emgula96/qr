@@ -39,37 +39,7 @@ function Playground() {
 
     return (
         <Page>
-            <Content>
-                <h2>DEMO QR CODE</h2>
-                <div className="playground-map-container">
-                    <img src={qrSrc} alt="QR Code" />
-                </div>
-                <div className="playground-map-container">
-                    {imageError ? (
-                        <p>
-                            Sorry, this map is currently unavailable. Please ask
-                            the front desk for location assistance.
-                        </p>
-                    ) : (
-                        <img
-                            src={generateImageUrl(deviceId, zoneId)}
-                            style={{ maxWidth: 500, maxHeight: 500 }}
-                            onError={handleImageError}
-                            alt={`Map to ${zoneId}`}
-                        />
-                    )}
-                </div>
-                <div className="qr-button qr-button-center">
-                    <Link
-                        to={{
-                            pathname: '/find-session',
-                            search: `deviceId=${deviceId}`,
-                        }}
-                    >
-                        <button>Find Session</button>
-                    </Link>
-                </div>
-            </Content>
+            <DeviceManager></DeviceManager>
         </Page>
     )
 }
