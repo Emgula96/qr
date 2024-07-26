@@ -6,6 +6,7 @@ const  FindSession = React.lazy(() => import('./pages/FindSession'))
 const  SessionInfo = React.lazy(() => import('./pages/SessionInfo'))
 const  PrintBadge = React.lazy(() => import('./pages/PrintBadge'))
 const  CheckIn = React.lazy(() => import('./pages/CheckIn'))
+const Playground = React.lazy(()=> import('./pages/Playground')) 
 import service from './service'
 import './assets/styles/main.scss'
 
@@ -29,7 +30,7 @@ const Router = () => {
       }
     }
     getTokens()
-  }, [code])
+  }, [code, deviceId])
 
   return (
     <React.Suspense fallback={<Loading />}>
@@ -40,7 +41,7 @@ const Router = () => {
         <Route path="/session-info" element={<SessionInfo deviceId={deviceId}/>} />
         <Route path="/print-badge" element={<PrintBadge deviceId={deviceId}/>} />
         <Route path="/check-in" element={<CheckIn deviceId={deviceId}/>} />
-        <Route path="/playground" element={<CheckIn deviceId={deviceId}/>} />
+        <Route path="/playground" element={<Playground deviceId={deviceId}/>} />
       </Routes>
     </React.Suspense>
   )
