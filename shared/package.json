@@ -26,7 +26,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.18.0",
     "react-simple-keyboard": "^3.7.108",
-    "sirv": "^2.0.4"
+    "sirv": "^2.0.4",
+    "underscore": "^1.13.7"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^7.5.3",
