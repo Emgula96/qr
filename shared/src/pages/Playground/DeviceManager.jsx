@@ -9,79 +9,84 @@ const DeviceManager = () => {
   useEffect(() => {
     const loadScripts = async () => {
       if (typeof window !== 'undefined') {
-        // Dynamically import jQuery and SignalR
-        const $ = (await import('jquery')).default;
-        await import('../../util/jquery.signalR-2.0.3.min');
+        // Dynamically load jQuery from the local file
+        const script = document.createElement('script');
+        script.src = '../../util/jquery-1.6.4.min.js';
+        script.onload = async () => {
+          const $ = window.jQuery;
+          await import('../../util/jquery.signalR-2.0.3.min');
 
-        const devMgrConnStr = "http://localhost:60559/signalr"; // Device Manager URL
-        const conn = $.hubConnection(devMgrConnStr);
-        const proxy = conn.createHubProxy('deviceManagerHub');
+          const devMgrConnStr = "http://localhost:60559/signalr"; // Device Manager URL
+          const conn = $.hubConnection(devMgrConnStr);
+          const proxy = conn.createHubProxy('deviceManagerHub');
 
-        // SignalR connection lifecycle callbacks
-        conn.reconnecting(() => {
-          console.log('attempting to reconnect');
-        });
+          // SignalR connection lifecycle callbacks
+          conn.reconnecting(() => {
+            console.log('attempting to reconnect');
+          });
 
-        conn.reconnected(() => {
-          console.log('reconnected');
-        });
+          conn.reconnected(() => {
+            console.log('reconnected');
+          });
 
-        conn.disconnected(() => {
-          console.error('disconnected');
-          setTimeout(() => {
-            conn.start().done(() => {
-              console.log('Connected');
+          conn.disconnected(() => {
+            console.error('disconnected');
+            setTimeout(() => {
+              conn.start().done(() => {
+                console.log('Connected');
+              }).fail((err) => {
+                console.error(JSON.stringify(err));
+              });
+            }, 5000);
+          });
+
+          // Register a dummy event called: '_a'
+          proxy.on('_a', () => {});
+
+          // Start the initial connection
+          conn.start().done(() => {
+            // Get all of the device components
+            proxy.invoke('GetAllComponents').done((comps) => {
+              console.log(comps);
+              const accItems = _.filter(comps, (c) => c.ComponentTypeName === "Ticket_Printer_Gen2" && c.IsActive);
+              if (accItems.length > 0) {
+                const ticketPrnItem = accItems[0];
+                setTicketIdx(ticketPrnItem.CompIdx);
+                setTicketDevInterface(ticketPrnItem.DeviceManagerInterface);
+                defineEvents(proxy);
+              } else {
+                console.error("A ticket printer component wasn't found in the configuration.");
+              }
             }).fail((err) => {
               console.error(JSON.stringify(err));
             });
-          }, 5000);
-        });
-
-        // Register a dummy event called: '_a'
-        proxy.on('_a', () => {});
-
-        // Start the initial connection
-        conn.start().done(() => {
-          // Get all of the device components
-          proxy.invoke('GetAllComponents').done((comps) => {
-            console.log(comps);
-            const accItems = _.filter(comps, (c) => c.ComponentTypeName === "Ticket_Printer_Gen2" && c.IsActive);
-            if (accItems.length > 0) {
-              const ticketPrnItem = accItems[0];
-              setTicketIdx(ticketPrnItem.CompIdx);
-              setTicketDevInterface(ticketPrnItem.DeviceManagerInterface);
-              defineEvents(proxy);
-            } else {
-              console.error("A ticket printer component wasn't found in the configuration.");
-            }
           }).fail((err) => {
             console.error(JSON.stringify(err));
           });
-        }).fail((err) => {
-          console.error(JSON.stringify(err));
-        });
 
-        const defineEvents = (proxy) => {
-          proxy.off('onTicketPrinterSetDelayedACK_Event');
-          proxy.off('onTicketPrinterGetStatus_Event');
-          proxy.off('onTicketPrinterPrinted_Event');
+          const defineEvents = (proxy) => {
+            proxy.off('onTicketPrinterSetDelayedACK_Event');
+            proxy.off('onTicketPrinterGetStatus_Event');
+            proxy.off('onTicketPrinterPrinted_Event');
 
-          proxy.on('onTicketPrinterSetDelayedACK_Event', (evt) => {
-            console.log('Delayed ACK Set');
-            console.log(evt.Payload);
-          });
+            proxy.on('onTicketPrinterSetDelayedACK_Event', (evt) => {
+              console.log('Delayed ACK Set');
+              console.log(evt.Payload);
+            });
 
-          proxy.on('onTicketPrinterGetStatus_Event', (evt) => {
-            console.log('Low Paper Status');
-            console.log(JSON.stringify(evt));
-          });
+            proxy.on('onTicketPrinterGetStatus_Event', (evt) => {
+              console.log('Low Paper Status');
+              console.log(JSON.stringify(evt));
+            });
 
-          proxy.on('onTicketPrinterPrinted_Event', (evt) => {
-            console.log('Print');
-            console.log(evt.Payload);
-            setPrintStatus('Printing finished successfully.');
-          });
+            proxy.on('onTicketPrinterPrinted_Event', (evt) => {
+              console.log('Print');
+              console.log(evt.Payload);
+              setPrintStatus('Printing finished successfully.');
+            });
+          };
         };
+        document.body.appendChild(script);
       }
     };
 
@@ -89,15 +94,17 @@ const DeviceManager = () => {
 
     return () => {
       if (typeof window !== 'undefined') {
-        const $ = require('jquery');
-        const conn = $.hubConnection();
-        conn.stop();
+        const $ = window.jQuery;
+        if ($ && $.hubConnection) {
+          const conn = $.hubConnection();
+          conn.stop();
+        }
       }
     };
   }, []);
 
   const handleSetDelayedACK = () => {
-    const $ = require('jquery');
+    const $ = window.jQuery;
     const proxy = $.connection.deviceManagerHub;
     proxy.invoke('TicketPrinter_SetDelayedACK', ticketIdx, ticketDevInterface).done(() => {
     }).fail((err) => {
@@ -106,7 +113,7 @@ const DeviceManager = () => {
   };
 
   const handleLowPaperStatus = () => {
-    const $ = require('jquery');
+    const $ = window.jQuery;
     const proxy = $.connection.deviceManagerHub;
     proxy.invoke('TicketPrinter_GetLowPaperStatus', ticketIdx, ticketDevInterface).done(() => {
     }).fail((err) => {
@@ -115,7 +122,7 @@ const DeviceManager = () => {
   };
 
   const handlePrintNoCut = () => {
-    const $ = require('jquery');
+    const $ = window.jQuery;
     const proxy = $.connection.deviceManagerHub;
     proxy.invoke('TicketPrinter_Print', ticketIdx, ticketDevInterface, "<HW1,1><RC5,5>Test", false).done(() => {
       setPrintStatus('');
@@ -125,7 +132,7 @@ const DeviceManager = () => {
   };
 
   const handlePrintCut = () => {
-    const $ = require('jquery');
+    const $ = window.jQuery;
     const proxy = $.connection.deviceManagerHub;
     proxy.invoke('TicketPrinter_Print', ticketIdx, ticketDevInterface, "<HW1,1><RC5,5>Test", true).done(() => {
       setPrintStatus('');
