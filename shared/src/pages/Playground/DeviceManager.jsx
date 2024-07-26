@@ -15,13 +15,14 @@ const DeviceManager = () => {
         const jqueryScript = document.createElement('script');
         jqueryScript.src = '../../util/jquery-1.6.4.min.js';
         jqueryScript.onload = async () => {
+          setLoadingMessage('jQuery loaded, loading SignalR script...');
           const $ = window.jQuery;
-          setLoadingMessage('Loading SignalR script...');
-
+          
           // Load SignalR
           const signalRScript = document.createElement('script');
           signalRScript.src = '../../util/jquery.signalR-2.0.3.min.js';
           signalRScript.onload = async () => {
+            setLoadingMessage('SignalR script loaded, initializing connection...');
             const devMgrConnStr = "http://localhost:60559/signalr"; // Device Manager URL
             const conn = $.hubConnection(devMgrConnStr);
             const proxy = conn.createHubProxy('deviceManagerHub');
@@ -52,7 +53,7 @@ const DeviceManager = () => {
             // Start the initial connection
             conn.start().done(() => {
               setConnectionStatus('Connected');
-              setLoadingMessage('Loading device components...');
+              setLoadingMessage('Connected to SignalR, loading device components...');
 
               // Get all of the device components
               proxy.invoke('GetAllComponents').done((comps) => {
@@ -92,7 +93,13 @@ const DeviceManager = () => {
               });
             };
           };
+          signalRScript.onerror = () => {
+            setLoadingMessage('Error loading SignalR script');
+          };
           document.body.appendChild(signalRScript);
+        };
+        jqueryScript.onerror = () => {
+          setLoadingMessage('Error loading jQuery script');
         };
         document.body.appendChild(jqueryScript);
       }
