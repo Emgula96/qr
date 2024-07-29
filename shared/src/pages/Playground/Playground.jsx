@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 import Page from '../../components/Page'
 import Content from '../../components/Content'
+import DeviceManagerAlt from './DeviceManagerAlt'
 import service from '../../service'
 import './playground.scss'
 import DeviceManager from './DeviceManager'; // Adjust the path as necessary
@@ -40,6 +41,7 @@ function Playground() {
     return (
         <Page>
             <DeviceManager></DeviceManager>
+            <DeviceManagerAlt></DeviceManagerAlt>
         </Page>
     )
 }
