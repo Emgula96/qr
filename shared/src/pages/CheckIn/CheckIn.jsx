@@ -163,18 +163,20 @@ function CheckIn() {
 
   return (
     <>
-      <TimeStamp isVertical={true} />
+      <div className="timestamp-container">
+        <TimeStamp isVertical={true} />
+      </div>
       {!!event && !!attendence && (
         <>
           <div className="check-in-wrapper">
             <div className="left">
               <div className="scanner">
                 <div className="scanner-content">
-                  <span>Scan QR Code to Check-In</span>
+                  <h2>Scan QR Code to Check-In</h2>
                   <p>
                     <em>
-                      Scan QR Code by holding printed badge under camera located
-                      at the bottom of this device.
+                      Scan QR Code by holding printed badge in front of camera
+                      located at the top of this device.
                     </em>
                   </p>
                   <QRCodeScanner
@@ -190,8 +192,6 @@ function CheckIn() {
                 <h2>Attendee Count</h2>
                 <div className="count">
                   <p>{attendence.length}</p>
-                  <span>of</span>
-                  <p>{event.max_attendees}</p>
                   <span>checked in</span>
                 </div>
                 <div className="bottom">
@@ -200,82 +200,62 @@ function CheckIn() {
               </div>
             </div>
             <div className="center">
-              {!!checkedIn && (
-                <Badge
-                  header={checkedIn.header}
-                  success={checkedIn.status}
-                  message={checkedIn.message}
-                />
-              )}
-              <Status
-                status={status}
-                attendeeName={attendence[0]?.name || 'Test Attendee'}
-              />
-              <button onClick={cycleStatus}>Change Status</button>
-              <h2>Session Information</h2>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Session ID:</b>
-                </p>
-                <p>{event.id}</p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Room No.:</b>
-                </p>
-                <p>{event.room_number}</p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Presenter:</b>
-                </p>
-                <p>{event.presenter}</p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Facilitator:</b>
-                </p>
-                <p>{event.facilitator}</p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>{event.title}</b>
-                </p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Description:</b>
-                </p>
-                <p>{event.description}</p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Credits Available:</b>
-                </p>
-                <p>{event.credits}</p>
-              </div>
-              <div className="check-in-wrapper-item">
-                <p>
-                  <b>Session begins at {getDate(event.start_time)}</b>
-                </p>
+              <p className="large-text">
+                <strong>Room No:</strong> {event.room_number}
+              </p>
+              <p className="large-text extra-bottom-space">{event.title}</p>
+              <p className="large-text extra-bottom-space">
+                Session begins at {getDate(event.start_time)} (CST)
+              </p>
+              <p className="large-text extra-bottom-space">
+                Session Information
+              </p>
+              <div className="session-info-grid">
+                <div className="session-info-item">
+                  <p>
+                    <b>Session ID:</b>
+                  </p>
+                  <p>{event.id}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Presenter:</b>
+                  </p>
+                  <p>{event.presenter}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Facilitator:</b>
+                  </p>
+                  <p>{event.facilitator}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Description:</b>
+                  </p>
+                  <p>{event.description}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Credits Available:</b>
+                  </p>
+                  <p>{event.credits}</p>
+                </div>
               </div>
               {event.notes && event.notes.trim() && (
                 <Notes items={event.notes} />
               )}
             </div>
             <div className="banner right">
-              <img src="sidebar.png" alt="Image 1" className="banner-image" />
+              <img
+                src="sidebar.png"
+                alt="We've got your back"
+                className="banner-image"
+              />
             </div>
           </div>
         </>
       )}
-      {/* <div className='qr-button qr-button-start left'>
-          <Link to={{
-            pathname: '/find-session',
-          }}>
-            <button>Find Session</button>
-          </Link>
-        </div> */}
     </>
   );
 }
