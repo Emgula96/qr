@@ -15,7 +15,7 @@
 .badge-wrapper {
   display: flex;
   align-items: center;
-  
+
   .messages {
     margin-left: 10px;
 
@@ -35,7 +35,7 @@
     &.fail {
       color: #940609;
     }
-  
+
     &.success {
       color: green;
     }
@@ -43,7 +43,7 @@
 }
 
 .attendee-container {
-  background-color: #EBF0F2;
+  background-color: #ebf0f2;
   max-height: 250px;
   min-width: 354px;
   margin-right: 40px;
@@ -52,7 +52,7 @@
   margin: 20px 40px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 
-  .count{ 
+  .count {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -83,7 +83,7 @@
 .check-in-wrapper {
   display: flex;
   margin-top: 30px;
-
+  justify-content: space-between;
 }
 
 .scanner {
@@ -98,5 +98,45 @@
   span {
     font-weight: lighter;
     font-size: 1.3em;
+  }
+}
+
+.timestamp-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.large-text {
+  font-size: 30px;
+  font-weight: normal;
+  margin: 10px 0 20px;
+
+  strong {
+    font-weight: bold;
+  }
+}
+
+.extra-bottom-space {
+  margin-bottom: 40px;
+}
+
+.session-info-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px 20px;
+  align-items: start;
+}
+
+.session-info-item {
+  display: contents;
+
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  b {
+    white-space: nowrap;
   }
 }
