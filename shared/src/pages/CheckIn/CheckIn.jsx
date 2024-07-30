@@ -87,7 +87,7 @@ function CheckIn() {
   const [event, setEvent] = useState();
   const [attendence, setAttendence] = useState();
   const [checkedIn, setCheckedIn] = useState();
-  const [status, setStatus] = useState('Session Full');
+  const [status, setStatus] = useState(null);
 
   const location = useLocation();
 
@@ -200,6 +200,12 @@ function CheckIn() {
               </div>
             </div>
             <div className="center">
+              {status && (
+                <Status
+                  status={status}
+                  attendeeName={attendence[0]?.name || 'Test Attendee'}
+                />
+              )}
               <p className="large-text">
                 <strong>Room No:</strong> {event.room_number}
               </p>
