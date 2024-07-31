@@ -1,0 +1,36 @@
+.error-state {
+  max-width: 800px; // Increased from 600px to 800px
+  margin: 0 auto;
+  text-align: left;
+
+  h2 {
+    color: #000;
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .error-content {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .error-icon {
+    flex-shrink: 0;
+    width: 9rem;
+    height: 9rem;
+    margin-right: 20px;
+    background-image: url('../../assets/imgs/errorxicon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  p {
+    font-size: 2em;
+    line-height: 1.5;
+    margin: 0;
+    padding: 10px;
+  }
+}
