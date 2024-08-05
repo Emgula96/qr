@@ -1,0 +1,41 @@
+import './session-info-card.scss';
+
+const SessionInfoCard = ({
+  name = 'Sonya Test',
+  email = 'sonya.test@gmail.com',
+  sessionTitle = 'Session Title',
+  location = 'Location',
+}) => {
+  return (
+    <div className="session-info-card">
+      <h2>Session Information</h2>
+      <p className="review-text">Review information below for accuracy.</p>
+
+      <div className="info-item">
+        <span className="label">Name:</span>
+        <span className="value">{name}</span>
+      </div>
+
+      <div className="info-item">
+        <span className="label">E-mail:</span>
+        <span className="value">{email}</span>
+      </div>
+
+      <div className="info-item">
+        <span className="label">Session Title:</span>
+        <span className="value">{sessionTitle}</span>
+      </div>
+
+      <div className="info-item">
+        <span className="label">Location:</span>
+        <span className="value">{location}</span>
+      </div>
+
+      <div className="button-container">
+        <button className="print-badge-button">Print Badge</button>
+      </div>
+    </div>
+  );
+};
+
+export default SessionInfoCard;

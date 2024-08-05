@@ -1,0 +1,57 @@
+.session-info-card {
+  background-color: #f5f5f5;
+  border-radius: 0.25rem;
+  padding: 1.25rem;
+  width: 100%;
+  max-width: 37.5rem; // 600px equivalent, same as before
+  box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+
+  h2 {
+    font-size: 1.75rem; // Approximately 28px
+    margin-bottom: 0.3125rem;
+    font-weight: normal;
+  }
+
+  .review-text {
+    font-style: italic;
+    margin-bottom: 1.25rem;
+    color: #666;
+    font-size: 0.875rem; // Approximately 14px
+  }
+
+  .info-item {
+    margin-bottom: 1.95rem;
+    font-size: 1rem; // Approximately 16px
+
+    .label {
+      font-weight: bold;
+      margin-right: 0.3125rem;
+    }
+
+    .value {
+      color: #333;
+    }
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+
+  .print-badge-button {
+    background-color: #2c7a9e;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 0.925rem 1.25rem;
+    border-radius: 0.3125rem;
+    font-size: 1.05rem; // Approximately 16px
+    cursor: pointer;
+
+    &:hover {
+      background-color: #236485;
+    }
+  }
+}

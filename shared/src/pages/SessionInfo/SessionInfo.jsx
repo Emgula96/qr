@@ -1,84 +1,81 @@
- 
-import { useState, useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import Page from '../../components/Page'
-import TimeStamp from '../../components/TimeStamp'
-import Content from '../../components/Content'
-import service from '../../service'
-import './session-info.scss'
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import Page from '../../components/Page';
+import TimeStamp from '../../components/TimeStamp';
+import Content from '../../components/Content';
+import service from '../../service';
+import './session-info.scss';
+import SessionInfoCard from './SessionInfoCard/SessionInfoCard';
 
 function SessionInfo() {
-  const [user, setUser] = useState()
-  
-  const location = useLocation()
-  
+  const [user, setUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const location = useLocation();
+
   // Get the query params
-  const queryParams = new URLSearchParams(location.search)
-  const email = queryParams.get('email')
-  const firstName = queryParams.get('firstName')
-  const lastName = queryParams.get('lastName')
-  const deviceId = queryParams.get('deviceId')
-  
+  const queryParams = new URLSearchParams(location.search);
+  const email = queryParams.get('email');
+  const firstName = queryParams.get('firstName');
+  const lastName = queryParams.get('lastName');
+  const deviceId = queryParams.get('deviceId');
+
   useEffect(() => {
     async function fetchData() {
-      const userInfo = await service.getUserAndFirstEvent(email, firstName, lastName)
-      setUser(userInfo)
+      try {
+        setIsLoading(true);
+        const userInfo = await service.getUserAndFirstEvent(
+          email,
+          firstName,
+          lastName
+        );
+        setUser(userInfo);
+      } catch (err) {
+        setError('Failed to fetch user data');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
-    fetchData()
-  }, [email, firstName, lastName])  
+    fetchData();
+  }, [email, firstName, lastName]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <Page>
       <TimeStamp />
-      <div class="center-container">
+      <div className="center-container">
         <h1>Welcome to Region 4</h1>
-        <p><strong>Print QR Code here or go to session room to check-in.</strong></p>
+        <SessionInfoCard />
       </div>
       <Content>
-        {
-          !!user && (
-            <div className='qr-inner-content-wrapper'>
-              <h2 className='qr-inner-content-heading'>Session Information</h2>
-              <em>Review information below for accuracy.</em>
-              <p className='session-info-label'><strong>Name: </strong>{user.first_name} {user.last_name}</p>
-              <p className='session-info-label'><strong>E-mail: </strong>{user.email}</p>
-              <p className='session-info-label'><strong>Phone: </strong>{user.phone}</p>
-              <p className='session-info-label'><strong>Region: </strong>{user.region}</p>
-              <p className='session-info-label'><strong>District: </strong>{user.district}</p>
-              <p className='session-info-label'><strong>Campus: </strong>{user.campus}</p>
-              <p className='session-info-label'><strong>Session Title: </strong>{user.title}</p>
-              <p className='session-info-label'><strong>Location: </strong>{user.location}</p>
-              <div className='qr-button qr-button-multi'>
-                <Link to={{pathname:'/find-session', search:`deviceId=${deviceId}`}}>
-                  <button>Find Session</button>
-                </Link>
-                <Link to={{
-                  pathname: '/print-badge',
-                  search: `userId=${user.user_id}&eventId=${user.event_id}&deviceId=${deviceId}`
-                }}>
-                  <button>Print Badge</button>
-                </Link>
-              </div>
-            </div>
-          )
-        }
+        {/* {!!user && ( */}
+        <div>
+          {/* <Link
+              to={{
+                pathname: '/find-session',
+                search: `deviceId=${deviceId}`,
+              }}
+            >
+              <button>Find Session</button>
+            </Link>
+            <Link
+              to={{
+                pathname: '/print-badge',
+                search: `userId=${user.user_id}&eventId=${user.event_id}&deviceId=${deviceId}`,
+              }}
+            >
+              <button>Print Badge</button>
+            </Link> */}
+        </div>
+        {/* )} */}
       </Content>
     </Page>
-  )
+  );
 }
 
-SessionInfo.defaultProps = {}
-
-// SessionInfo.propTypes = {
-//   name: PropTypes.string.isRequired,
-//   email: PropTypes.string.isRequired,
-//   phone: PropTypes.string.isRequired,
-//   region: PropTypes.string.isRequired,
-//   district: PropTypes.string.isRequired,
-//   campus: PropTypes.string.isRequired,
-//   title: PropTypes.string.isRequired,
-//   location: PropTypes.string.isRequired,
-// }
-
-export default SessionInfo
+export default SessionInfo;
