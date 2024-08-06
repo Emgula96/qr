@@ -8,27 +8,23 @@ import service from '../../service';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
+// import getCurrentTimeRoundedToNearest5Minutes from '../../util/timeUtil';
 
-const getDate = (timestamp) => {
-  // Create a new Date object from the timestamp (which is already in UTC)
-  const date = new Date(timestamp);
-
-  // Get hours and minutes in 12-hour format with AM/PM indicator
-  let hours = date.getUTCHours(); // Use getUTCHours() to get hours in UTC
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Use getUTCMinutes() for minutes in UTC
-
-  // Convert the hours to 12-hour format and handle midnight and noon cases
-  const hours12 = hours % 12 || 12;
-
-  // Add an AM or PM indicator
-  const ampm = hours >= 12 ? 'p.m.' : 'a.m.';
-
-  // Create a string representing the time in 12-hour format
-  const time12 = `${hours12}:${minutes} ${ampm}`;
-
-  // Return the time string
-  return time12;
-};
+const militaryToReadable = (timeStr) =>{
+    // Split the input time string into hours, minutes, and seconds
+    const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+    
+    // Determine if it's AM or PM
+    const period = hours < 12 ? 'AM' : 'PM';
+    
+    // Convert hours to 12-hour format
+    const readableHours = hours % 12 || 12;
+    
+    // Format the readable time string
+    const readableTime = `${readableHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+    
+    return readableTime;
+}
 
 const debounce = (callback, wait) => {
   let timeoutId = null;
@@ -85,7 +81,6 @@ const Badge = ({ header, message, success }) => {
 
 function CheckIn() {
   const [event, setEvent] = useState();
-  const [attendence, setAttendence] = useState();
   const [checkedIn, setCheckedIn] = useState();
   const [status, setStatus] = useState(null);
 
@@ -94,6 +89,10 @@ function CheckIn() {
   // Get the query params
   const queryParams = new URLSearchParams(location.search);
   const eventId = queryParams.get('eventId');
+
+  const [roomName, setRoomName] = useState(queryParams.get('roomname')
+  ? queryParams.get('roomname')
+  : 'Classroom');
 
   const beepSound = useMemo(() => {
     return new Audio(beep);
@@ -122,31 +121,12 @@ function CheckIn() {
 
   useEffect(() => {
     async function fetchData() {
-      const queryParams = new URLSearchParams(location.search);
-      const roomName = queryParams.get('roomname')
-        ? queryParams.get('roomname')
-        : 'Classroom';
-      const mockEvent = {
-        id: '1836497',
-        room_number: roomName,
-        presenter: '',
-        facilitator: 'Amanda Galvan',
-        title: 'Region 4 All-Staff Meeting',
-        description: 'All-Staff Meeting',
-        credits: '(0) Contact Hours',
-        start_time: '2024-06-26T08:00:00Z', // ISO 8601 format
-        notes: '',
-        max_attendees: 50,
-      };
-      // const event = await service.getEventById(1)
-      const event = mockEvent;
-      const attendence = await service.getAttendence(eventId);
-      console.log(attendence);
+      const event = await service.getEventByRoomAndTime(roomName, '2024-07-23T08:00:00')
       setEvent(event);
-      setAttendence(attendence);
     }
 
     fetchData();
+
   }, [eventId]);
 
   const cycleStatus = () => {
@@ -166,7 +146,7 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      {!!event && !!attendence && (
+      {!!event && (
         <>
           <div className="check-in-wrapper">
             <div className="left">
@@ -191,7 +171,7 @@ function CheckIn() {
               <div className="attendee-container">
                 <h2>Attendee Count</h2>
                 <div className="count">
-                  <p>{attendence.length}</p>
+                  <p>{event.capacity}</p>
                   <span>checked in</span>
                 </div>
                 <div className="bottom">
@@ -203,7 +183,7 @@ function CheckIn() {
               {status && (
                 <Status
                   status={status}
-                  attendeeName={attendence[0]?.name || 'Test Attendee'}
+                  attendeeName={'Test Attendee'}
                 />
               )}
               <p className="large-text">
@@ -211,7 +191,7 @@ function CheckIn() {
               </p>
               <p className="large-text extra-bottom-space">{event.title}</p>
               <p className="large-text extra-bottom-space">
-                Session begins at {getDate(event.start_time)} (CST)
+                Session begins at {militaryToReadable(event.event_dates[0].start_time)} (CST)
               </p>
               <p className="large-text extra-bottom-space">
                 Session Information
@@ -227,25 +207,25 @@ function CheckIn() {
                   <p>
                     <b>Presenter:</b>
                   </p>
-                  <p>{event.presenter}</p>
+                  <p>{event.instructors}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
                     <b>Facilitator:</b>
                   </p>
-                  <p>{event.facilitator}</p>
+                  <p>{event.contact_person}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
                     <b>Description:</b>
                   </p>
-                  <p>{event.description}</p>
+                  <p>{event.details}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
                     <b>Credits Available:</b>
                   </p>
-                  <p>{event.credits}</p>
+                  <p>{event.certificate_type_id}</p>
                 </div>
               </div>
               {event.notes && event.notes.trim() && (
