@@ -1,19 +1,20 @@
  
 import rest from './util/rest.js' 
 
-const host = import.meta.env.VITE_ENVIRONMENT === 'development' ? import.meta.env.VITE_API_URL : '/api'
+const host = import.meta.env.VITE_ENVIRONMENT === 'development' ? import.meta.env.VITE_API_ROOT_URL : '/api';
 
 async function getUserInfo(email, firstName, lastName) {
   return await rest.get(`${host}/v1/users?email=${email}&first_name=${firstName}&last_name=${lastName}`)
 }
 
 async function getUserAndFirstEvent(email, firstName, lastName) {
-  const { data } = await rest.get(`${host}/v1/users?email=${email}&first_name=${firstName}&last_name=${lastName}`)
+  const { data } = await rest.get(`${host}/v1/users?userId=${email}&first_name=${firstName}&last_name=${lastName}`)
   return data[0]
 }
 
-async function getEventById(id) {
-  const { data } = await rest.get(`${host}/v1/attendence/event?eventId=${id}`)
+async function getEventByRoomAndTime(roomName, time) {
+  console.log(host)
+  const { data } = await rest.get(`${host}/v1/room?roomname=${roomName}&time=${time}`)
   return data[0]
 }
 
@@ -66,7 +67,7 @@ export default {
   getUserAndFirstEvent,
   generateQrCode,
   getAccessToken,
-  getEventById,
+  getEventByRoomAndTime,
   getAttendence,
   checkInUser,
 }

@@ -20,6 +20,7 @@ const getEventStmt = 'SELECT * FROM events WHERE id=$1 LIMIT 1'
 
 router.get('/event', async (req, res) => {
   try {
+    console.log(req)
     const { rows } = await query(getEventStmt, [req.query.eventId])
     res.status(200).json({ 'data': rows })
   } catch (error) {
