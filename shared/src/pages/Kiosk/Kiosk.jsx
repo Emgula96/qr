@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
 import './kiosk.scss';
 import KioskError from './KioskError';
+import Layout from '../FindSession/FindSessionButton/Layout';
 
 function Kiosk({ deviceId }) {
   const [errorState, setErrorState] = useState(null);
@@ -46,14 +46,10 @@ function Kiosk({ deviceId }) {
             message={errorStates[errorState].message}
           />
         )}
+        <div className="qr-button qr-button-left">
+          <Layout deviceId={deviceId} />
+        </div>
       </Content>
-      <div className="qr-button qr-button-center">
-        <Link
-          to={{ pathname: '/find-session', search: `deviceId=${deviceId}` }}
-        >
-          <button>Find Session</button>
-        </Link>
-      </div>
     </Page>
   );
 }
