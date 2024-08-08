@@ -1,4 +1,11 @@
 import express from 'express'
+import axios from 'axios';
+import dotenv from 'dotenv'
+
+dotenv.config()
+
+const baseUrl = process.env.ESCWORKS_API_URL;
+const apiKey = process.env.ESCWORKS_API_KEY;
 const router = express.Router()
 import { query } from '../../db.js'
 
@@ -29,36 +36,30 @@ router.get('/event', async (req, res) => {
   }
 })
 
-router.get('/check-in', async (req, res) => {
+router.put('/check-in', async (req, res) => {
   try {
-    // Fetch the attendence record for the user
-    const { rows } = await query(attendenceRecordStmt, [req.query.userId, req.query.eventId]) 
-    if (rows.length > 1) {
-      return res.status(200).json({ data: { code: 'MULTICHECKIN', header: 'Already checked into another event', message: 'You are already checked into another event', status: false } })
-    } else if (rows.length !== 0 && rows[0].checked_in) {
-      return res.status(200).json({ data: { code: 'ALREADYCHECKIN', header: 'Already Checked In', message: 'You have already checked into this event', status: false } })
+    const { userId, sessionId, sessionDateTimeId } = req.body;
+    
+    if (!userId || !sessionId || !sessionDateTimeId) {
+      return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Fetch the user event record
-    const eventRecordResult = await query(getUserEventStmt, [req.query.userId, req.query.eventId])
-    if (!eventRecordResult.rows.length) {
-      return res.status(200).json({ data: { code: 'NONREGISTER', header: 'Not Registered', message: 'You are not registered for this event', status: false } })
-    } else if (!eventRecordResult.rows[0].paid) {
-      return res.status(200).json({ data: { code: 'NOPAY', header: 'Payment Not Received', message: 'You have not payed for this event', status: false } } )
-    }
+    const mockTime = '2024-07-23T08:00:00'; // API expects a time; will be deprecated
+    const requestUrl = `${baseUrl}/session-events/${sessionId}/attendance/${mockTime}`;
+    const request = { userId }; // Include mockTime if necessary
 
-    // Check the user in
-    const checkInResult = await query(checkInStmt, [req.query.userId, req.query.eventId, true, false])
-    if (checkInResult) {
-      res.status(200).json({ data: { code: 'CHECKIN', header: 'Checked In', message: 'You have checked into this event', status: true } })
-    } else {
-      res.status(500).json()
-    }
+    const response = await axios.put(requestUrl, request, {
+      headers: {
+        'x-api-key': apiKey
+      }
+    });
+
+    res.status(200).json(response.data);
   } catch (error) {
-    console.error('An error ocurred:', error)
-    res.status(500).json(error)
+    console.error('An error occurred:', error);
+    res.status(500).json({ error: error.message });
   }
-})
+});
 
 router.get('/', async (req, res) => {
   try {

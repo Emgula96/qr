@@ -28,8 +28,8 @@ async function generateQrCode(eventId, userId) {
   return data
 }
 
-async function checkInUser(eventId, userId) {
-  const { data } = await rest.get(`${host}/v1/attendence/check-in?eventId=${eventId}&userId=${userId}`)
+async function checkInUser(eventId, userId, sessionDateTimeId = '2024-07-23T08:00:00') {
+  const { data } = await rest.put(`${host}/v1/attendence/check-in`, {userId, eventId,sessionDateTimeId})
   return data
 }
 
