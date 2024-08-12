@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
 import service from '../../service';
 import './session-info.scss';
 import SessionInfoCard from './SessionInfoCard/SessionInfoCard';
+import Layout from '../FindSession/FindSessionButton/Layout';
 
 function SessionInfo() {
   const [user, setUser] = useState(false);
@@ -54,24 +55,7 @@ function SessionInfo() {
       </div>
       <Content>
         {/* {!!user && ( */}
-        <div>
-          {/* <Link
-              to={{
-                pathname: '/find-session',
-                search: `deviceId=${deviceId}`,
-              }}
-            >
-              <button>Find Session</button>
-            </Link>
-            <Link
-              to={{
-                pathname: '/print-badge',
-                search: `userId=${user.user_id}&eventId=${user.event_id}&deviceId=${deviceId}`,
-              }}
-            >
-              <button>Print Badge</button>
-            </Link> */}
-        </div>
+        <Layout deviceId={deviceId} />
         {/* )} */}
       </Content>
     </Page>
