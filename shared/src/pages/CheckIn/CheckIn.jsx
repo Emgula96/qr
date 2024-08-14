@@ -85,18 +85,6 @@ function CheckIn() {
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
 
-  const location = useLocation();
-
-  // Function to simulate different times for testing
-  const simulateTime = (minutesFromStart) => {
-    if (event && event.event_dates && event.event_dates[0]) {
-      const { event_date, start_time } = event.event_dates[0];
-      const sessionStartTime = parseISO(`${event_date}T${start_time}`);
-      const simulatedTime = addMinutes(sessionStartTime, minutesFromStart);
-      setCurrentTime(simulatedTime);
-    }
-  };
-
   const isLateCheckIn = useMemo(() => {
     if (event && event.event_dates && event.event_dates[0]) {
       const { event_date, start_time } = event.event_dates[0];
@@ -247,22 +235,6 @@ function CheckIn() {
               {event.notes && event.notes.trim() && (
                 <Notes items={event.notes} />
               )}
-              {/* Testing buttons */}
-              <div>
-                <button onClick={() => simulateTime(-60)}>
-                  1 hour before start
-                </button>
-                <button onClick={() => simulateTime(-15)}>
-                  15 minutes before start
-                </button>
-                <button onClick={() => simulateTime(0)}>At start time</button>
-                <button onClick={() => simulateTime(10)}>
-                  10 minutes after start
-                </button>
-                <button onClick={() => simulateTime(20)}>
-                  20 minutes after start
-                </button>
-              </div>
             </div>
             <div className="banner right">
               <img
