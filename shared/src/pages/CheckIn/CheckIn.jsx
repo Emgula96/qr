@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
+import { parseISO, isPast, addMinutes, subMinutes } from 'date-fns'; // Make sure to install date-fns
 
 import TimeStamp from '../../components/TimeStamp';
 import QRCodeScanner from '../../components/QRCodeScanner';
@@ -8,23 +9,22 @@ import service from '../../service';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
-// import getCurrentTimeRoundedToNearest5Minutes from '../../util/timeUtil';
+import { dummySession } from './CheckInStatusChecks';
+const militaryToReadable = (timeStr) => {
+  // Split the input time string into hours, minutes, and seconds
+  const [hours, minutes, seconds] = timeStr.split(':').map(Number);
 
-const militaryToReadable = (timeStr) =>{
-    // Split the input time string into hours, minutes, and seconds
-    const [hours, minutes, seconds] = timeStr.split(':').map(Number);
-    
-    // Determine if it's AM or PM
-    const period = hours < 12 ? 'AM' : 'PM';
-    
-    // Convert hours to 12-hour format
-    const readableHours = hours % 12 || 12;
-    
-    // Format the readable time string
-    const readableTime = `${readableHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-    
-    return readableTime;
-}
+  // Determine if it's AM or PM
+  const period = hours < 12 ? 'AM' : 'PM';
+
+  // Convert hours to 12-hour format
+  const readableHours = hours % 12 || 12;
+
+  // Format the readable time string
+  const readableTime = `${readableHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+
+  return readableTime;
+};
 
 const debounce = (callback, wait) => {
   let timeoutId = null;
@@ -80,23 +80,40 @@ const Badge = ({ header, message, success }) => {
 };
 
 function CheckIn() {
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(dummySession);
   const [checkedIn, setCheckedIn] = useState();
   const [status, setStatus] = useState(null);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
 
-  const location = useLocation();
+  const isLateCheckIn = useMemo(() => {
+    if (event && event.event_dates && event.event_dates[0]) {
+      const { event_date, start_time } = event.event_dates[0];
+      const sessionStartTime = parseISO(`${event_date}T${start_time}`);
+      const lateThreshold = addMinutes(
+        sessionStartTime,
+        event.late_threshold || 0
+      );
 
-  // Get the query params
-  const queryParams = new URLSearchParams(location.search);
-  const eventId = queryParams.get('eventId');
+      return isPast(lateThreshold);
+    }
+    return false;
+  }, [event, currentTime]);
 
-  const [roomName, setRoomName] = useState(queryParams.get('roomname')
-  ? queryParams.get('roomname')
-  : 'Classroom');
+  useEffect(() => {
+    if (isLateCheckIn) {
+      setStatus('Late Check-In');
+    } else {
+      setStatus(null);
+    }
+  }, [isLateCheckIn]);
 
-  const beepSound = useMemo(() => {
-    return new Audio(beep);
-  }, []);
+  // Debugging useEffect
+  useEffect(() => {
+    console.log('Event:', event);
+    console.log('Current Time:', currentTime);
+    console.log('Is Late Check-In:', isLateCheckIn);
+    console.log('Status:', status);
+  }, [event, currentTime, isLateCheckIn, status]);
 
   const onNewScanResult = debounce((decodedText) => {
     console.log(`Code matched = ${decodedText}`);
@@ -108,9 +125,16 @@ function CheckIn() {
       .then((checkedIn) => {
         setCheckedIn(checkedIn);
         beepSound.play();
+
+        if (isLateCheckIn) {
+          setStatus('Late Check-In');
+        } else {
+          setStatus(null);
+        }
       })
       .catch((err) => {
         console.error(err);
+        setStatus('Check-In Error');
       })
       .finally(() => {
         setTimeout(() => {
@@ -119,27 +143,9 @@ function CheckIn() {
       });
   }, 500);
 
-  useEffect(() => {
-    async function fetchData() {
-      const event = await service.getEventByRoomAndTime(roomName, '2024-07-23T08:00:00')
-      setEvent(event);
-    }
-
-    fetchData();
-
-  }, [eventId]);
-
-  const cycleStatus = () => {
-    const statuses = [
-      'Session Full',
-      'Late Check-In',
-      'No Payment',
-      'Wrong Session',
-    ];
-    const currentIndex = statuses.indexOf(status);
-    const nextIndex = (currentIndex + 1) % statuses.length;
-    setStatus(statuses[nextIndex]);
-  };
+  const beepSound = useMemo(() => {
+    return new Audio(beep);
+  }, []);
 
   return (
     <>
@@ -181,17 +187,15 @@ function CheckIn() {
             </div>
             <div className="center">
               {status && (
-                <Status
-                  status={status}
-                  attendeeName={'Test Attendee'}
-                />
+                <Status status={status} attendeeName={'Test Attendee'} />
               )}
               <p className="large-text">
                 <strong>Room No:</strong> {event.room_number}
               </p>
               <p className="large-text extra-bottom-space">{event.title}</p>
               <p className="large-text extra-bottom-space">
-                Session begins at {militaryToReadable(event.event_dates[0].start_time)} (CST)
+                Session begins at{' '}
+                {militaryToReadable(event.event_dates[0].start_time)} (CST)
               </p>
               <p className="large-text extra-bottom-space">
                 Session Information
