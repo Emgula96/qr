@@ -100,11 +100,27 @@ function CheckIn() {
 
   const onNewScanResult = debounce((decodedText) => {
     console.log(`Code matched = ${decodedText}`);
-    const url = new URL(decodedText);
-    const userId = url.searchParams.get('userId');
+    
+    const parseScan = (text)=> {
+      // Split the string into key-value pairs
+      const pairs = text.split(',');
+  
+      // Create an object to store the parsed data
+      const dataObj = {};
+  
+      // Iterate over each pair and split into key and value
+      pairs.forEach(pair => {
+          const [key, value] = pair.split('=');
+          dataObj[key] = value;
+      });
+  
+      return dataObj;
+    };
+
+    const {userId, sessionId} = parseScan(decodedText);
 
     service
-      .checkInUser(eventId, userId)
+      .checkInUser(sessionId, userId)
       .then((checkedIn) => {
         setCheckedIn(checkedIn);
         beepSound.play();

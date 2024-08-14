@@ -5,13 +5,13 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
-    const url = `${process.env.HOST_URL}/check-in?eventId=${req.query.eventId}&userId=${req.query.userId}`
-    QRCode.toDataURL(url, { version: 10 }, function (err, url) {
+    const string = `userId=${req.query.userId},sessionId=${req.query.sessionId}`
+    QRCode.toString(string, { version: 10 }, function (err, url) {
       if (err) {
         throw err
       }
 
-      res.status(200).json({ data: url })
+      res.status(200).json({ data: string })
     })
   } catch (error) {
     console.error('An error ocurred: ', error)

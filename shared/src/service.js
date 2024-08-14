@@ -24,7 +24,7 @@ async function getAttendence(id) {
 }
 
 async function generateQrCode(eventId, userId) {
-  const { data } = await rest.get(`${host}/v1/qr?userId=${userId}&eventId=${eventId}`)
+  const { data } = await rest.get(`${host}/v1/qr?userId=${userId}&sessionId=${eventId}`)
   return data
 }
 
