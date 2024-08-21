@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <script src="src/util/jquery-1.6.4.min.js" type="text/javascript"></script>
-  <script src="src/util/jquery.signalR-2.0.3.min.js" type="text/javascript"></script>
+  <script src="/jquery-1.6.4.min.js" type="text/javascript"></script>
+  <script src="/jquery.signalR-2.0.3.min.js" type="text/javascript"></script>
   <title>QR Check-In Lib</title>
 </head>
 
@@ -70,4 +70,42 @@
         }
         else {
           console.error("A barcode scanner component wasn't found in the configuration.");
-      
+        }
+      }).fail(function (err) {
+        console.error(err);
+      });
+    }).fail(function (err) {
+      console.error(err);
+      $("#barcode-conn-status").css({ 'color': 'red' })
+    });
+    function defineEvents() {
+      // Detach the event handlers. This is done here because if defineEvents() is called again, then these events won't be registered multiple times and cause duplicate event firings.
+      proxy.off('onBarcodeScannerConnected_Event');
+      proxy.off('onBarcodeScannerConnectedError_Event');
+      proxy.off('onBarcodeScanned_Event');
+      proxy.off('onBarcodeScannerTriggerTimeout_Event');
+      // Attach the event handlers
+      proxy.on('onBarcodeScannerConnected_Event', function (evt) {
+        $("#barcode-conn-status").css({ 'color': 'green' })
+        console.log('Connected');
+        console.log(JSON.stringify(evt));
+      });
+      proxy.on('onBarcodeScannerConnectedError_Event', function (evt) {
+        $("#barcode-conn-status").css({ 'color': 'red' })
+        console.log('Connection Error');
+        console.log(evt.Payload);
+      });
+      proxy.on('onBarcodeScanned_Event', function (evt) {
+        console.log('Barcode Scanned');
+        console.log(evt.Payload);
+        $("#log").append(evt.Payload)
+        window.location.href = evt.Payload;
+      });
+      proxy.on('onBarcodeScannerTriggerTimeout_Event', function (evt) {
+        console.log('Scan Timeout');
+        console.log(evt.Payload);
+      });
+    }
+  </script>
+</body>
+</html>
