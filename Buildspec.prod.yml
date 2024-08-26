@@ -10,10 +10,18 @@ phases:
       - cd ../..
   pre_build:
     commands:
+      - echo "Logging into Docker Hub..."
+
+      - export DOCKER_USERNAME=$(aws secretsmanager get-secret-value --secret-id prod/dockerhub/credential --query 'SecretString' --output text | jq -r .username)
+      - export DOCKER_PASSWORD=$(aws secretsmanager get-secret-value --secret-id prod/dockerhub/credential --query 'SecretString' --output text | jq -r .password)
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+      - echo "Logging into AWS ECR..."
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 471808368523.dkr.ecr.us-east-1.amazonaws.com/kiosk:latest
       - REPOSITORY_URI=471808368523.dkr.ecr.us-east-1.amazonaws.com/kiosk
+      - DOCKERHUB_REPO=escw0rksdocker/kiosk
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
+    
   build:
     commands:
       - echo "Zipping up the application server..."
@@ -21,12 +29,21 @@ phases:
       - zip -r kiosk-express.zip .
       - cd ../..
       - echo "Buiding web application docker container"
-      - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg API_URL=${API_URL} --build-arg SERVER=${SERVER} --build-arg VITE_ENVIRONMENT=${VITE_ENVIRONMENT} --build-arg VITE_MODE_DEBUG_LOCAL_PROD=${VITE_MODE_DEBUG_LOCAL_PROD} .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - docker build -t $REPOSITORY_URI:latest -t $DOCKERHUB_REPO:latest -f ./Dockerfile.prod --build-arg API_URL=${API_URL} --build-arg SERVER=${SERVER} --build-arg VITE_ENVIRONMENT=${VITE_ENVIRONMENT} --build-arg VITE_MODE_DEBUG_LOCAL_PROD=${VITE_MODE_DEBUG_LOCAL_PROD} . 
+     
+      # - docker build -t $REPOSITORY_URI:latest -f ./Dockerfile.prod --build-arg API_URL=${API_URL} --build-arg SERVER=${SERVER} --build-arg VITE_ENVIRONMENT=${VITE_ENVIRONMENT} --build-arg VITE_MODE_DEBUG_LOCAL_PROD=${VITE_MODE_DEBUG_LOCAL_PROD} .
+      # - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      
+      - echo "Tagging images with the commit hash..."
+      - if [ -z "$IMAGE_TAG" ]; then IMAGE_TAG="latest"; fi 
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG 
+      - docker tag $DOCKERHUB_REPO:latest $DOCKERHUB_REPO:$IMAGE_TAG
   post_build:
     commands:
-      - echo "Pushing the Docker images..."
+      - echo "Pushing the Docker images to ECR and Docker Hub..."
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - docker push $DOCKERHUB_REPO:$IMAGE_TAG
+      - docker push $DOCKERHUB_REPO:latest
       - printf '[{"name":"kiosk","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo "Uploading the lambda serverless API..."
       - aws lambda update-function-code --function-name kiosk-express --zip-file fileb://shared/server/kiosk-express.zip
