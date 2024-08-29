@@ -117,24 +117,24 @@ function CheckIn() {
 
   const onNewScanResult = debounce((decodedText) => {
     console.log(`Code matched = ${decodedText}`);
-    
-    const parseScan = (text)=> {
+
+    const parseScan = (text) => {
       // Split the string into key-value pairs
       const pairs = text.split(',');
-  
+
       // Create an object to store the parsed data
       const dataObj = {};
-  
+
       // Iterate over each pair and split into key and value
-      pairs.forEach(pair => {
-          const [key, value] = pair.split('=');
-          dataObj[key] = value;
+      pairs.forEach((pair) => {
+        const [key, value] = pair.split('=');
+        dataObj[key] = value;
       });
-  
+
       return dataObj;
     };
 
-    const {userId, sessionId} = parseScan(decodedText);
+    const { userId, sessionId } = parseScan(decodedText);
 
     service
       .checkInUser(sessionId, userId)
@@ -252,7 +252,7 @@ function CheckIn() {
                 <Notes items={event.notes} />
               )}
             </div>
-            <div className="banner right">
+            <div className="banner-right">
               <img
                 src="sidebar.png"
                 alt="We've got your back"
