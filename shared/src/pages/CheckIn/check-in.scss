@@ -27,6 +27,13 @@ html {
     margin-bottom: 1rem;
   }
 }
+.center {
+  height: 100%;
+
+  > * {
+    transform: scale(0.87);
+  }
+}
 
 .badge-wrapper {
   display: flex;
@@ -152,5 +159,17 @@ html {
 
   b {
     white-space: nowrap;
+  }
+}
+.banner-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 9rem;
+}
+.banner-right {
+  img {
+    max-width: 20rem;
+    height: auto;
   }
 }
