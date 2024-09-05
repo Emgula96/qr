@@ -107,13 +107,36 @@ function CheckIn() {
     }
   }, [isLateCheckIn]);
 
-  // Debugging useEffect
   useEffect(() => {
-    console.log('Event:', event);
-    console.log('Current Time:', currentTime);
-    console.log('Is Late Check-In:', isLateCheckIn);
-    console.log('Status:', status);
-  }, [event, currentTime, isLateCheckIn, status]);
+    const fetchEvent = async () => {
+      try {
+        // Replace this with your actual API call to fetch the event
+        const newEvent = await service.getEventByRoomAndTime(
+          event.event_dates[0].room.name,
+          currentTime
+        );
+        setEvent(newEvent);
+      } catch (error) {
+        console.error('Error fetching event:', error);
+      }
+    };
+
+    // Fetch event immediately on component mount
+    fetchEvent();
+
+    // Set up interval to fetch event every 15 minutes
+    const intervalId = setInterval(fetchEvent, 15 * 60 * 1000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
+  useEffect(() => {
+    // Update current time every minute
+    const timerId = setInterval(() => setCurrentTime(new Date()), 60 * 1000);
+
+    return () => clearInterval(timerId);
+  }, []);
 
   const onNewScanResult = debounce((decodedText) => {
     console.log(`Code matched = ${decodedText}`);
@@ -162,13 +185,27 @@ function CheckIn() {
   const beepSound = useMemo(() => {
     return new Audio(beep);
   }, []);
+  const handleManualRefresh = () => {
+    const manualFetchEvent = async () => {
+      try {
+        const newEvent = await service.getEventByRoomAndTime(
+          event.event_dates[0].room.name,
+          new Date()
+        );
+        setEvent(newEvent);
+      } catch (error) {
+        console.error('Error fetching event:', error);
+      }
+    };
+    manualFetchEvent();
+  };
 
   return (
     <>
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      {!!event && (
+      {event ? (
         <>
           <div className="check-in-wrapper">
             <div className="left">
@@ -252,15 +289,21 @@ function CheckIn() {
                 <Notes items={event.notes} />
               )}
             </div>
+
             <div className="banner-right">
               <img
                 src="sidebar.png"
                 alt="We've got your back"
+                onClick={handleManualRefresh}
                 className="banner-image"
               />
             </div>
           </div>
         </>
+      ) : (
+        <div className="page-footer">
+          <img className="page-footer" src="infofooter_wevegotyourback.png" />
+        </div>
       )}
     </>
   );
