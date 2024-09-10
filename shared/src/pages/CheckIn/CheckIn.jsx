@@ -106,6 +106,7 @@ function CheckIn() {
 
   const fetchEvent = async () => {
     try {
+      console.log('Fetching event...');
       const todayEvents = await service.getEventByRoomAndTime(
         roomName,
         currentTime.toLocaleDateString('en-CA')
@@ -206,7 +207,7 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      {event ? (
+      {event && event.length > 0 ? (
         <>
           <div className="check-in-wrapper">
             <div className="left">

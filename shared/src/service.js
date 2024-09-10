@@ -19,11 +19,10 @@ async function getUserAndFirstEvent(email, firstName, lastName) {
 }
 
 async function getEventByRoomAndTime(roomName, time) {
-  console.log(host);
   const { data } = await rest.get(
     `${host}/v1/room?roomname=${roomName}&time=${time}`
   );
-  return data[0];
+  return data;
 }
 
 async function getAttendence(id) {
