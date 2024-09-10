@@ -10,6 +10,8 @@ import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
 import { dummySession } from './CheckInStatusChecks';
+import displaySession from './displaySession';
+
 const militaryToReadable = (timeStr) => {
   // Split the input time string into hours, minutes, and seconds
   const [hours, minutes, seconds] = timeStr.split(':').map(Number);
@@ -80,10 +82,13 @@ const Badge = ({ header, message, success }) => {
 };
 
 function CheckIn() {
-  const [event, setEvent] = useState(dummySession);
+  const [event, setEvent] = useState();
   const [checkedIn, setCheckedIn] = useState();
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const roomName = queryParams.get('roomname');
 
   const isLateCheckIn = useMemo(() => {
     if (event && event.event_dates && event.event_dates[0]) {
@@ -99,6 +104,19 @@ function CheckIn() {
     return false;
   }, [event, currentTime]);
 
+  const fetchEvent = async () => {
+    try {
+      const todayEvents = await service.getEventByRoomAndTime(
+        roomName,
+        currentTime
+      );
+      const session = displaySession(todayEvents);
+      setEvent(session);
+    } catch (error) {
+      console.error('Error fetching event:', error);
+    }
+  };
+
   useEffect(() => {
     if (isLateCheckIn) {
       setStatus('Late Check-In');
@@ -108,19 +126,6 @@ function CheckIn() {
   }, [isLateCheckIn]);
 
   useEffect(() => {
-    const fetchEvent = async () => {
-      try {
-        // Replace this with your actual API call to fetch the event
-        const newEvent = await service.getEventByRoomAndTime(
-          event.event_dates[0].room.name,
-          currentTime
-        );
-        setEvent(newEvent);
-      } catch (error) {
-        console.error('Error fetching event:', error);
-      }
-    };
-
     // Fetch event immediately on component mount
     fetchEvent();
 
@@ -129,7 +134,7 @@ function CheckIn() {
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [roomName]);
 
   useEffect(() => {
     // Update current time every minute
@@ -188,11 +193,7 @@ function CheckIn() {
   const handleManualRefresh = () => {
     const manualFetchEvent = async () => {
       try {
-        const newEvent = await service.getEventByRoomAndTime(
-          event.event_dates[0].room.name,
-          new Date()
-        );
-        setEvent(newEvent);
+        fetchEvent();
       } catch (error) {
         console.error('Error fetching event:', error);
       }
