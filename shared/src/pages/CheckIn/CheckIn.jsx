@@ -108,7 +108,7 @@ function CheckIn() {
     try {
       const todayEvents = await service.getEventByRoomAndTime(
         roomName,
-        currentTime
+        currentTime.toLocaleDateString('en-CA')
       );
       const session = displaySession(todayEvents);
       setEvent(session);
