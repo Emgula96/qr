@@ -12,7 +12,8 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build:client": "vite build --outDir dist/client --ssrManifest",
-    "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server"
+    "build:server": "vite build --ssr src/entry-server.jsx --outDir dist/server",
+    "test": "jest"
   },
   "dependencies": {
     "compression": "^1.7.4",
@@ -32,6 +33,7 @@
     "underscore": "^1.13.7"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.25.4",
     "@storybook/addon-essentials": "^7.5.3",
     "@storybook/addon-interactions": "^7.5.3",
     "@storybook/addon-links": "^7.5.3",
@@ -44,6 +46,7 @@
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.3",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
