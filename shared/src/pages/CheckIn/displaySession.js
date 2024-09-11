@@ -59,7 +59,7 @@ const displaySession = (sessions) => {
   }
 
   console.log("No matching sessions found, returning empty array.");
-  return [];
+  return null;
 };
 
 
