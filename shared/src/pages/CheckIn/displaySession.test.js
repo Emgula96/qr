@@ -61,6 +61,46 @@ const dummySessions = [
   },
 ];
 
+const newSession = {
+  id: 61,
+  master_event_id: 78,
+  event_type: 'series',
+  modality: 'in_person',
+  details: 'Afternoon session with a late threshold',
+  contact_person: 'Amanda Silva',
+  instructors: [
+    {
+      id: 8,
+      username: '8iZYjORjrMe__J_YvKAaJiaqPXk',
+      first_name: 'Amanda',
+      last_name: 'Silva',
+    },
+  ],
+  event_dates: [
+    {
+      id: 119,
+      event_date: '2024-09-10',
+      start_time: '15:30:00',
+      end_time: '16:00:00',
+      room: {
+        id: 3,
+        building: {
+          id: 2,
+          name: 'Region 4 ESC',
+        },
+        name: 'MCC102',
+        label: 'MCC102',
+      },
+    },
+  ],
+  confirmation_comments: 'Late threshold test',
+  evaluation_type_id: 2,
+  certificate_type_id: 2,
+  fee: '0.00',
+  capacity: 10,
+  late_threshold: 60, // 60-minute late threshold
+};
+
 describe('displaySession', () => {
   // Test case for Rule 1: If a session is within 30 minutes of starting
   test('should return a session that is within 30 minutes of starting', () => {
@@ -96,6 +136,16 @@ describe('displaySession', () => {
 
     const result = displaySession(dummySessions);
     expect(result).toEqual(dummySessions[0]); // Expect the session to be returned 1 hour before start
+  });
+
+  // New test for a session in progress and within the late threshold
+  test('should return the session that is currently in progress and within the late threshold', () => {
+    // Mock the current date to be during the session (3:35 PM)
+    jest.useFakeTimers().setSystemTime(new Date('2024-09-10T15:35:00').getTime());
+
+    // Add the new session to the dummySessions array
+    const result = displaySession([...dummySessions, newSession]);
+    expect(result).toEqual(newSession); // Expect the in-progress session to be returned
   });
 
   // Reset the fake timers after each test
