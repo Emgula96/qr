@@ -112,6 +112,7 @@ function CheckIn() {
         currentTime.toLocaleDateString('en-CA')
       );
       const session = displaySession(todayEvents);
+      console.log(session)
       setEvent(session);
     } catch (error) {
       console.error('Error fetching event:', error);
@@ -207,7 +208,7 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      {event && event.length > 0 ? (
+      {event ? (
         <>
           <div className="check-in-wrapper">
             <div className="left">
@@ -266,7 +267,7 @@ function CheckIn() {
                   <p>
                     <b>Presenter:</b>
                   </p>
-                  <p>{event.instructors}</p>
+                  <p>{event.instructors.map(instructor => `${instructor.first_name} ${instructor.last_name}`).join(', ')}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
