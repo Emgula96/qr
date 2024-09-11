@@ -117,16 +117,16 @@ describe('displaySession', () => {
     jest.useFakeTimers().setSystemTime(new Date('2024-03-10T14:16:00').getTime());
 
     const result = displaySession(dummySessions);
-    expect(result).toEqual([]); // Expect an empty array because it is past the late threshold
+    expect(result).toEqual(null); // Expect an null because it is past the late threshold
   });
 
   // Test case for Rule 3: If no sessions are scheduled within 1 hour
-  test('should return an empty array when no sessions are scheduled within the next hour', () => {
+  test('should return null when no sessions are scheduled within the next hour', () => {
     // Mock the current date to be 2 hours before any session starts
     jest.useFakeTimers().setSystemTime(new Date('2024-09-15T07:00:00').getTime());
 
     const result = displaySession(dummySessions);
-    expect(result).toEqual([]); // No sessions within the next hour, so expect an empty array
+    expect(result).toEqual(null); // No sessions within the next hour, so expect an null
   });
 
   // Test case for Rule 4: If there is no previous session, return session 1 hour before it starts
