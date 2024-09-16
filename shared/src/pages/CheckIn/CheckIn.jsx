@@ -246,7 +246,7 @@ function CheckIn() {
                 <Status status={status} attendeeName={'Test Attendee'} />
               )}
               <p className="large-text">
-                <strong>Room No:</strong> {event.room_number}
+                <strong>Room No:</strong> {roomName ? roomName : "Test-room"}
               </p>
               <p className="large-text extra-bottom-space">{event.title}</p>
               <p className="large-text extra-bottom-space">
