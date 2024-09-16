@@ -169,6 +169,26 @@ function CheckIn() {
     service
       .checkInUser(sessionId, userId)
       .then((checkedIn) => {
+        const checkLateCheckIn = (session, currentTime) => {
+          if (session && session.late_threshold) {
+            const sessionStartTime = new Date(session.startTime);
+            const latenessThreshold = parseInt(session.late_threshold);
+            const lateThresholdTime = new Date(
+              sessionStartTime.getTime() + latenessThreshold * 60000
+            );
+
+            if (currentTime > lateThresholdTime) {
+              setStatus('Late Check-In');
+            } else {
+              setStatus(null);
+            }
+          }
+        };
+
+        // Assuming the session data is available in the checkedIn object
+        if (checkedIn && checkedIn.session) {
+          checkLateCheckIn(checkedIn.session, new Date());
+        }
         setCheckedIn(checkedIn);
         beepSound.play();
 
