@@ -304,8 +304,13 @@ function CheckIn() {
           </div>
         </>
       ) : (
-        <div className="page-footer">
-          <img className="page-footer" src="infofooter_wevegotyourback.png" />
+        <div class="parent-div">
+          <div class="region4logo">
+              <img src="region4header.png" alt="R4 Logo" />
+          </div>
+          <div className="page-footer">
+              <img className="page-footer" src="infofooter_wevegotyourback.png" />
+          </div>
         </div>
       )}
     </>
