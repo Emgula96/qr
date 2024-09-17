@@ -12,7 +12,7 @@ import Status from '../Status/Status';
 import { dummySession } from './CheckInStatusChecks';
 import displaySession from './displaySession';
 
-const militaryToReadable = (timeStr) => {
+const militaryToReadable = (timeStr = '10:00:00') => {
   // Split the input time string into hours, minutes, and seconds
   const [hours, minutes, seconds] = timeStr.split(':').map(Number);
 
@@ -91,7 +91,7 @@ function CheckIn() {
   const roomName = queryParams.get('roomname');
 
   const isLateCheckIn = useMemo(() => {
-    if (event && event.event_dates && event.event_dates[0]) {
+    if (event && event?.event_dates && event?.event_dates[0]) {
       const { event_date, start_time } = event.event_dates[0];
       const sessionStartTime = parseISO(`${event_date}T${start_time}`);
       const lateThreshold = addMinutes(
@@ -308,10 +308,11 @@ function CheckIn() {
                   <p>{event.certificate_type_id}</p>
                 </div>
               </div>
-              {event.notes && event.notes.trim() && (
-                <Notes items={event.notes} />
-              )}
             </div>
+            {event?.notes && event?.notes.trim() && (
+              <Notes items={event?.notes} />
+            )}
+          </div>
 
             <div className="banner-right">
               <img
