@@ -112,7 +112,7 @@ function CheckIn() {
         currentTime.toLocaleDateString('en-CA')
       );
       const session = displaySession(todayEvents);
-      console.log(session)
+      console.log(session);
       setEvent(session);
     } catch (error) {
       console.error('Error fetching event:', error);
@@ -266,7 +266,7 @@ function CheckIn() {
                 <Status status={status} attendeeName={'Test Attendee'} />
               )}
               <p className="large-text">
-                <strong>Room No:</strong> {roomName ? roomName : "Test-room"}
+                <strong>Room No:</strong> {roomName ? roomName : 'Test-room'}
               </p>
               <p className="large-text extra-bottom-space">{event.title}</p>
               <p className="large-text extra-bottom-space">
@@ -287,7 +287,14 @@ function CheckIn() {
                   <p>
                     <b>Presenter:</b>
                   </p>
-                  <p>{event.instructors.map(instructor => `${instructor.first_name} ${instructor.last_name}`).join(', ')}</p>
+                  <p>
+                    {event.instructors
+                      .map(
+                        (instructor) =>
+                          `${instructor.first_name} ${instructor.last_name}`
+                      )
+                      .join(', ')}
+                  </p>
                 </div>
                 <div className="session-info-item">
                   <p>
@@ -314,23 +321,22 @@ function CheckIn() {
             )}
           </div>
 
-            <div className="banner-right">
-              <img
-                src="sidebar.png"
-                alt="We've got your back"
-                onClick={handleManualRefresh}
-                className="banner-image"
-              />
-            </div>
+          <div className="banner-right">
+            <img
+              src="sidebar.png"
+              alt="We've got your back"
+              onClick={handleManualRefresh}
+              className="banner-image"
+            />
           </div>
         </>
       ) : (
         <div class="parent-div">
           <div class="region4logo">
-              <img src="region4header.png" alt="R4 Logo" />
+            <img src="region4header.png" alt="R4 Logo" />
           </div>
           <div className="page-footer">
-              <img className="page-footer" src="infofooter_wevegotyourback.png" />
+            <img className="page-footer" src="infofooter_wevegotyourback.png" />
           </div>
         </div>
       )}
