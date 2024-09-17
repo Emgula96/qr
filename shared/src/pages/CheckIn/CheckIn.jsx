@@ -112,6 +112,7 @@ function CheckIn() {
         currentTime.toLocaleDateString('en-CA')
       );
       const session = displaySession(todayEvents);
+      console.log(session)
       setEvent(session);
     } catch (error) {
       console.error('Error fetching event:', error);
@@ -227,82 +228,85 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      {/* {event && event.length > 0 ? ( */}
-      <>
-        <div className="check-in-wrapper">
-          <div className="left">
-            <div className="scanner">
-              <div className="scanner-content">
-                <h2>Scan QR Code to Check-In</h2>
-                <p>
-                  <em>
-                    Scan QR Code by holding printed badge in front of camera
-                    located at the top of this device.
-                  </em>
-                </p>
-                <QRCodeScanner
-                  fps={10}
-                  qrbox={354}
-                  disableFlip={false}
-                  qrCodeSuccessCallback={onNewScanResult}
-                  verbose={true}
-                />
+      {event ? (
+        <>
+          <div className="check-in-wrapper">
+            <div className="left">
+              <div className="scanner">
+                <div className="scanner-content">
+                  <h2>Scan QR Code to Check-In</h2>
+                  <p>
+                    <em>
+                      Scan QR Code by holding printed badge in front of camera
+                      located at the top of this device.
+                    </em>
+                  </p>
+                  <QRCodeScanner
+                    fps={10}
+                    qrbox={354}
+                    disableFlip={false}
+                    qrCodeSuccessCallback={onNewScanResult}
+                    verbose={true}
+                  />
+                </div>
+              </div>
+              <div className="attendee-container">
+                <h2>Attendee Count</h2>
+                <div className="count">
+                  <p>{event.capacity}</p>
+                  <span>checked in</span>
+                </div>
+                <div className="bottom">
+                  <div>Max Attendee Count: {event.max_attendees}</div>
+                </div>
               </div>
             </div>
-            <div className="attendee-container">
-              <h2>Attendee Count</h2>
-              <div className="count">
-                <p>{event?.capacity}</p>
-                <span>checked in</span>
-              </div>
-              <div className="bottom">
-                <div>Max Attendee Count: {event?.max_attendees}</div>
-              </div>
-            </div>
-          </div>
-          <div className="center">
-            {status && (
-              <Status status={status} attendeeName={'Test Attendee'} />
-            )}
-            <p className="large-text">
-              <strong>Room No:</strong> {event?.room_number}
-            </p>
-            <p className="large-text extra-bottom-space">{event?.title}</p>
-            <p className="large-text extra-bottom-space">
-              Session begins at{' '}
-              {militaryToReadable(event?.event_dates[0].start_time)} (CST)
-            </p>
-            <p className="large-text extra-bottom-space">Session Information</p>
-            <div className="session-info-grid">
-              <div className="session-info-item">
-                <p>
-                  <b>Session ID:</b>
-                </p>
-                <p>{event?.id}</p>
-              </div>
-              <div className="session-info-item">
-                <p>
-                  <b>Presenter:</b>
-                </p>
-                <p>{event?.instructors}</p>
-              </div>
-              <div className="session-info-item">
-                <p>
-                  <b>Facilitator:</b>
-                </p>
-                <p>{event?.contact_person}</p>
-              </div>
-              <div className="session-info-item">
-                <p>
-                  <b>Description:</b>
-                </p>
-                <p>{event?.details}</p>
-              </div>
-              <div className="session-info-item">
-                <p>
-                  <b>Credits Available:</b>
-                </p>
-                <p>{event?.certificate_type_id}</p>
+            <div className="center">
+              {status && (
+                <Status status={status} attendeeName={'Test Attendee'} />
+              )}
+              <p className="large-text">
+                <strong>Room No:</strong> {roomName ? roomName : "Test-room"}
+              </p>
+              <p className="large-text extra-bottom-space">{event.title}</p>
+              <p className="large-text extra-bottom-space">
+                Session begins at{' '}
+                {militaryToReadable(event.event_dates[0].start_time)} (CST)
+              </p>
+              <p className="large-text extra-bottom-space">
+                Session Information
+              </p>
+              <div className="session-info-grid">
+                <div className="session-info-item">
+                  <p>
+                    <b>Session ID:</b>
+                  </p>
+                  <p>{event.id}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Presenter:</b>
+                  </p>
+                  <p>{event.instructors.map(instructor => `${instructor.first_name} ${instructor.last_name}`).join(', ')}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Facilitator:</b>
+                  </p>
+                  <p>{event.contact_person}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Description:</b>
+                  </p>
+                  <p>{event.details}</p>
+                </div>
+                <div className="session-info-item">
+                  <p>
+                    <b>Credits Available:</b>
+                  </p>
+                  <p>{event.certificate_type_id}</p>
+                </div>
               </div>
             </div>
             {event?.notes && event?.notes.trim() && (
@@ -310,20 +314,26 @@ function CheckIn() {
             )}
           </div>
 
-          <div className="banner-right">
-            <img
-              src="sidebar.png"
-              alt="We've got your back"
-              onClick={handleManualRefresh}
-              className="banner-image"
-            />
+            <div className="banner-right">
+              <img
+                src="sidebar.png"
+                alt="We've got your back"
+                onClick={handleManualRefresh}
+                className="banner-image"
+              />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div class="parent-div">
+          <div class="region4logo">
+              <img src="region4header.png" alt="R4 Logo" />
+          </div>
+          <div className="page-footer">
+              <img className="page-footer" src="infofooter_wevegotyourback.png" />
           </div>
         </div>
-      </>
-      {/* ) : ( */}
-      <div className="page-footer">
-        <img className="page-footer" src="infofooter_wevegotyourback.png" />
-      </div>
+      )}
     </>
   );
 }
