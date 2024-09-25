@@ -9,7 +9,7 @@ import service from '../../service';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
-import { dummySession } from './CheckInStatusChecks';
+
 import displaySession from './displaySession';
 
 const militaryToReadable = (timeStr = '10:00:00') => {
@@ -80,6 +80,45 @@ const Badge = ({ header, message, success }) => {
     </>
   );
 };
+const dummySession = {
+  id: 61,
+  master_event_id: 78,
+  event_type: 'series',
+  modality: 'in_person',
+  details: 'Afternoon session with a late threshold',
+  contact_person: 'Amanda Silva',
+  instructors: [
+    {
+      id: 8,
+      username: '8iZYjORjrMe__J_YvKAaJiaqPXk',
+      first_name: 'Amanda',
+      last_name: 'Silva',
+    },
+  ],
+  event_dates: [
+    {
+      id: 119,
+      event_date: '2024-09-10',
+      start_time: '15:30:00',
+      end_time: '16:00:00',
+      room: {
+        id: 3,
+        building: {
+          id: 2,
+          name: 'Region 4 ESC',
+        },
+        name: 'MCC102',
+        label: 'MCC102',
+      },
+    },
+  ],
+  confirmation_comments: 'Late threshold test',
+  evaluation_type_id: 2,
+  certificate_type_id: 2,
+  fee: '0.00',
+  capacity: 10,
+  late_threshold: 60, // 60-minute late threshold
+};
 
 function CheckIn() {
   const [event, setEvent] = useState();
@@ -114,6 +153,7 @@ function CheckIn() {
       const session = displaySession(todayEvents);
       console.log(session);
       setEvent(session);
+      console.log(event);
     } catch (error) {
       console.error('Error fetching event:', error);
     }
@@ -253,11 +293,7 @@ function CheckIn() {
               <div className="attendee-container">
                 <h2>Attendee Count</h2>
                 <div className="count">
-                  <p>{event.capacity}</p>
-                  <span>checked in</span>
-                </div>
-                <div className="bottom">
-                  <div>Max Attendee Count: {event.max_attendees}</div>
+                  <p>{event?.capacity}</p>
                 </div>
               </div>
             </div>
@@ -268,10 +304,10 @@ function CheckIn() {
               <p className="large-text">
                 <strong>Room No:</strong> {roomName ? roomName : 'Test-room'}
               </p>
-              <p className="large-text extra-bottom-space">{event.title}</p>
+              <p className="large-text extra-bottom-space">{event?.title}</p>
               <p className="large-text extra-bottom-space">
                 Session begins at{' '}
-                {militaryToReadable(event.event_dates[0].start_time)} (CST)
+                {militaryToReadable(event?.event_dates[0]?.start_time)} (CST)
               </p>
               <p className="large-text extra-bottom-space">
                 Session Information
@@ -281,17 +317,17 @@ function CheckIn() {
                   <p>
                     <b>Session ID:</b>
                   </p>
-                  <p>{event.id}</p>
+                  <p>{event?.id}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
                     <b>Presenter:</b>
                   </p>
                   <p>
-                    {event.instructors
-                      .map(
+                    {event?.instructors
+                      ?.map(
                         (instructor) =>
-                          `${instructor.first_name} ${instructor.last_name}`
+                          `${instructor?.first_name} ${instructor?.last_name}`
                       )
                       .join(', ')}
                   </p>
@@ -300,39 +336,38 @@ function CheckIn() {
                   <p>
                     <b>Facilitator:</b>
                   </p>
-                  <p>{event.contact_person}</p>
+                  <p>{event?.contact_person}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
                     <b>Description:</b>
                   </p>
-                  <p>{event.details}</p>
+                  <p>{event?.details}</p>
                 </div>
                 <div className="session-info-item">
                   <p>
                     <b>Credits Available:</b>
                   </p>
-                  <p>{event.certificate_type_id}</p>
+                  <p>{event?.certificate_type_id}</p>
                 </div>
               </div>
             </div>
             {event?.notes && event?.notes.trim() && (
               <Notes items={event?.notes} />
             )}
-          </div>
-
-          <div className="banner-right">
-            <img
-              src="sidebar.png"
-              alt="We've got your back"
-              onClick={handleManualRefresh}
-              className="banner-image"
-            />
+            <div className="banner-right">
+              <img
+                src="sidebar.png"
+                alt="We've got your back"
+                onClick={handleManualRefresh}
+                className="banner-image"
+              />
+            </div>
           </div>
         </>
       ) : (
-        <div class="parent-div">
-          <div class="region4logo">
+        <div className="parent-div">
+          <div className="region4logo">
             <img src="region4header.png" alt="R4 Logo" />
           </div>
           <div className="page-footer">

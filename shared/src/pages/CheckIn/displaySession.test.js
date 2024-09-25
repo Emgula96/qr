@@ -42,7 +42,7 @@ const dummySessions = [
     details:
       'Session with start time past current time but within late threshold',
     contact_person: 'Bob Smith',
-    instructors: 'Bob',
+    instructors: ['Bob'],
     event_dates: [
       {
         id: 117,
@@ -105,7 +105,9 @@ describe('displaySession', () => {
   // Test case for Rule 1: If a session is within 30 minutes of starting
   test('should return a session that is within 30 minutes of starting', () => {
     // Mock the current date to be just before the session starts
-    jest.useFakeTimers().setSystemTime(new Date('2024-09-15T08:40:00').getTime());
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2024-09-15T08:40:00').getTime());
 
     const result = displaySession(dummySessions);
     expect(result).toEqual(dummySessions[0]); // Expect the session to be returned
@@ -114,7 +116,9 @@ describe('displaySession', () => {
   // Test case for Rule 2: If the session is past the late threshold
   test('should skip session that is past the late threshold', () => {
     // Mock the current date to be after the late threshold
-    jest.useFakeTimers().setSystemTime(new Date('2024-03-10T14:16:00').getTime());
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2024-03-10T14:16:00').getTime());
 
     const result = displaySession(dummySessions);
     expect(result).toEqual(null); // Expect an null because it is past the late threshold
@@ -123,7 +127,9 @@ describe('displaySession', () => {
   // Test case for Rule 3: If no sessions are scheduled within 1 hour
   test('should return null when no sessions are scheduled within the next hour', () => {
     // Mock the current date to be 2 hours before any session starts
-    jest.useFakeTimers().setSystemTime(new Date('2024-09-15T07:00:00').getTime());
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2024-09-15T07:00:00').getTime());
 
     const result = displaySession(dummySessions);
     expect(result).toEqual(null); // No sessions within the next hour, so expect an null
@@ -132,7 +138,9 @@ describe('displaySession', () => {
   // Test case for Rule 4: If there is no previous session, return session 1 hour before it starts
   test('should return session information 1 hour before it starts if no previous session exists', () => {
     // Mock the current date to be 1 hour before the session start
-    jest.useFakeTimers().setSystemTime(new Date('2024-09-15T08:00:00').getTime());
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2024-09-15T08:00:00').getTime());
 
     const result = displaySession(dummySessions);
     expect(result).toEqual(dummySessions[0]); // Expect the session to be returned 1 hour before start
@@ -141,7 +149,9 @@ describe('displaySession', () => {
   // New test for a session in progress and within the late threshold
   test('should return the session that is currently in progress and within the late threshold', () => {
     // Mock the current date to be during the session (3:35 PM)
-    jest.useFakeTimers().setSystemTime(new Date('2024-09-10T15:35:00').getTime());
+    jest
+      .useFakeTimers()
+      .setSystemTime(new Date('2024-09-10T15:35:00').getTime());
 
     // Add the new session to the dummySessions array
     const result = displaySession([...dummySessions, newSession]);
