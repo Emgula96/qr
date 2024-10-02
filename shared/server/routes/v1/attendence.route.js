@@ -39,15 +39,13 @@ router.get('/event', async (req, res) => {
 
 router.put('/check-in', async (req, res) => {
   try {
-    const { userId, sessionId, sessionDateTimeId } = req.body;
+    const { userId, eventId, sessionDateTimeId } = req.body;
 
-    if (!userId || !sessionId || !sessionDateTimeId) {
+    if (!userId || !eventId || !sessionDateTimeId) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
-
-    const mockTime = '2024-07-23T08:00:00'; // API expects a time; will be deprecated
-    const requestUrl = `${baseUrl}/session-events/${sessionId}/attendance/${mockTime}`;
-    const request = { userId }; // Include mockTime if necessary
+    const requestUrl = `${baseUrl}/session-events/${eventId}/attendance/${sessionDateTimeId}`;
+    const request = { user_id: userId, eventId, sessionDateTimeId };
     console.log(
       requestUrl,
       request,

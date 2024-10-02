@@ -185,7 +185,7 @@ function CheckIn() {
     return () => clearInterval(timerId);
   }, []);
 
-  const onNewScanResult = debounce((decodedText) => {
+  const onNewScanResult = debounce(async (decodedText) => {
     console.log(`Code matched = ${decodedText}`);
 
     const parseScan = (text) => {
@@ -205,48 +205,56 @@ function CheckIn() {
     };
 
     const { userId, sessionId } = parseScan(decodedText);
+    // const eventDateId = event?.event_dates[0]?.id;
+    try {
+      // event_date
+      const checkedIn = await service.checkInUser(
+        sessionId,
+        userId
+        // eventDateId is the eventdate.id but we need to have the event array filled first
+      );
 
-    service
-      .checkInUser(sessionId, userId)
-      .then((checkedIn) => {
-        const checkLateCheckIn = (session, currentTime) => {
-          if (session && session.late_threshold) {
-            const sessionStartTime = new Date(session.startTime);
-            const latenessThreshold = parseInt(session.late_threshold);
-            const lateThresholdTime = new Date(
-              sessionStartTime.getTime() + latenessThreshold * 60000
-            );
-
-            if (currentTime > lateThresholdTime) {
-              setStatus('Late Check-In');
-            } else {
-              setStatus(null);
-            }
+      const checkLateCheckIn = (session, currentTime) => {
+        if (session && session.late_threshold) {
+          const sessionStartTime = new Date(session.startTime);
+          const latenessThreshold = parseInt(session.late_threshold);
+          const lateThresholdTime = new Date(
+            sessionStartTime.getTime() + latenessThreshold * 60000
+          );
+          console.log(
+            'currentTime > lateThresholdTime',
+            currentTime > lateThresholdTime
+          );
+          if (currentTime > lateThresholdTime) {
+            setStatus('Late Check-In');
+          } else {
+            console.log('Success');
+            setStatus('Success');
           }
-        };
-
-        // Assuming the session data is available in the checkedIn object
-        if (checkedIn && checkedIn.session) {
-          checkLateCheckIn(checkedIn.session, new Date());
         }
-        setCheckedIn(checkedIn);
-        beepSound.play();
+      };
+      // Assuming the session data is available in the checkedIn object
+      if (checkedIn && checkedIn.session) {
+        console.log('checkedIn.session', checkedIn.session);
+        checkLateCheckIn(checkedIn.session, new Date());
+      }
+      setCheckedIn(checkedIn);
+      beepSound.play();
 
-        if (isLateCheckIn) {
-          setStatus('Late Check-In');
-        } else {
-          setStatus(null);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setStatus('Check-In Error');
-      })
-      .finally(() => {
-        setTimeout(() => {
-          setCheckedIn(null);
-        }, 4000);
-      });
+      if (isLateCheckIn) {
+        setStatus('Late Check-In');
+      } else {
+        setStatus('Success');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('Check-In Error');
+    } finally {
+      setTimeout(() => {
+        setCheckedIn(null);
+        setStatus(null);
+      }, 4000);
+    }
   }, 500);
 
   const beepSound = useMemo(() => {
