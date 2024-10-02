@@ -6,6 +6,12 @@ const Status = ({ status, attendeeName }) => {
 
   const getStatusContent = () => {
     switch (status) {
+      case 'Success':
+        return {
+          title: 'Check-In Success',
+          message: 'You have checked in successfully for the session below.',
+          className: 'status-success',
+        };
       case 'Session Full':
         return {
           title: 'Check-In Error—Session is at capacity',
@@ -48,7 +54,9 @@ const Status = ({ status, attendeeName }) => {
       <h1 className="status-header">Check-In Information</h1>
       <p className="attendee-name">{attendeeName}</p>
       <div className={`status-container ${statusContent.className}`}>
-        <div className="status-icon"></div>
+        <div
+          className={`${status} === Success ? status-icon-success : status-icon`}
+        ></div>
         <div className="status-content">
           <h2 className="status-title">{statusContent.title}</h2>
           <p className="status-message">{statusContent.message}</p>
