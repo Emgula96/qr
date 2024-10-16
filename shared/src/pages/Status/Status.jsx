@@ -19,6 +19,12 @@ const Status = ({ status, attendeeName }) => {
             'This session has reached maximum capacity. Please see registration services for assistance.',
           className: 'status-full',
         };
+      case 'User Already Checked In':
+        return {
+          title: 'Check-In Error—User Already Checked In',
+          message: 'You have already checked in for this session.',
+          className: 'status-checked-in',
+        };
       case 'Late Check-In':
         return {
           title: 'Check-In Error—Late Check-In',

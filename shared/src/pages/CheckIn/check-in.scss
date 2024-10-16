@@ -195,3 +195,20 @@ html {
   justify-content: center;
   align-items: center;
 }
+.room-name-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.room-name {
+  font-size: 1.75em;
+  font-weight: bold;
+  margin: 10px 0 20px;
+}
+.room-name-number {
+  font-size: 1.75em;
+  font-weight: normal;
+  margin: 10px 0 20px;
+  text-transform: uppercase;
+}
