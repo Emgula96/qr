@@ -2,7 +2,10 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { parseISO, isPast, addMinutes, subMinutes } from 'date-fns'; // Make sure to install date-fns
-
+import {
+  extractErrorCode,
+  mapErrorCodeToStatusMessage,
+} from './CheckinFunctions';
 import TimeStamp from '../../components/TimeStamp';
 import QRCodeScanner from '../../components/QRCodeScanner';
 import service from '../../service';
@@ -79,45 +82,6 @@ const Badge = ({ header, message, success }) => {
       </div>
     </>
   );
-};
-const dummySession = {
-  id: 61,
-  master_event_id: 78,
-  event_type: 'series',
-  modality: 'in_person',
-  details: 'Afternoon session with a late threshold',
-  contact_person: 'Amanda Silva',
-  instructors: [
-    {
-      id: 8,
-      username: '8iZYjORjrMe__J_YvKAaJiaqPXk',
-      first_name: 'Amanda',
-      last_name: 'Silva',
-    },
-  ],
-  event_dates: [
-    {
-      id: 119,
-      event_date: '2024-09-10',
-      start_time: '15:30:00',
-      end_time: '16:00:00',
-      room: {
-        id: 3,
-        building: {
-          id: 2,
-          name: 'Region 4 ESC',
-        },
-        name: 'MCC102',
-        label: 'MCC102',
-      },
-    },
-  ],
-  confirmation_comments: 'Late threshold test',
-  evaluation_type_id: 2,
-  certificate_type_id: 2,
-  fee: '0.00',
-  capacity: 10,
-  late_threshold: 60, // 60-minute late threshold
 };
 
 function CheckIn() {
@@ -205,15 +169,20 @@ function CheckIn() {
     };
 
     const { userId, sessionId } = parseScan(decodedText);
-    // const eventDateId = event?.event_dates[0]?.id;
+    const eventDateId = event?.event_dates[0]?.id;
     try {
       // event_date
       const checkedIn = await service.checkInUser(
         sessionId,
-        userId
+        userId,
+        eventDateId
         // eventDateId is the eventdate.id but we need to have the event array filled first
       );
-
+      const checkedInStatusCode = checkedIn.statusCode;
+      if (checkedIn.error) {
+        beepSound.play();
+        throw new Error(checkedInStatusCode);
+      }
       const checkLateCheckIn = (session, currentTime) => {
         if (session && session.late_threshold) {
           const sessionStartTime = new Date(session.startTime);
@@ -221,10 +190,7 @@ function CheckIn() {
           const lateThresholdTime = new Date(
             sessionStartTime.getTime() + latenessThreshold * 60000
           );
-          console.log(
-            'currentTime > lateThresholdTime',
-            currentTime > lateThresholdTime
-          );
+
           if (currentTime > lateThresholdTime) {
             setStatus('Late Check-In');
           } else {
@@ -238,17 +204,17 @@ function CheckIn() {
         console.log('checkedIn.session', checkedIn.session);
         checkLateCheckIn(checkedIn.session, new Date());
       }
-      setCheckedIn(checkedIn);
       beepSound.play();
-
       if (isLateCheckIn) {
         setStatus('Late Check-In');
       } else {
+        setCheckedIn(checkedIn);
         setStatus('Success');
       }
     } catch (err) {
+      const errorMessage = mapErrorCodeToStatusMessage(err);
       console.error(err);
-      setStatus('Check-In Error');
+      setStatus(errorMessage);
     } finally {
       setTimeout(() => {
         setCheckedIn(null);
@@ -276,6 +242,13 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
+      <div className="room-name-container">
+        <h3 className="room-name">Room No:</h3>
+        <div className="room-name-divider">
+          <h3 className="room-name-number">{roomName}</h3>
+        </div>
+      </div>
+
       {event ? (
         <>
           <div className="check-in-wrapper">
