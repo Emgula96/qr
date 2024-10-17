@@ -59,13 +59,21 @@ const Status = ({ status, attendeeName }) => {
     <div className="status-wrapper">
       <h1 className="status-header">Check-In Information</h1>
       <p className="attendee-name">{attendeeName}</p>
-      <div className={`status-container ${statusContent.className}`}>
+      <div className={`status-container ${statusContent?.className}`}>
         <div
           className={`${status} === Success ? status-icon-success : status-icon`}
         ></div>
         <div className="status-content">
-          <h2 className="status-title">{statusContent.title}</h2>
-          <p className="status-message">{statusContent.message}</p>
+          <h2
+            className={`${
+              status === 'Success'
+                ? 'status-title-success'
+                : 'status-title-error'
+            }`}
+          >
+            {statusContent?.title}
+          </h2>
+          <p className="status-message">{statusContent?.message}</p>
         </div>
       </div>
     </div>

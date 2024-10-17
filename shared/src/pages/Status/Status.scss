@@ -41,8 +41,14 @@
       flex-grow: 1;
     }
 
-    .status-title {
+    .status-title-error {
       color: #cc0000;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+    }
+    .status-title-success {
+      color: #009900;
       font-size: 24px;
       font-weight: bold;
       margin: 0 0 10px 0;
