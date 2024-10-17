@@ -19,7 +19,7 @@ export function mapErrorCodeToStatusMessage(code) {
     case 412:
       return 'Check-In Error';
     default:
-      return 'An unexpected error occurred.';
+      return 'Check-In Error';
   }
 }
 export function setStatusMessage(errorCode, setStatus) {
