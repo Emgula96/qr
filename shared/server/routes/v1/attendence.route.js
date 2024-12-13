@@ -9,21 +9,6 @@ const apiKey = process.env.ESCWORKS_API_KEY;
 const router = express.Router();
 import { query } from '../../db.js';
 
-const checkInStmt = `
-  INSERT INTO attendees (user_id, event_id, schedule_id, status, checked_in, checked_out)
-  VALUES ($1, $2, '1', 1, $3, $4);
-`;
-
-const getUserEventStmt = `
-  SELECT * FROM users
-  INNER JOIN users_events ue ON users.id = ue.user_id
-  INNER JOIN events e ON ue.event_id = e.id
-  WHERE ue.user_id = $1 AND ue.event_id = $2;
-`;
-
-const attendenceRecordStmt =
-  'SELECT * FROM attendees WHERE user_id=$1 AND event_id=$2';
-
 const getEventStmt = 'SELECT * FROM events WHERE id=$1 LIMIT 1';
 
 router.get('/event', async (req, res) => {
