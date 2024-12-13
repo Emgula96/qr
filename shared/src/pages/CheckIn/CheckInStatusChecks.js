@@ -6,7 +6,12 @@ export const dummySession = {
   details:
     'Session event to be used in demonstration meeting. This session will be used to test the check-in and room schedule APIs.',
   contact_person: 'John Gilliland',
-  instructors: 'John',
+  instructors: [
+    {
+      first_name: 'John',
+      last_name: 'Doe',
+    },
+  ],
   event_dates: [
     {
       id: 115,

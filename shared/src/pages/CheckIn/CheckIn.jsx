@@ -12,7 +12,7 @@ import service from '../../service';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
-
+import { dummySession } from './CheckInStatusChecks';
 import displaySession from './displaySession';
 
 const militaryToReadable = (timeStr = '10:00:00') => {
@@ -85,7 +85,7 @@ const Badge = ({ header, message, success }) => {
 };
 
 function CheckIn() {
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(dummySession);
   const [checkedIn, setCheckedIn] = useState();
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
@@ -236,7 +236,7 @@ function CheckIn() {
     };
     manualFetchEvent();
   };
-
+  console.log(event, "this is event");
   return (
     <>
       <div className="timestamp-container">
