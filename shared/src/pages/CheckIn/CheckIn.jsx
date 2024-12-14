@@ -8,28 +8,13 @@ import {
 } from './CheckinFunctions';
 import TimeStamp from '../../components/TimeStamp';
 import QRCodeScanner from '../../components/QRCodeScanner';
-import service from '../../service';
+import service from '../../util/Functions/service';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
 import { dummySession } from './CheckInStatusChecks';
 import displaySession from './displaySession';
-
-const militaryToReadable = (timeStr = '10:00:00') => {
-  // Split the input time string into hours, minutes, and seconds
-  const [hours, minutes, seconds] = timeStr.split(':').map(Number);
-
-  // Determine if it's AM or PM
-  const period = hours < 12 ? 'AM' : 'PM';
-
-  // Convert hours to 12-hour format
-  const readableHours = hours % 12 || 12;
-
-  // Format the readable time string
-  const readableTime = `${readableHours}:${minutes.toString().padStart(2, '0')} ${period}`;
-
-  return readableTime;
-};
+import { militaryToReadable } from '../../util/Functions/militaryToReadable';
 
 const debounce = (callback, wait) => {
   let timeoutId = null;
@@ -41,58 +26,49 @@ const debounce = (callback, wait) => {
   };
 };
 
-const Notes = ({ items }) => {
-  const lis = items.split('|');
-  return (
-    <div>
-      <p>
-        <b>Note:</b>
-      </p>
-      <ul className="check-in-wrapper-list">
-        {lis.map((i, key) => (
-          <li key={key}>{i}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+const Notes = ({ items }) => (
+  <div>
+    <p><b>Note:</b></p>
+    <ul className="check-in-wrapper-list">
+      {items.split('|').map((i, key) => <li key={key}>{i}</li>)}
+    </ul>
+  </div>
+);
 
-const Badge = ({ header, message, success }) => {
-  const status = success ? 'Success' : 'Error';
-  const cls = success ? 'header success' : 'header fail';
-  const imgSrc = success
-    ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png'
-    : 'https://kiosk-assets-public.s3.amazonaws.com/x.png';
-  return (
-    <>
-      <h2>Check In Information</h2>
-      <div className="badge-wrapper">
-        <img src={imgSrc} width="100" />
-        <div className="messages">
-          <p className={cls}>
-            Check-In {status} — {header}
-          </p>
-          <div className="details">
-            <p>{message}</p>
-            {!success && (
-              <p>Please contact the facilitator for more information</p>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
+// const Badge = ({ header, message, success }) => {
+//   const status = success ? 'Success' : 'Error';
+//   const cls = success ? 'header success' : 'header fail';
+//   const imgSrc = success
+//     ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png'
+//     : 'https://kiosk-assets-public.s3.amazonaws.com/x.png';
+//   return (
+//     <>
+//       <h2>Check In Information</h2>
+//       <div className="badge-wrapper">
+//         <img src={imgSrc} width="100" />
+//         <div className="messages">
+//           <p className={cls}>
+//             Check-In {status} — {header}
+//           </p>
+//           <div className="details">
+//             <p>{message}</p>
+//             {!success && (
+//               <p>Please contact the facilitator for more information</p>
+//             )}
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
 function CheckIn() {
   const [event, setEvent] = useState(dummySession);
-  const [checkedIn, setCheckedIn] = useState();
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const roomName = queryParams.get('roomname');
-
+  const roomName = new URLSearchParams(location.search).get('roomname');
+  const beepSound = useMemo(() => new Audio(beep), []);
+  
   const isLateCheckIn = useMemo(() => {
     if (event && event?.event_dates && event?.event_dates[0]) {
       const { event_date, start_time } = event.event_dates[0];
@@ -109,26 +85,18 @@ function CheckIn() {
 
   const fetchEvent = async () => {
     try {
-      console.log('Fetching event...');
       const todayEvents = await service.getEventByRoomAndTime(
         roomName,
         currentTime.toLocaleDateString('en-CA')
       );
-      const session = displaySession(todayEvents);
-      console.log(session);
-      setEvent(session);
-      console.log(event);
+      setEvent(displaySession(todayEvents));
     } catch (error) {
       console.error('Error fetching event:', error);
     }
   };
 
   useEffect(() => {
-    if (isLateCheckIn) {
-      setStatus('Late Check-In');
-    } else {
-      setStatus(null);
-    }
+    setStatus(isLateCheckIn ? 'Late Check-In' : null);
   }, [isLateCheckIn]);
 
   useEffect(() => {
@@ -150,67 +118,22 @@ function CheckIn() {
   }, []);
 
   const onNewScanResult = debounce(async (decodedText) => {
-    console.log(`Code matched = ${decodedText}`);
-
-    const parseScan = (text) => {
-      // Split the string into key-value pairs
-      const pairs = text.split(',');
-
-      // Create an object to store the parsed data
-      const dataObj = {};
-
-      // Iterate over each pair and split into key and value
-      pairs.forEach((pair) => {
-        const [key, value] = pair.split('=');
-        dataObj[key] = value;
-      });
-
-      return dataObj;
-    };
+    const parseScan = text => 
+      Object.fromEntries(text.split(',').map(pair => pair.split('=')));
 
     const { userId, sessionId } = parseScan(decodedText);
     const eventDateId = event?.event_dates[0]?.id;
+
     try {
-      // event_date
-      const checkedIn = await service.checkInUser(
-        sessionId,
-        userId,
-        eventDateId
-        // eventDateId is the eventdate.id but we need to have the event array filled first
-      );
-      const checkedInStatusCode = checkedIn.statusCode;
+      const checkedIn = await service.checkInUser(sessionId, userId, eventDateId);
+      
       if (checkedIn.error) {
         beepSound.play();
-        throw new Error(checkedInStatusCode);
+        throw new Error(checkedIn.statusCode);
       }
-      const checkLateCheckIn = (session, currentTime) => {
-        if (session && session.late_threshold) {
-          const sessionStartTime = new Date(session.startTime);
-          const latenessThreshold = parseInt(session.late_threshold);
-          const lateThresholdTime = new Date(
-            sessionStartTime.getTime() + latenessThreshold * 60000
-          );
 
-          if (currentTime > lateThresholdTime) {
-            setStatus('Late Check-In');
-          } else {
-            console.log('Success');
-            setStatus('Success');
-          }
-        }
-      };
-      // Assuming the session data is available in the checkedIn object
-      if (checkedIn && checkedIn.session) {
-        console.log('checkedIn.session', checkedIn.session);
-        checkLateCheckIn(checkedIn.session, new Date());
-      }
       beepSound.play();
-      if (isLateCheckIn) {
-        setStatus('Late Check-In');
-      } else {
-        setCheckedIn(checkedIn);
-        setStatus('Success');
-      }
+      setStatus(isLateCheckIn ? 'Late Check-In' : 'Success');
     } catch (err) {
       const errorMessage = mapErrorCodeToStatusMessage(err);
       console.error(err);
@@ -223,20 +146,19 @@ function CheckIn() {
     }
   }, 500);
 
-  const beepSound = useMemo(() => {
-    return new Audio(beep);
-  }, []);
-  const handleManualRefresh = () => {
-    const manualFetchEvent = async () => {
-      try {
-        fetchEvent();
-      } catch (error) {
-        console.error('Error fetching event:', error);
-      }
-    };
-    manualFetchEvent();
-  };
-  console.log(event, "this is event");
+  if (!event) {
+    return (
+      <div className="parent-div">
+        <div className="region4logo">
+          <img src="region4header.png" alt="R4 Logo" />
+        </div>
+        <div className="page-footer">
+          <img className="page-footer" src="infofooter_wevegotyourback.png" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="timestamp-container">
@@ -245,117 +167,104 @@ function CheckIn() {
       <div className="room-name-container">
         <h3 className="room-name">Room No:</h3>
         <div className="room-name-divider">
-          <h3 className="room-name-number">{roomName}</h3>
+          <h3 className="room-name-number">{event.event_dates[0].room.label}</h3>
         </div>
       </div>
 
-      {event ? (
-        <>
-          <div className="check-in-wrapper">
-            <div className="left">
-              <div className="scanner">
-                <div className="scanner-content">
-                  <h2>Scan QR Code to Check-In</h2>
-                  <p>
-                    <em>
-                      Scan QR Code by holding printed badge in front of camera
-                      located at the top of this device.
-                    </em>
-                  </p>
-                  <QRCodeScanner
-                    fps={10}
-                    qrbox={354}
-                    disableFlip={false}
-                    qrCodeSuccessCallback={onNewScanResult}
-                    verbose={true}
-                  />
-                </div>
-              </div>
-              <div className="attendee-container">
-                <h2>Attendee Count</h2>
-                <div className="count">
-                  <p>{event?.capacity}</p>
-                </div>
-              </div>
-            </div>
-            <div className="center">
-              {status && (
-                <Status status={status} attendeeName={'Test Attendee'} />
-              )}
-              <p className="large-text">
-                <strong>Room No:</strong> {roomName ? roomName : 'Test-room'}
+      <div className="check-in-wrapper">
+        <div className="left">
+          <div className="scanner">
+            <div className="scanner-content">
+              <h2>Scan QR Code to Check-In</h2>
+              <p>
+                <em>
+                  Scan QR Code by holding printed badge in front of camera
+                  located at the top of this device.
+                </em>
               </p>
-              <p className="large-text extra-bottom-space">{event?.title}</p>
-              <p className="large-text extra-bottom-space">
-                Session begins at{' '}
-                {militaryToReadable(event?.event_dates[0]?.start_time)} (CST)
-              </p>
-              <p className="large-text extra-bottom-space">
-                Session Information
-              </p>
-              <div className="session-info-grid">
-                <div className="session-info-item">
-                  <p>
-                    <b>Session ID:</b>
-                  </p>
-                  <p>{event?.id}</p>
-                </div>
-                <div className="session-info-item">
-                  <p>
-                    <b>Presenter:</b>
-                  </p>
-                  <p>
-                    {event?.instructors
-                      ?.map(
-                        (instructor) =>
-                          `${instructor?.first_name} ${instructor?.last_name}`
-                      )
-                      .join(', ')}
-                  </p>
-                </div>
-                <div className="session-info-item">
-                  <p>
-                    <b>Facilitator:</b>
-                  </p>
-                  <p>{event?.contact_person}</p>
-                </div>
-                <div className="session-info-item">
-                  <p>
-                    <b>Description:</b>
-                  </p>
-                  <p>{event?.details}</p>
-                </div>
-                <div className="session-info-item">
-                  <p>
-                    <b>Credits Available:</b>
-                  </p>
-                  <p>{event?.certificate_type_id}</p>
-                </div>
-              </div>
-            </div>
-            {event?.notes && event?.notes.trim() && (
-              <Notes items={event?.notes} />
-            )}
-            <div className="banner-right">
-              <img
-                src="sidebar.png"
-                alt="We've got your back"
-                onClick={handleManualRefresh}
-                className="banner-image"
+              <QRCodeScanner
+                fps={10}
+                qrbox={354}
+                disableFlip={false}
+                qrCodeSuccessCallback={onNewScanResult}
+                verbose={true}
               />
             </div>
           </div>
-        </>
-      ) : (
-        <div className="parent-div">
-          <div className="region4logo">
-            <img src="region4header.png" alt="R4 Logo" />
-          </div>
-          <div className="page-footer">
-            <img className="page-footer" src="infofooter_wevegotyourback.png" />
+          <div className="attendee-container">
+            <h2>Attendee Count</h2>
+            <div className="count">
+              <p>{event?.capacity}</p>
+            </div>
           </div>
         </div>
-      )}
+        <div className="center">
+          {status && (
+            <Status status={status} attendeeName={'Test Attendee'} />
+          )}
+          <p className="large-text">
+            <strong>Room No:</strong> {roomName ? roomName : 'Test-room'}
+          </p>
+          <p className="large-text extra-bottom-space">{event?.title}</p>
+          <p className="large-text extra-bottom-space">
+            Session begins at{' '}
+            {militaryToReadable(event?.event_dates[0]?.start_time)} (CST)
+          </p>
+          <p className="large-text extra-bottom-space">
+            Session Information
+          </p>
+          <div className="session-info-grid">
+            <div className="session-info-item">
+              <p>
+                <b>Session ID:</b>
+              </p>
+              <p>{event?.id}</p>
+            </div>
+            <div className="session-info-item">
+              <p>
+                <b>Presenter:</b>
+              </p>
+              <p>
+                {event?.instructors
+                  ?.map(
+                    (instructor) =>
+                      `${instructor?.first_name} ${instructor?.last_name}`
+                  )
+                  .join(', ')}
+              </p>
+            </div>
+            <div className="session-info-item">
+              <p>
+                <b>Facilitator:</b>
+              </p>
+              <p>{event?.contact_person}</p>
+            </div>
+            <div className="session-info-item">
+              <p>
+                <b>Description:</b>
+              </p>
+              <p>{event?.details}</p>
+            </div>
+            <div className="session-info-item">
+              <p>
+                <b>Credits Available:</b>
+              </p>
+              <p>{event?.certificate_type_id}</p>
+            </div>
+          </div>
+        </div>
+        {event?.notes && event?.notes.trim() && (
+          <Notes items={event?.notes} />
+        )}
+        <div className="banner-right">
+          <img
+            src="sidebar.png"
+            alt="We've got your back"
+            onClick={fetchEvent}
+            className="banner-image"
+          />
+        </div>
+      </div>
     </>
   );
 }

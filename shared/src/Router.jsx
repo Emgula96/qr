@@ -7,7 +7,7 @@ const SessionInfo = React.lazy(() => import('./pages/SessionInfo'));
 const PrintBadge = React.lazy(() => import('./pages/PrintBadge'));
 const CheckIn = React.lazy(() => import('./pages/CheckIn'));
 const Playground = React.lazy(() => import('./pages/Playground'));
-import service from './service';
+import service from './util/Functions/service';
 import './assets/styles/main.scss';
 
 const Router = () => {

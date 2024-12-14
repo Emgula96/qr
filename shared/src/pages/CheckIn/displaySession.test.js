@@ -13,9 +13,9 @@ const dummySessions = [
     event_dates: [
       {
         id: 116,
-        event_date: '2024-09-15',
-        start_time: '09:00:00',
-        end_time: '17:00:00',
+        event_date: '2024-12-13',
+        start_time: '13:00:00',
+        end_time: '23:00:00',
         room: {
           id: 2,
           building: {

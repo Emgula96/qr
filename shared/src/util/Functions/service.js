@@ -1,4 +1,4 @@
-import rest from './util/rest.js';
+import rest from './rest.js';
 
 const host =
   import.meta.env.VITE_ENVIRONMENT === 'development'
