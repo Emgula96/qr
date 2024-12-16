@@ -35,32 +35,6 @@ const Notes = ({ items }) => (
   </div>
 );
 
-// const Badge = ({ header, message, success }) => {
-//   const status = success ? 'Success' : 'Error';
-//   const cls = success ? 'header success' : 'header fail';
-//   const imgSrc = success
-//     ? 'https://kiosk-assets-public.s3.amazonaws.com/check.png'
-//     : 'https://kiosk-assets-public.s3.amazonaws.com/x.png';
-//   return (
-//     <>
-//       <h2>Check In Information</h2>
-//       <div className="badge-wrapper">
-//         <img src={imgSrc} width="100" />
-//         <div className="messages">
-//           <p className={cls}>
-//             Check-In {status} — {header}
-//           </p>
-//           <div className="details">
-//             <p>{message}</p>
-//             {!success && (
-//               <p>Please contact the facilitator for more information</p>
-//             )}
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
 function CheckIn() {
   const [event, setEvent] = useState(dummySession);
   const [status, setStatus] = useState(null);
@@ -68,7 +42,7 @@ function CheckIn() {
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
   const beepSound = useMemo(() => new Audio(beep), []);
-  
+  console.log(status, 'status');
   const isLateCheckIn = useMemo(() => {
     if (event && event?.event_dates && event?.event_dates[0]) {
       const { event_date, start_time } = event.event_dates[0];
@@ -124,23 +98,37 @@ function CheckIn() {
     const { userId, sessionId } = parseScan(decodedText);
     const eventDateId = event?.event_dates[0]?.id;
 
+    // Simulate different response codes for testing until I get acess to liev sessions
+    const testResponses = [
+      { error: false, statusCode: 200 },  // Success
+      { error: true, statusCode: 400 },   // Invalid parameters
+      { error: true, statusCode: 403 },   // wrong session
+      { error: true, statusCode: 404 },   // session not found
+      { error: true, statusCode: 409 },   // already checked in
+    ];
+    //edit this number to test different responses
+    const testResponse = testResponses[0]; 
+    
     try {
-      const checkedIn = await service.checkInUser(sessionId, userId, eventDateId);
+      const checkedIn = testResponse;
+      console.log('Test Response:', checkedIn);
       
       if (checkedIn.error) {
         beepSound.play();
-        throw new Error(checkedIn.statusCode);
+        const errorMessage = mapErrorCodeToStatusMessage(checkedIn.statusCode);
+        setStatus(errorMessage);
+        throw checkedIn.statusCode;
       }
 
       beepSound.play();
       setStatus(isLateCheckIn ? 'Late Check-In' : 'Success');
     } catch (err) {
+      console.log('Error Code:', err);
       const errorMessage = mapErrorCodeToStatusMessage(err);
-      console.error(err);
+      console.log('Error Message:', errorMessage);
       setStatus(errorMessage);
     } finally {
       setTimeout(() => {
-        setCheckedIn(null);
         setStatus(null);
       }, 4000);
     }
@@ -189,6 +177,12 @@ function CheckIn() {
                 qrCodeSuccessCallback={onNewScanResult}
                 verbose={true}
               />
+              <button 
+                onClick={() => onNewScanResult('userId=123,sessionId=456')}
+                style={{ margin: '10px', padding: '8px 16px' }}
+              >
+                Test Scan
+              </button>
             </div>
           </div>
           <div className="attendee-container">
