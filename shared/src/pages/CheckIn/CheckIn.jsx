@@ -28,7 +28,7 @@ function CheckIn() {
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
   // const roomName = new URLSearchParams(location.search).get('roomname');
-  const roomName = 'MCC100A'
+  const roomName = 'MCC100AB'
   const beepSound = useMemo(() => new Audio(beep), []);
   console.log(status, 'status');
   

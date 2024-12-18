@@ -9,19 +9,37 @@ const apiKey = process.env.ESCWORKS_API_KEY;
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-    try {
-        const time = req.query.time;
-        const roomName = req.query.roomname;
-        const response = await axios.get(`${baseUrl}/rooms/${roomName}/session-events/${time}`, {
-            headers: {
-                'x-api-key': apiKey
-            }
-        });
-        res.status(200).json({ 'data': response.data })
-    } catch (error) {
-      console.error('An error ocurred:', error)
-      res.status(500).json(error)
-    }
-  })
+  try {
+    const { time, roomname } = req.query;
+    
+    console.log('Received parameters:', { time, roomname });
+
+    const response = await axios.get(`${baseUrl}/rooms/${roomname}/session-events/${time}`, {
+      headers: {
+        'X-API-Key': apiKey
+      }
+    });
+    
+    console.log('Successful response:', response.data);
+    res.status(200).json({ 'data': response.data });
+  } catch (error) {
+    console.error('Request details:', {
+      url: `${baseUrl}/rooms/${roomname}/session-events/${time}`,
+      headers: {
+        'X-API-Key': process.env.ESCWORKS_API_KEY
+      },
+      error: {
+        message: error.message,
+        status: error.response?.status,
+        data: error.response?.data
+      }
+    });
+    
+    res.status(error.response?.status || 500).json({
+      error: error.message,
+      details: error.response?.data
+    });
+  }
+});
 
 export default router
