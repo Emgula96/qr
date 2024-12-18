@@ -15,47 +15,26 @@ import Status from '../Status/Status';
 import { dummySession } from './CheckInStatusChecks';
 import displaySession from './displaySession';
 import { militaryToReadable } from '../../util/Functions/militaryToReadable';
+import { isLateCheckIn } from './isLateCheckIn';
+import { debounce } from '../../util/Functions/debounce';
+import { Notes } from '../../components/Notes/Notes';
+import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
+import { handleQrScan } from '../../util/Functions/handleQrScan';
 
-const debounce = (callback, wait) => {
-  let timeoutId = null;
-  return (...args) => {
-    window.clearTimeout(timeoutId);
-    timeoutId = window.setTimeout(() => {
-      callback(...args);
-    }, wait);
-  };
-};
-
-const Notes = ({ items }) => (
-  <div>
-    <p><b>Note:</b></p>
-    <ul className="check-in-wrapper-list">
-      {items.split('|').map((i, key) => <li key={key}>{i}</li>)}
-    </ul>
-  </div>
-);
 
 function CheckIn() {
   const [event, setEvent] = useState(dummySession);
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
-  const roomName = new URLSearchParams(location.search).get('roomname');
+  // const roomName = new URLSearchParams(location.search).get('roomname');
+  const roomName = 'MCC100A'
   const beepSound = useMemo(() => new Audio(beep), []);
   console.log(status, 'status');
-  const isLateCheckIn = useMemo(() => {
-    if (event && event?.event_dates && event?.event_dates[0]) {
-      const { event_date, start_time } = event.event_dates[0];
-      const sessionStartTime = parseISO(`${event_date}T${start_time}`);
-      const lateThreshold = addMinutes(
-        sessionStartTime,
-        event.late_threshold || 0
-      );
-
-      return isPast(lateThreshold);
-    }
-    return false;
-  }, [event, currentTime]);
+  
+  const isUserLate = useMemo(() => {
+    return isLateCheckIn(event);
+  }, [event]);
 
   const fetchEvent = async () => {
     try {
@@ -70,8 +49,8 @@ function CheckIn() {
   };
 
   useEffect(() => {
-    setStatus(isLateCheckIn ? 'Late Check-In' : null);
-  }, [isLateCheckIn]);
+    setStatus(isUserLate ? 'Late Check-In' : null);
+  }, [isUserLate]);
 
   useEffect(() => {
     // Fetch event immediately on component mount
@@ -91,48 +70,10 @@ function CheckIn() {
     return () => clearInterval(timerId);
   }, []);
 
-  const onNewScanResult = debounce(async (decodedText) => {
-    const parseScan = text => 
-      Object.fromEntries(text.split(',').map(pair => pair.split('=')));
-
-    const { userId, sessionId } = parseScan(decodedText);
-    const eventDateId = event?.event_dates[0]?.id;
-
-    // Simulate different response codes for testing until I get acess to liev sessions
-    const testResponses = [
-      { error: false, statusCode: 200 },  // Success
-      { error: true, statusCode: 400 },   // Invalid parameters
-      { error: true, statusCode: 403 },   // wrong session
-      { error: true, statusCode: 404 },   // session not found
-      { error: true, statusCode: 409 },   // already checked in
-    ];
-    //edit this number to test different responses
-    const testResponse = testResponses[0]; 
-    
-    try {
-      const checkedIn = testResponse;
-      console.log('Test Response:', checkedIn);
-      
-      if (checkedIn.error) {
-        beepSound.play();
-        const errorMessage = mapErrorCodeToStatusMessage(checkedIn.statusCode);
-        setStatus(errorMessage);
-        throw checkedIn.statusCode;
-      }
-
-      beepSound.play();
-      setStatus(isLateCheckIn ? 'Late Check-In' : 'Success');
-    } catch (err) {
-      console.log('Error Code:', err);
-      const errorMessage = mapErrorCodeToStatusMessage(err);
-      console.log('Error Message:', errorMessage);
-      setStatus(errorMessage);
-    } finally {
-      setTimeout(() => {
-        setStatus(null);
-      }, 4000);
-    }
-  }, 500);
+  const onNewScanResult = debounce(
+    (decodedText) => handleQrScan(decodedText, event, beepSound, setStatus, isUserLate),
+    500
+  );
 
   if (!event) {
     return (
@@ -207,45 +148,7 @@ function CheckIn() {
           <p className="large-text extra-bottom-space">
             Session Information
           </p>
-          <div className="session-info-grid">
-            <div className="session-info-item">
-              <p>
-                <b>Session ID:</b>
-              </p>
-              <p>{event?.id}</p>
-            </div>
-            <div className="session-info-item">
-              <p>
-                <b>Presenter:</b>
-              </p>
-              <p>
-                {event?.instructors
-                  ?.map(
-                    (instructor) =>
-                      `${instructor?.first_name} ${instructor?.last_name}`
-                  )
-                  .join(', ')}
-              </p>
-            </div>
-            <div className="session-info-item">
-              <p>
-                <b>Facilitator:</b>
-              </p>
-              <p>{event?.contact_person}</p>
-            </div>
-            <div className="session-info-item">
-              <p>
-                <b>Description:</b>
-              </p>
-              <p>{event?.details}</p>
-            </div>
-            <div className="session-info-item">
-              <p>
-                <b>Credits Available:</b>
-              </p>
-              <p>{event?.certificate_type_id}</p>
-            </div>
-          </div>
+          <SessionInfo event={event} />
         </div>
         {event?.notes && event?.notes.trim() && (
           <Notes items={event?.notes} />
