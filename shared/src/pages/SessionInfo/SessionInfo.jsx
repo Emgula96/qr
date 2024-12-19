@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
-import service from '../../service';
+import service from '../../util/Functions/service';
 import './session-info.scss';
 import SessionInfoCard from './SessionInfoCard/SessionInfoCard';
 import Layout from '../FindSession/FindSessionButton/Layout';

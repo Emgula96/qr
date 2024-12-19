@@ -9,7 +9,6 @@ async function get(url, customHeaders = {}) {
   } else if (localStorage.getItem('access_token')) {
     headers.Authorization = localStorage.getItem('access_token')
   }
-  console.log(url)
   const response = await fetch(url, {
     headers
   })
@@ -28,7 +27,6 @@ async function put(url, data, customHeaders = {}) {
   } else if (localStorage.getItem('access_token')) {
     headers.Authorization = localStorage.getItem('access_token')
   }
-  console.log(url)
   const response = await fetch(url, {
     method: 'PUT',
     headers,

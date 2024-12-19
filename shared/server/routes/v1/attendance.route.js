@@ -9,26 +9,10 @@ const apiKey = process.env.ESCWORKS_API_KEY;
 const router = express.Router();
 import { query } from '../../db.js';
 
-const checkInStmt = `
-  INSERT INTO attendees (user_id, event_id, schedule_id, status, checked_in, checked_out)
-  VALUES ($1, $2, '1', 1, $3, $4);
-`;
-
-const getUserEventStmt = `
-  SELECT * FROM users
-  INNER JOIN users_events ue ON users.id = ue.user_id
-  INNER JOIN events e ON ue.event_id = e.id
-  WHERE ue.user_id = $1 AND ue.event_id = $2;
-`;
-
-const attendenceRecordStmt =
-  'SELECT * FROM attendees WHERE user_id=$1 AND event_id=$2';
-
 const getEventStmt = 'SELECT * FROM events WHERE id=$1 LIMIT 1';
 
 router.get('/event', async (req, res) => {
   try {
-    console.log(req);
     const { rows } = await query(getEventStmt, [req.query.eventId]);
     res.status(200).json({ data: rows });
   } catch (error) {
@@ -46,14 +30,6 @@ router.put('/check-in', async (req, res) => {
     }
     const requestUrl = `${baseUrl}/session-events/${eventId}/attendance/${sessionDateTimeId}`;
     const request = { user_id: userId, eventId, sessionDateTimeId };
-    console.log(
-      requestUrl,
-      request,
-      apiKey,
-      ' requestUrl',
-      ' request',
-      ' apiKey'
-    );
     const response = await axios.put(requestUrl, request, {
       headers: {
         'x-api-key': apiKey,
@@ -66,11 +42,8 @@ router.put('/check-in', async (req, res) => {
 
     // Extract the error code from the error message
     const errorCode = extractErrorCode(error.message);
-    console.log('THIS IS THE ERROR CODE', errorCode);
     // Map error codes to HTTP status codes and messages
     const { statusCode, responseMessage } = mapErrorCodeToResponse(errorCode);
-    console.log('THIS IS THE STATUS CODE', statusCode);
-    console.log('THIS IS THE RESPONSE MESSAGE', responseMessage);
     res.status(statusCode).json(responseMessage);
   }
 

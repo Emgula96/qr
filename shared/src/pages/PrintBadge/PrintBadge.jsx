@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import Page from '../../components/Page';
 import Content from '../../components/Content';
-import service from '../../service';
+import service from '../../util/Functions/service';
 import './print-badge.scss';
 import Layout from '../FindSession/FindSessionButton/Layout';
 import Map from '../../assets/imgs/maps/1.png';
