@@ -109,12 +109,6 @@ function CheckIn() {
                 qrCodeSuccessCallback={onNewScanResult}
                 verbose={true}
               />
-              <button 
-                onClick={() => onNewScanResult('userId=123,sessionId=456')}
-                style={{ margin: '10px', padding: '8px 16px' }}
-              >
-                Test Scan
-              </button>
             </div>
           </div>
           <div className="attendee-container">
