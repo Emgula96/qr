@@ -12,6 +12,8 @@ html {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  display: flex;
+  justify-content: space-between;
 }
 
 .check-in-wrapper-item {
@@ -29,6 +31,7 @@ html {
 }
 .center {
   height: 100%;
+  width: 67%;
 
   > * {
     transform: scale(0.87);
@@ -112,9 +115,13 @@ html {
   display: flex;
 
   .scanner-content {
-    max-width: 354px;
-    margin: 20px 40px;
-    text-align: center; /* Center the text */
+    margin: 0px 40px;
+    text-align: center;
+    
+    .qr-code-scanner {
+      height: 360px;
+      width: 360px;
+    }
   }
 
   span {
@@ -162,14 +169,17 @@ html {
   }
 }
 .banner-right {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 9rem;
-}
-.banner-right {
+  margin-bottom: 0;
+  z-index: 100;
+  
   img {
-    max-width: 20rem;
+    max-width: 10rem;
     height: auto;
   }
 }
