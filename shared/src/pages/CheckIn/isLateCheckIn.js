@@ -1,3 +1,6 @@
+//TO CHECK IF THE USER IS LATE FOR THE SESSION
+// IF PAST LATE THRESHOLD, FAIL CHECK IN
+
 import { parseISO, isPast, addMinutes } from 'date-fns';
 
 export const isLateCheckIn = (event) => {

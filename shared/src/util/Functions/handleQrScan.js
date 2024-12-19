@@ -1,24 +1,18 @@
+//TO HANDLE THE QR SCAN FOR CHECK IN
+//RECEIVE SESSION ID AND USER ID FROM QR SCAN
+//RECEIVE EVENT FROM EVENT OBJ
+
 import { mapErrorCodeToStatusMessage } from '../../pages/CheckIn/CheckinFunctions';
+import service from './service';
 
 export const parseScan = text => 
   Object.fromEntries(text.split(',').map(pair => pair.split('=')));
 
 export const handleQrScan = async (decodedText, event, beepSound, setStatus, isLate) => {
-//   const { userId, sessionId } = parseScan(decodedText);
-//   const eventDateId = event?.event_dates[0]?.id;
-
-  // Test responses logic...
-  const testResponses = [
-    { error: false, statusCode: 200 },
-    { error: true, statusCode: 400 },
-    { error: true, statusCode: 403 },
-    { error: true, statusCode: 404 },
-    { error: true, statusCode: 409 },
-  ];
-  const testResponse = testResponses[0];
-  
+  const { userId, sessionId } = parseScan(decodedText);
+  const eventDateId = event?.event_dates[0]?.id;
   try {
-    const checkedIn = testResponse;
+    const checkedIn = await service.checkInUser(sessionId, userId, eventDateId);
     
     if (checkedIn.error) {
       beepSound.play();

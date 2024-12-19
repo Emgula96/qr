@@ -1,3 +1,7 @@
+//TO DISPLAY THE STATUS OF THE CHECK IN
+//RECEIVE STATUS AND ATTENDEE NAME
+//DISPLAY THE STATUS MESSAGE
+
 import PropTypes from 'prop-types';
 import './Status.scss';
 
@@ -31,7 +35,7 @@ const Status = ({ status, attendeeName }) => {
         message:
         'The QR code scanned does not match this session. Double-check the room number for your session. Please go to Registration Services on the first floor for additional assistance.',
         className: 'status-wrong',
-        };
+      };
     case 'Session event or user not found':
       return {
         title: 'Check-In Error—Session Event or User Not Found',

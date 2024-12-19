@@ -7,7 +7,6 @@ import service from '../../util/Functions/service';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
 import Status from '../Status/Status';
-import { dummySession } from './CheckInStatusChecks';
 import displaySession from './displaySession';
 import { militaryToReadable } from '../../util/Functions/militaryToReadable';
 import { isLateCheckIn } from './isLateCheckIn';
@@ -18,7 +17,7 @@ import { handleQrScan } from '../../util/Functions/handleQrScan';
 
 
 function CheckIn() {
-  const [event, setEvent] = useState(dummySession);
+  const [event, setEvent] = useState();
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
