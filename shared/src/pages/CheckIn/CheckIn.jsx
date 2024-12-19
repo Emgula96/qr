@@ -23,8 +23,6 @@ function CheckIn() {
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
   const beepSound = useMemo(() => new Audio(beep), []);
-  console.log(status, 'status');
-  console.log(event, 'event');
   const isUserLate = useMemo(() => {
     return isLateCheckIn(event);
   }, [event]);

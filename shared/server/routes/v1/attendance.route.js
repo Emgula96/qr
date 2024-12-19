@@ -13,7 +13,6 @@ const getEventStmt = 'SELECT * FROM events WHERE id=$1 LIMIT 1';
 
 router.get('/event', async (req, res) => {
   try {
-    console.log(req);
     const { rows } = await query(getEventStmt, [req.query.eventId]);
     res.status(200).json({ data: rows });
   } catch (error) {
@@ -31,14 +30,6 @@ router.put('/check-in', async (req, res) => {
     }
     const requestUrl = `${baseUrl}/session-events/${eventId}/attendance/${sessionDateTimeId}`;
     const request = { user_id: userId, eventId, sessionDateTimeId };
-    console.log(
-      requestUrl,
-      request,
-      apiKey,
-      ' requestUrl',
-      ' request',
-      ' apiKey'
-    );
     const response = await axios.put(requestUrl, request, {
       headers: {
         'x-api-key': apiKey,
@@ -51,11 +42,8 @@ router.put('/check-in', async (req, res) => {
 
     // Extract the error code from the error message
     const errorCode = extractErrorCode(error.message);
-    console.log('THIS IS THE ERROR CODE', errorCode);
     // Map error codes to HTTP status codes and messages
     const { statusCode, responseMessage } = mapErrorCodeToResponse(errorCode);
-    console.log('THIS IS THE STATUS CODE', statusCode);
-    console.log('THIS IS THE RESPONSE MESSAGE', responseMessage);
     res.status(statusCode).json(responseMessage);
   }
 

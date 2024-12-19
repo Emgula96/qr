@@ -8,7 +8,6 @@ export const isLateCheckIn = (event) => {
     const { event_date, start_time } = event.event_dates[0];
     const sessionStartTime = parseISO(`${event_date}T${start_time}`);
     const lateThreshold = addMinutes(
-      console.log(event.late_threshold, 'event.late_threshold'),
       sessionStartTime,
       event.late_threshold || 0
     );

@@ -12,7 +12,6 @@ router.get('/', async (req, res) => {
   try {
     const { time, roomname } = req.query;
     
-    console.log('Received parameters:', { time, roomname });
 
     const response = await axios.get(`${baseUrl}/rooms/${roomname}/session-events/${time}`, {
       headers: {
@@ -20,7 +19,6 @@ router.get('/', async (req, res) => {
       }
     });
     
-    console.log('Successful response:', response.data);
     res.status(200).json({ 'data': response.data });
   } catch (error) {
     console.error('Request details:', {

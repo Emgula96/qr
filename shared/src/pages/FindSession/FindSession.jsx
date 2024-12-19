@@ -16,7 +16,6 @@ function FindSession() {
   const deviceId = queryParams.get('deviceId');
 
   const [currentInput, setCurrentInput] = useState('');
-  console.log(deviceId);
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

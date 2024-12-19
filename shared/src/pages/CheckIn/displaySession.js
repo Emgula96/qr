@@ -22,14 +22,12 @@ const displaySession = (sessions) => {
     currentDate.getMinutes(),
     currentDate.getSeconds()
   ).getTime();
-  console.log("Current Time (Local):", new Date(localCurrentTime));
 
   for (const session of sessions) {
     for (const eventDate of session.event_dates) {
       const startTime = parseEventDateTime(eventDate.event_date, eventDate.start_time).getTime();
       const endTime = parseEventDateTime(eventDate.event_date, eventDate.end_time).getTime();
 
-      console.log("Session Start Time (Local):", new Date(startTime));
       console.log("Session End Time (Local):", new Date(endTime));
 
       // Rule 1: Display session information 30 minutes before the scheduled session start time
