@@ -31,6 +31,12 @@ const Status = ({ status, attendeeName }) => {
         message:
         'The QR code scanned does not match this session. Double-check the room number for your session. Please go to Registration Services on the first floor for additional assistance.',
         className: 'status-wrong',
+        };
+    case 'Session event or user not found':
+      return {
+        title: 'Check-In Error—Session Event or User Not Found',
+        message: 'The session event or user you are trying to check in for does not exist.',
+        className: 'status-not-found',
       };
     case 'User has already checked in':
       return {

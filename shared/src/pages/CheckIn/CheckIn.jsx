@@ -1,11 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { parseISO, isPast, addMinutes, subMinutes } from 'date-fns'; // Make sure to install date-fns
-import {
-  extractErrorCode,
-  mapErrorCodeToStatusMessage,
-} from './CheckinFunctions';
 import TimeStamp from '../../components/TimeStamp';
 import QRCodeScanner from '../../components/QRCodeScanner';
 import service from '../../util/Functions/service';
@@ -27,11 +22,10 @@ function CheckIn() {
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
-  // const roomName = new URLSearchParams(location.search).get('roomname');
-  const roomName = 'MCC100AB'
+  const roomName = new URLSearchParams(location.search).get('roomname');
   const beepSound = useMemo(() => new Audio(beep), []);
   console.log(status, 'status');
-  
+  console.log(event, 'event');
   const isUserLate = useMemo(() => {
     return isLateCheckIn(event);
   }, [event]);

@@ -12,10 +12,10 @@ export const handleQrScan = async (decodedText, event, beepSound, setStatus, isL
     { error: false, statusCode: 200 },
     { error: true, statusCode: 400 },
     { error: true, statusCode: 403 },
-    { error: true, statusCode: 404 },//come back to this
+    { error: true, statusCode: 404 },
     { error: true, statusCode: 409 },
   ];
-  const testResponse = testResponses[4];
+  const testResponse = testResponses[0];
   
   try {
     const checkedIn = testResponse;
