@@ -27,6 +27,11 @@ function CheckIn() {
     return isLateCheckIn(event);
   }, [event]);
 
+  const sessionStartTime = useMemo(() => 
+    militaryToReadable(event?.event_dates[0]?.start_time),
+  [event]
+  );
+
   const fetchEvent = async () => {
     try {
       const todayEvents = await service.getEventByRoomAndTime(
@@ -87,7 +92,7 @@ function CheckIn() {
       <div className="room-name-container">
         <h3 className="room-name">Room No:</h3>
         <div className="room-name-divider">
-          <h3 className="room-name-number">{event.event_dates[0].room.label}</h3>
+          <h3 className="room-name-number">{event?.event_dates[0]?.room?.label}</h3>
         </div>
       </div>
 
@@ -127,8 +132,7 @@ function CheckIn() {
           </p>
           <p className="large-text extra-bottom-space">{event?.title}</p>
           <p className="large-text extra-bottom-space">
-            Session begins at{' '}
-            {militaryToReadable(event?.event_dates[0]?.start_time)} (CST)
+            Session begins at {sessionStartTime} (CST)
           </p>
           <p className="large-text extra-bottom-space">
             Session Information

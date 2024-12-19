@@ -26,9 +26,7 @@ const displaySession = (sessions) => {
   for (const session of sessions) {
     for (const eventDate of session.event_dates) {
       const startTime = parseEventDateTime(eventDate.event_date, eventDate.start_time).getTime();
-      const endTime = parseEventDateTime(eventDate.event_date, eventDate.end_time).getTime();
 
-      console.log("Session End Time (Local):", new Date(endTime));
 
       // Rule 1: Display session information 30 minutes before the scheduled session start time
       if (localCurrentTime < startTime && getTimeDifference(startTime, localCurrentTime) <= 30) {
@@ -45,7 +43,6 @@ const displaySession = (sessions) => {
 
       // Rule 3: If no sessions are scheduled within 1 hour, continue checking the next session
       if (localCurrentTime < startTime && getTimeDifference(startTime, localCurrentTime) > 60) {
-        console.log("This session is more than 1 hour away, checking next session.");
         continue;  // Continue to the next session instead of returning an empty array
       }
 
@@ -56,7 +53,6 @@ const displaySession = (sessions) => {
     }
   }
 
-  console.log("No matching sessions found, returning empty array.");
   return null;
 };
 
