@@ -106,7 +106,7 @@ Wall panels are mounted displays where users scan their QR code badges to:
 Note: Each environment requires its own API configuration and credentials.
 
 ## File Structure
-
+```
 ```
 /
 ├── shared/                    # Shared resources and main application code
