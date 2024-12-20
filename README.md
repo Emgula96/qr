@@ -36,14 +36,23 @@ POSTGRES_HOST=localhost
 
 VITE_ENVIRONMENT=development
 
-# AWS Cognito Configuration (Local Development)
+# These are only used for local development and working with AWS Cognito, these values will need to be fetched and used locally
 VITE_CLIENT_ID=7ed6re55ui982icppppknm6o48
 VITE_CLIENT_SECRET=1c65bnoo0r9gm42tj5590tfgfk69dr3mfrqdfhq6r74b52n067ji
+# VITE_API_URL=https://qlfz9ox1dk.execute-api.us-east-1.amazonaws.com/development/kiosk-express
 VITE_API_ROOT_URL=http://localhost:3030/kiosk-express
+# VITE_API_URL=https://dev.escworks.com
 VITE_API_KEY='{"API-KEY":"b-728yT-92EnUmyQ"}'
 VITE_MODE_DEBUG_LOCAL_PROD=false
 
-# MSSQL Configuration
+# MSSQL_SA_PASSWORD=StrongerP@ssw0rd123
+# MSSQL_PORT=1433
+# MSSQL_USER=local_user
+# MSSQL_PASSWORD=mssql
+# MSSQL_SERVER=mssql_local
+# MSSQL_DATABASE=mssql_db
+#1080x1920
+
 MSSQL_USER=devteam
 MSSQL_PASSWORD=H0ll1ster~
 MSSQL_SERVER=R04HOUSQL82A\ESCDB
