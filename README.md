@@ -1,7 +1,15 @@
-# QR Check-In Front End Applications
+# KIOSK and WALL PANEL Front End Applications
 
-## .env
-Add the following .env under /shared/server
+## Table of Contents
+- [Environment Configuration](#environment-configuration)
+- [Applications](#applications)
+- [Application Workflow](#application-workflow)
+- [Supported Environments](#supported-environments)
+- [Project Structure](#project-structure)
+
+## Environment Configuration
+
+### Add the following .env under /shared/server
 ```
 # DEVELOPMENT
 # ESCWORKS_API_URL=https://dev.escworks.com/api
@@ -14,8 +22,10 @@ Add the following .env under /shared/server
 # UAT
 ESCWORKS_API_URL=https://uat.escworks.com/api
 ESCWORKS_API_KEY='{"API-KEY":"aB1!cD2@eF3#gH4$iJ5%kL6^mN7&oP8*pQ9(rS0)qT"}'
+```
 
-# These are put in .env under /shared/
+### These are put in .env under /shared/
+```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
@@ -46,8 +56,11 @@ MSSQL_PASSWORD=H0ll1ster~
 MSSQL_SERVER=R04HOUSQL82A\ESCDB
 MSSQL_DATABASE=escworks.system
 MSSQL_PORT=1433
+```
 
-## Application Overview
+---
+
+## Applications
 
 ### 1. Kiosk Check-In System
 The kiosk application allows users to check in and receive their QR code badge:
@@ -65,37 +78,41 @@ Wall panels are mounted displays where users scan their QR code badges to:
 - Record professional development hours
 - Verify session eligibility
 
+---
+
 ## Application Workflow
 
-1. **Initial Setup**
-   - Ensure all environment variables are properly configured in `.env`
-   - Start the Docker services using `docker compose up`
-   - Run `npm run dev` inside /shared to start the frontend application
-   - Run `npm run dev inside /shared/server` to start the backend application
+### 1. Initial Setup/ Running the application
+- Ensure all environment variables are properly configured in `.env`
+- Start the Docker services using `docker compose up`
+- Run `npm run dev` inside /shared to start the frontend application
+- Run `npm run dev inside /shared/server` to start the backend application
 
-2. **Authentication Flow**
-   - Application uses AWS Cognito for user authentication
-   - Local development uses the configured `VITE_CLIENT_ID` and `VITE_CLIENT_SECRET`
+### 2. Authentication Flow
+- Application uses AWS Cognito for user authentication
+- Local development uses the configured `VITE_CLIENT_ID` and `VITE_CLIENT_SECRET`
 
-3. **API Communication**
-   - Frontend communicates with ESCWorks(NextGen) API using configured endpoints
-   - Development: Uses local API at `http://localhost:3030/kiosk-express`
-   - Production: Uses deployed API endpoints based on environment
+### 3. API Communication
+- Frontend communicates with ESCWorks(NextGen) API using configured endpoints
+- Development: Uses local API at `http://localhost:3030/kiosk-express`
+- Production: Uses deployed API endpoints based on environment
 
-4. **Database Interactions**
-   - Application connects to both PostgreSQL and MSSQL databases
-   - PostgreSQL: Used for local development and storing application data
-   - MSSQL: Connects to ESCWorks system database for core business logic
+### 4. Database Interactions
+- Application connects to both PostgreSQL and MSSQL databases
+- PostgreSQL: Used for local development and storing application data
+- MSSQL: Connects to ESCWorks system database for core business logic
 
-5. **Development Mode**
-   - Set `VITE_ENVIRONMENT=development` for development features
-   - Debug mode can be toggled using `VITE_MODE_DEBUG_LOCAL_PROD`
+### 5. Development Mode
+- Set `VITE_ENVIRONMENT=development` for development features
+- Debug mode can be toggled using `VITE_MODE_DEBUG_LOCAL_PROD`
 
-6. **QR Check-In Process**
-   1. User scans QR code at kiosk
-   2. NextGen(API) validates user credentials if checks pass call lambda function to record attendance
-   3. Attendance is recorded in the database
-   4. Confirmation is displayed to user via panels
+### 6. QR Check-In Process
+1. User scans QR code at kiosk
+2. NextGen(API) validates user credentials if checks pass call lambda function to record attendance
+3. Attendance is recorded in the database
+4. Confirmation is displayed to user via panels
+
+---
 
 ## Supported Environments
 - Development
@@ -105,48 +122,55 @@ Wall panels are mounted displays where users scan their QR code badges to:
 
 Note: Each environment requires its own API configuration and credentials.
 
-## File Structure
-```
+---
+
+## Project Structure
+The project follows a modular architecture with clear separation between frontend and backend components.
+
+### Directory Layout
 ```
 /
-├── shared/                    # Shared resources and main application code
-│   ├── server/               # Backend server application
-│   │   ├── src/             # Source code
-│   │   ├── routes/          # API routes
-│   │   ├── controllers/     # Business logic
-│   │   └── models/          # Database models
+├── shared/              # Main application directory
+│   ├── server/         # Backend Express.js application
+│   │   ├── src/        # Core server source code
+│   │   ├── routes/     # API route definitions
+│   │   ├── controllers/# Business logic handlers
+│   │   ├── models/     # Database models and schemas
+│   │   └── .env        # Server-specific environment variables
 │   │
-│   ├── src/                 # Frontend application
-│   │   ├── components/      # Reusable UI components
-│   │   ├── pages/          # Page components, keep react components out of page files
-│   │   ├── services/       # API services/calls
-│   │   ├── utils/          # Utility functions
-│   │   └── styles/         # Global styles
+│   ├── src/           # Frontend React application
+│   │   ├── components/ # Reusable UI components
+│   │   ├── pages/     # Page components and logic, keep as dry as possible
+│   │   ├── services/  # API and external service integrations
+│   │   ├── utils/     # Helper functions and utilities
+│   │   └── styles/    # CSS and styling files
 │   │
-│   ├── public/             # Static assets
-│   └── .env                # Environment variables
+│   ├── public/        # Static assets directory
+│   └── .env           # Environment configuration
 │
-├── docker-compose.yml      # Docker services configuration
-├── package.json           
-└── README.md              # Project documentation
+├── docker-compose.yml  # Docker services configuration
+├── package.json       # Project dependencies and scripts
+└── README.md         # Project documentation
 ```
 
-### Key Directories
+### Directory Descriptions
 
-- **/shared/server**: Contains the Express.js backend application
-  - Handles API requests
-  - Manages database connections
-  - Processes business logic
+#### /shared/server
+- Contains the Express.js backend application
+- Handles API requests
+- Manages database connections
+- Processes business logic
 
-- **/shared/src**: Contains the React frontend application
-  - Manages UI components
-  - Handles user interactions
-  - Communicates with backend API
+#### /shared/src
+- Contains the React frontend application
+- Manages UI components
+- Handles user interactions
+- Communicates with backend API
 
-- **/shared/public**: Static files and assets
-  - Images
-  - Fonts
-  - Other static resources
+#### /shared/public
+- Static files and assets
+- Images
+- Fonts
+- Other static resources
 
-```
 
