@@ -9,8 +9,7 @@
 
 ## Environment Configuration
 
-### .env
-Add the following .env under /shared/server
+###Add the following .env under /shared/server
 ```
 # DEVELOPMENT
 # ESCWORKS_API_URL=https://dev.escworks.com/api
@@ -25,8 +24,7 @@ ESCWORKS_API_URL=https://uat.escworks.com/api
 ESCWORKS_API_KEY='{"API-KEY":"aB1!cD2@eF3#gH4$iJ5%kL6^mN7&oP8*pQ9(rS0)qT"}'
 ```
 
-### Shared Environment Variables
-These are put in .env under /shared/
+###These are put in .env under /shared/
 ```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
