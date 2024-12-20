@@ -135,7 +135,8 @@ The project follows a modular architecture with clear separation between fronten
 │   │   ├── src/        # Core server source code
 │   │   ├── routes/     # API route definitions
 │   │   ├── controllers/# Business logic handlers
-│   │   └── models/     # Database models and schemas
+│   │   ├── models/     # Database models and schemas
+│   │   └── .env        # Server-specific environment variables
 │   │
 │   ├── src/           # Frontend React application
 │   │   ├── components/ # Reusable UI components
