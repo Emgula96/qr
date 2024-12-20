@@ -89,13 +89,6 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      <div className="room-name-container">
-        <h3 className="room-name">Room No:</h3>
-        <div className="room-name-divider">
-          <h3 className="room-name-number">{event?.event_dates[0]?.room?.label}</h3>
-        </div>
-      </div>
-
       <div className="check-in-wrapper">
         <div className="left">
           <div className="scanner">
@@ -107,13 +100,15 @@ function CheckIn() {
                   located at the top of this device.
                 </em>
               </p>
-              <QRCodeScanner
-                fps={10}
-                qrbox={354}
-                disableFlip={false}
-                qrCodeSuccessCallback={onNewScanResult}
-                verbose={true}
-              />
+              <div className="qr-code-scanner">
+                <QRCodeScanner
+                  fps={10}
+                  qrbox={354}
+                  disableFlip={false}
+                  qrCodeSuccessCallback={onNewScanResult}
+                  verbose={true}
+                />
+              </div>
             </div>
           </div>
           <div className="attendee-container">
@@ -123,13 +118,16 @@ function CheckIn() {
             </div>
           </div>
         </div>
-        <div className="center">
+        <div className="right">
+          <div className="room-name-container">
+            <h3 className="room-name">Room No:</h3>
+            <div className="room-name-divider">
+              <h3 className="room-name-number">{event?.event_dates[0]?.room?.label}</h3>
+            </div>
+          </div>
           {status && (
             <Status status={status} attendeeName={'Test Attendee'} />
           )}
-          <p className="large-text">
-            <strong>Room No:</strong> {roomName ? roomName : 'Test-room'}
-          </p>
           <p className="large-text extra-bottom-space">{event?.title}</p>
           <p className="large-text extra-bottom-space">
             Session begins at {sessionStartTime} (CST)
@@ -137,19 +135,17 @@ function CheckIn() {
           <p className="large-text extra-bottom-space">
             Session Information
           </p>
-          <SessionInfo event={event} />
+          <div className="session-info-container">
+            <SessionInfo event={event} />
+            <div className="info-footer">
+              <img className='logo' src="region4header.png" />
+            </div>
+          </div>
+
         </div>
         {event?.notes && event?.notes.trim() && (
           <Notes items={event?.notes} />
         )}
-        <div className="banner-right">
-          <img
-            src="sidebar.png"
-            alt="We've got your back"
-            onClick={fetchEvent}
-            className="banner-image"
-          />
-        </div>
       </div>
     </>
   );

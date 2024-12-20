@@ -7,11 +7,19 @@ html {
   width: 100%;
   height: 100%;
 }
-
+//parent div for if no event is found
+.parent-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5rem;
+}
 .check-in-wrapper {
+  gap: 3rem;
+  margin-top: 1rem;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 85vh;
   display: flex;
   justify-content: space-between;
 }
@@ -29,12 +37,84 @@ html {
     margin-bottom: 1rem;
   }
 }
-.center {
+.right {
+  width: 67%;
   height: 100%;
   width: 67%;
 
-  > * {
-    transform: scale(0.87);
+  .room-name-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .session-info-container {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .info-footer {
+      display: flex;
+      justify-content: flex-end;
+      
+      .region4logo {
+        max-height: 8rem;
+        width: auto;
+      }
+    }
+  }
+}
+.left {
+  width: 33%;
+  min-width: 40%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .scanner {
+    height: 80vh;
+    
+    .scanner-content {
+      height: 100%;
+      margin: 0px 40px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      
+      .qr-code-scanner {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+
+.attendee-container {
+  background-color: #ebf0f2;
+  max-height: 250px;
+  min-width: 354px;
+  margin-right: 40px;
+  text-align: center;
+  padding: 10px;
+  margin: 20px 40px;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+
+    .count {
+      height: 70%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      p {
+        font-size: 5em;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
   }
 }
 
@@ -68,68 +148,6 @@ html {
   }
 }
 
-.attendee-container {
-  background-color: #ebf0f2;
-  max-height: 250px;
-  min-width: 354px;
-  margin-right: 40px;
-  text-align: center;
-  padding: 10px;
-  margin: 20px 40px;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-
-  .count {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    max-height: 100px;
-    padding: 45px;
-  }
-
-  .bottom {
-    display: flex;
-    font-weight: bold;
-    justify-content: end;
-    margin-right: 20px;
-    min-height: 66px;
-    align-items: end;
-  }
-
-  p {
-    font-size: 5em;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
-  }
-
-  span {
-    margin: auto;
-  }
-}
-
-.check-in-wrapper {
-  display: flex;
-  justify-content: space-between;
-}
-
-.scanner {
-  display: flex;
-
-  .scanner-content {
-    margin: 0px 40px;
-    text-align: center;
-    
-    .qr-code-scanner {
-      height: 360px;
-      width: 360px;
-    }
-  }
-
-  span {
-    font-weight: lighter;
-    font-size: 1.3em;
-  }
-}
-
 .timestamp-container {
   display: flex;
   justify-content: center;
@@ -146,7 +164,7 @@ html {
 }
 
 .extra-bottom-space {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .session-info-grid {
@@ -168,21 +186,7 @@ html {
     white-space: nowrap;
   }
 }
-.banner-right {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0;
-  z-index: 100;
-  
-  img {
-    max-width: 10rem;
-    height: auto;
-  }
-}
+
 .page-footer {
   height: 50vh;
   display: flex;
@@ -190,16 +194,21 @@ html {
   align-items: center;
 }
 
-.region4logo {
+.info-footer {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: right;
 }
 
 .region4logo img {
   width: 250px;
   height: 114px;
-}
+      }
+  .logo {
+        margin-right: 2rem;
+        max-height: 8rem;
+        width: auto;
+      }
+
 .count {
   display: flex;
   justify-content: center;
