@@ -164,5 +164,4 @@ Note: Each environment requires its own API configuration and credentials.
 - Fonts
 - Other static resources
 
-```
 
