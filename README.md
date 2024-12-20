@@ -125,30 +125,31 @@ Note: Each environment requires its own API configuration and credentials.
 ---
 
 ## Project Structure
+The project follows a modular architecture with clear separation between frontend and backend components.
 
 ### Directory Layout
 ```
 /
-├── shared/
-│   ├── server/
-│   │   ├── src/
-│   │   ├── routes/
-│   │   ├── controllers/
-│   │   └── models/
+├── shared/              # Main application directory
+│   ├── server/         # Backend Express.js application
+│   │   ├── src/        # Core server source code
+│   │   ├── routes/     # API route definitions
+│   │   ├── controllers/# Business logic handlers
+│   │   └── models/     # Database models and schemas
 │   │
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   └── styles/
+│   ├── src/           # Frontend React application
+│   │   ├── components/ # Reusable UI components
+│   │   ├── pages/     # Page components and logic, keep as dry as possible
+│   │   ├── services/  # API and external service integrations
+│   │   ├── utils/     # Helper functions and utilities
+│   │   └── styles/    # CSS and styling files
 │   │
-│   ├── public/
-│   └── .env
+│   ├── public/        # Static assets directory
+│   └── .env           # Environment configuration
 │
-├── docker-compose.yml
-├── package.json
-└── README.md
+├── docker-compose.yml  # Docker services configuration
+├── package.json       # Project dependencies and scripts
+└── README.md         # Project documentation
 ```
 
 ### Directory Descriptions
