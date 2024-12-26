@@ -23,25 +23,37 @@ const createConfig = (props) => {
 }
 
 const QRCodeScanner = (props) => {
-
   useEffect(() => {
-    // when component mounts
+    if (!props.isScanning) {
+      return;
+    }
+
     const config = createConfig(props)
     const verbose = props.verbose === true
-    // Suceess callback is required.
     if (!(props.qrCodeSuccessCallback)) {
       throw 'qrCodeSuccessCallback is required callback.'
     }
+    
     const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, config, verbose)
+    
     html5QrcodeScanner.render(props.qrCodeSuccessCallback, props.qrCodeErrorCallback)
 
-    // cleanup function when component will unmount
+    // Expose scanner instance to parent component
+    if (props.onLoad) {
+      props.onLoad(html5QrcodeScanner);
+    }
+
+    // Handle video pausing
+    if (props.shouldPauseVideo) {
+      html5QrcodeScanner.pause(true);
+    }
+
     return () => {
       html5QrcodeScanner.clear().catch(error => {
         console.error('Failed to clear html5QrcodeScanner. ', error)
       })
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.isScanning, props.shouldPauseVideo])
 
   return (
     <div id={qrcodeRegionId} />
@@ -50,12 +62,17 @@ const QRCodeScanner = (props) => {
 
 QRCodeScanner.defaultProps = {
   qrCodeErrorCallback: () => {},
+  isScanning: false,
+  shouldPauseVideo: false, // Add default value for shouldPauseVideo
 }
 
 QRCodeScanner.propTypes = {
   verbose: PropTypes.bool.isRequired,
   qrCodeSuccessCallback: PropTypes.func.isRequired,
   qrCodeErrorCallback: PropTypes.func,
+  isScanning: PropTypes.bool,
+  shouldPauseVideo: PropTypes.bool, // Add prop type for shouldPauseVideo
+  onLoad: PropTypes.func, // Add this new prop type
 }
 
 export default QRCodeScanner

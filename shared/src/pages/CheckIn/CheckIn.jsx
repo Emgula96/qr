@@ -33,6 +33,9 @@ function CheckIn() {
   [event]
   );
 
+  const [showScanner, setShowScanner] = useState(false);
+  const [scannerInstance, setScannerInstance] = useState(null);
+
   const fetchEvent = async () => {
     try {
       const todayEvents = await service.getEventByRoomAndTime(
@@ -72,6 +75,25 @@ function CheckIn() {
     500
   );
 
+  const handleStartScanning = () => {
+    setShowScanner(true);
+    
+    // Auto-stop after 10 seconds
+    setTimeout(() => {
+      setShowScanner(false);
+      if (scannerInstance) {
+        scannerInstance.stop().catch((err) => {
+          console.error('Failed to stop scanner:', err);
+        });
+      }
+    }, 45000);
+  };
+
+  // Add scanner instance ref callback
+  const onScannerLoad = (instance) => {
+    setScannerInstance(instance);
+  };
+
   if (!event) {
     return (
       <div className="parent-div">
@@ -108,13 +130,26 @@ function CheckIn() {
                   located at the top of this device.
                 </em>
               </p>
-              <QRCodeScanner
-                fps={10}
-                qrbox={354}
-                disableFlip={false}
-                qrCodeSuccessCallback={onNewScanResult}
-                verbose={true}
-              />
+              {!showScanner ? (
+                <div className="scanner-start-container">
+                  <button 
+                    className="scanner-start-button"
+                    onClick={handleStartScanning}
+                  >
+                    Start Scanning
+                  </button>
+                </div>
+              ) : (
+                <QRCodeScanner
+                  fps={10}
+                  qrbox={354}
+                  disableFlip={false}
+                  qrCodeSuccessCallback={onNewScanResult}
+                  verbose={true}
+                  isScanning={true}
+                  onLoad={onScannerLoad}
+                />
+              )}
             </div>
           </div>
           <div className="attendee-container">
