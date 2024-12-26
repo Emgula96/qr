@@ -34,8 +34,9 @@ function CheckIn() {
 
   const fetchEvent = async () => {
     try {
+      const cleanRoomName = roomName?.replace(/[^a-zA-Z0-9\s]/g, ' ');
       const todayEvents = await service.getEventByRoomAndTime(
-        roomName,
+        cleanRoomName,
         currentTime.toLocaleDateString('en-CA')
       );
       setEvent(displaySession(todayEvents));
