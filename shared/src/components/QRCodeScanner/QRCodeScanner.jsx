@@ -23,25 +23,36 @@ const createConfig = (props) => {
 }
 
 const QRCodeScanner = (props) => {
-
   useEffect(() => {
-    // when component mounts
+    // Don't initialize scanner if scanning is not enabled
+    if (!props.isScanning) {
+      return;
+    }
+
     const config = createConfig(props)
     const verbose = props.verbose === true
-    // Suceess callback is required.
     if (!(props.qrCodeSuccessCallback)) {
       throw 'qrCodeSuccessCallback is required callback.'
     }
+    
     const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, config, verbose)
+    
+    // Set up timeout to stop scanning after 45 seconds
+    const timeoutId = setTimeout(() => {
+      html5QrcodeScanner.clear().catch(error => {
+        console.error('Failed to clear html5QrcodeScanner after timeout. ', error)
+      })
+    }, 45000)
+
     html5QrcodeScanner.render(props.qrCodeSuccessCallback, props.qrCodeErrorCallback)
 
-    // cleanup function when component will unmount
     return () => {
+      clearTimeout(timeoutId)
       html5QrcodeScanner.clear().catch(error => {
         console.error('Failed to clear html5QrcodeScanner. ', error)
       })
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.isScanning]) // Add isScanning to dependency array
 
   return (
     <div id={qrcodeRegionId} />
@@ -50,12 +61,14 @@ const QRCodeScanner = (props) => {
 
 QRCodeScanner.defaultProps = {
   qrCodeErrorCallback: () => {},
+  isScanning: false, // Add default value for isScanning
 }
 
 QRCodeScanner.propTypes = {
   verbose: PropTypes.bool.isRequired,
   qrCodeSuccessCallback: PropTypes.func.isRequired,
   qrCodeErrorCallback: PropTypes.func,
+  isScanning: PropTypes.bool, // Add prop type for isScanning
 }
 
 export default QRCodeScanner
