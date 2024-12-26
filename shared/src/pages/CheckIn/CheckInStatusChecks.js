@@ -15,7 +15,7 @@ export const dummySession = {
   event_dates: [
     {
       id: 115,
-      event_date: '2024-12-17',
+      event_date: '2024-12-26',
       start_time: '13:00:00',
       end_time: '23:00:00',
       room: {
