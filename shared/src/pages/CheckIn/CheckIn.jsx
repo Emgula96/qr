@@ -14,10 +14,11 @@ import { debounce } from '../../util/Functions/debounce';
 import { Notes } from '../../components/Notes/Notes';
 import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
 import { handleQrScan } from '../../util/Functions/handleQrScan';
+import {dummySession} from './CheckInStatusChecks';
 
 
 function CheckIn() {
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(dummySession);
   const [status, setStatus] = useState(null);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
