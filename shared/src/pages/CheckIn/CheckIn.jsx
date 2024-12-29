@@ -14,11 +14,12 @@ import { debounce } from '../../util/Functions/debounce';
 import { Notes } from '../../components/Notes/Notes';
 import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
 import { handleQrScan } from '../../util/Functions/handleQrScan';
-
+import { dummySession } from './CheckInStatusChecks';
 
 function CheckIn() {
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(dummySession);
   const [status, setStatus] = useState(null);
+  const [checkedInCount, setCheckedInCount] = useState(0);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
@@ -52,8 +53,8 @@ function CheckIn() {
     // Fetch event immediately on component mount
     fetchEvent();
 
-    // Set up interval to fetch event every 15 minutes
-    const intervalId = setInterval(fetchEvent, 15 * 60 * 1000);
+    // Set up interval to fetch event every 3 minutes
+    const intervalId = setInterval(fetchEvent, 3 * 60 * 1000);
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
@@ -66,8 +67,21 @@ function CheckIn() {
     return () => clearInterval(timerId);
   }, []);
 
+  const isSessionFull = useMemo(() => {
+    return event && checkedInCount >= event.capacity;
+  }, [checkedInCount, event]);
+
   const onNewScanResult = debounce(
-    (decodedText) => handleQrScan(decodedText, event, beepSound, setStatus, isUserLate),
+    async (decodedText) => {
+      if (isSessionFull) {
+        setStatus('Session Full');
+        return;
+      }
+      const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
+      if (scanResult?.success) {
+        setCheckedInCount(prev => prev + 1);
+      }
+    },
     500
   );
 
@@ -119,7 +133,7 @@ function CheckIn() {
           <div className="attendee-container">
             <h2>Attendee Count</h2>
             <div className="count">
-              <p>{event?.capacity}</p>
+              <p>{checkedInCount} / {event?.capacity}</p>
             </div>
           </div>
         </div>
