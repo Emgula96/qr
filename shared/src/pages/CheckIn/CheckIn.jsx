@@ -20,7 +20,7 @@ function CheckIn() {
   const [event, setEvent] = useState(null);
   const [status, setStatus] = useState(null);
   const [checkedInCount, setCheckedInCount] = useState(0);
-  const [currentTime, setCurrentTime] = useState('2024-12-31');
+  const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
   const beepSound = useMemo(() => new Audio(beep), []);
@@ -78,7 +78,7 @@ function CheckIn() {
   const isSessionFull = useMemo(() => {
     return event && checkedInCount >= event.capacity;
   }, [checkedInCount, event]);
-
+  console.log(checkedInCount)
   const onNewScanResult = debounce(
     async (decodedText) => {
       if (isSessionFull) {
@@ -87,7 +87,10 @@ function CheckIn() {
       }
       const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
       if (scanResult?.success) {
-        setCheckedInCount(prev => prev + 1);
+        setCheckedInCount((prevCount) => {
+          console.log('Updating count from:', prevCount, 'to:', prevCount + 1);
+          return prevCount + 1;
+        });
       }
     },
     500
