@@ -17,10 +17,10 @@ import { handleQrScan } from '../../util/Functions/handleQrScan';
 import { dummySession } from './CheckInStatusChecks';
 
 function CheckIn() {
-  const [event, setEvent] = useState(dummySession);
+  const [event, setEvent] = useState(null);
   const [status, setStatus] = useState(null);
   const [checkedInCount, setCheckedInCount] = useState(0);
-  const [currentTime, setCurrentTime] = useState(() => new Date());
+  const [currentTime, setCurrentTime] = useState('2024-12-31');
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
   const beepSound = useMemo(() => new Audio(beep), []);
@@ -39,7 +39,15 @@ function CheckIn() {
         roomName,
         currentTime.toLocaleDateString('en-CA')
       );
-      setEvent(displaySession(todayEvents));
+      console.log('todayEvents', todayEvents);
+      const newEventData = displaySession(todayEvents);
+      
+      // Only reset attnd count if the event ID has changed
+      if (newEventData?.id !== event?.id) {
+        setCheckedInCount(0);
+      }
+      
+      setEvent(newEventData);
     } catch (error) {
       console.error('Error fetching event:', error);
     }
