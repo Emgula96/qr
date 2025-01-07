@@ -43,24 +43,26 @@ html {
 
   .room-name-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
   }
 
   .session-info-container {
-    height: 60vh;
+    height: 65vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
     .info-footer {
-      display: flex;
-      justify-content: flex-end;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
       
       .region4logo {
-        max-height: 8rem;
+        max-height: 10rem;
         width: auto;
       }
     }
@@ -75,7 +77,11 @@ html {
 
   .scanner {
     height: 80vh;
-    
+
+    .scanner-text {
+      font-size: 1.5em;
+    }
+
     .scanner-content {
       height: 100%;
       margin: 0px 40px;
@@ -94,27 +100,31 @@ html {
 
 .attendee-container {
   background-color: #ebf0f2;
-  max-height: 250px;
-  min-width: 354px;
+  max-height: 300px;
+  min-width: 400px;
   margin-right: 40px;
   text-align: center;
-  padding: 10px;
+  padding: 20px;
   margin: 20px 40px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 
     .count {
-      height: 70%;
+      height: 75%;
       display: flex;
       justify-content: center;
       align-items: center;
 
       p {
-        font-size: 5em;
+        font-size: 6em;
         font-weight: bold;
         margin: 0;
       }
     }
-  }
+
+    h2 {
+      font-size: 28px;
+    }
+}
 }
 
 .badge-wrapper {
@@ -153,7 +163,7 @@ html {
 }
 
 .large-text {
-  font-size: 30px;
+  font-size: 36px;
   font-weight: normal;
   margin: 10px 0 20px;
 
@@ -171,6 +181,7 @@ html {
   grid-template-columns: auto 1fr;
   gap: 10px 20px;
   align-items: start;
+  font-size: 24px;
 }
 
 .session-info-item {
@@ -179,10 +190,12 @@ html {
   p {
     margin: 0;
     line-height: 1.5;
+    font-size: 24px;
   }
 
   b {
     white-space: nowrap;
+    font-size: 24px;
   }
 }
 .page-footer {
@@ -219,13 +232,13 @@ html {
   gap: 10px;
 }
 .room-name {
-  font-size: 1.75em;
+  font-size: 3em;
   font-weight: bold;
   margin: 10px 0 20px;
 }
-.room-name-number {
-  font-size: 1.75em;
-  font-weight: normal;
+.room-name-text {
+  font-size: 3em;
+  font-weight: bold;
   margin: 10px 0 20px;
   text-transform: uppercase;
 }

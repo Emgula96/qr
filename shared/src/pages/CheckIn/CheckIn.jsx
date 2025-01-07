@@ -94,7 +94,7 @@ function CheckIn() {
           <div className="scanner">
             <div className="scanner-content">
               <h2>Scan QR Code to Check-In</h2>
-              <p>
+              <p className="scanner-text">
                 <em>
                   Scan QR Code by holding printed badge in front of camera
                   located at the top of this device.
@@ -120,9 +120,9 @@ function CheckIn() {
         </div>
         <div className="right">
           <div className="room-name-container">
-            <h3 className="room-name">Room No:</h3>
+            <h3 className="room-name">Room:</h3>
             <div className="room-name-divider">
-              <h3 className="room-name-number">{event?.event_dates[0]?.room?.label}</h3>
+              <h3 className="room-name-text">{event?.event_dates[0]?.room?.label}</h3>
             </div>
           </div>
           {status && (
