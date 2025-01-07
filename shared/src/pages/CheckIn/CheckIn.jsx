@@ -88,7 +88,6 @@ function CheckIn() {
       const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
       if (scanResult?.success) {
         setCheckedInCount((prevCount) => {
-          console.log('Updating count from:', prevCount, 'to:', prevCount + 1);
           return prevCount + 1;
         });
       }
