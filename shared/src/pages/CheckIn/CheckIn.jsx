@@ -15,10 +15,10 @@ import { Notes } from '../../components/Notes/Notes';
 import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
 import { handleQrScan } from '../../util/Functions/handleQrScan';
 
-
 function CheckIn() {
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(null);
   const [status, setStatus] = useState(null);
+  const [checkedInCount, setCheckedInCount] = useState(0);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
@@ -39,7 +39,15 @@ function CheckIn() {
         cleanRoomName,
         currentTime.toLocaleDateString('en-CA')
       );
-      setEvent(displaySession(todayEvents));
+      console.log('todayEvents', todayEvents);
+      const newEventData = displaySession(todayEvents);
+      
+      // Only reset attnd count if the event ID has changed
+      if (newEventData?.id !== event?.id) {
+        setCheckedInCount(0);
+      }
+      
+      setEvent(newEventData);
     } catch (error) {
       console.error('Error fetching event:', error);
     }
@@ -53,8 +61,8 @@ function CheckIn() {
     // Fetch event immediately on component mount
     fetchEvent();
 
-    // Set up interval to fetch event every 15 minutes
-    const intervalId = setInterval(fetchEvent, 15 * 60 * 1000);
+    // Set up interval to fetch event every 3 minutes
+    const intervalId = setInterval(fetchEvent, 3 * 60 * 1000);
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
@@ -67,8 +75,22 @@ function CheckIn() {
     return () => clearInterval(timerId);
   }, []);
 
+  const isSessionFull = useMemo(() => {
+    return event && checkedInCount >= event.capacity;
+  }, [checkedInCount, event]);
   const onNewScanResult = debounce(
-    (decodedText) => handleQrScan(decodedText, event, beepSound, setStatus, isUserLate),
+    async (decodedText) => {
+      if (isSessionFull) {
+        setStatus('Session Full');
+        return;
+      }
+      const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
+      if (scanResult?.success && checkedInCount < event?.capacity) {
+        setCheckedInCount((prevCount) => {
+          return prevCount + 1;
+        });
+      }
+    },
     500
   );
 
@@ -90,47 +112,45 @@ function CheckIn() {
       <div className="timestamp-container">
         <TimeStamp isVertical={true} />
       </div>
-      <div className="room-name-container">
-        <h3 className="room-name">Room No:</h3>
-        <div className="room-name-divider">
-          <h3 className="room-name-number">{event?.event_dates[0]?.room?.label}</h3>
-        </div>
-      </div>
-
       <div className="check-in-wrapper">
         <div className="left">
           <div className="scanner">
             <div className="scanner-content">
               <h2>Scan QR Code to Check-In</h2>
-              <p>
+              <p className="scanner-text">
                 <em>
                   Scan QR Code by holding printed badge in front of camera
                   located at the top of this device.
                 </em>
               </p>
-              <QRCodeScanner
-                fps={10}
-                qrbox={354}
-                disableFlip={false}
-                qrCodeSuccessCallback={onNewScanResult}
-                verbose={true}
-              />
+              <div className="qr-code-scanner">
+                <QRCodeScanner
+                  fps={10}
+                  qrbox={250}
+                  disableFlip={false}
+                  qrCodeSuccessCallback={onNewScanResult}
+                  verbose={true}
+                />
+              </div>
             </div>
           </div>
           <div className="attendee-container">
             <h2>Attendee Count</h2>
             <div className="count">
-              <p>{event?.capacity}</p>
+              <p>{isSessionFull ? "Session at Capacity" : `${checkedInCount} / ${event?.capacity}`}</p>
             </div>
           </div>
         </div>
-        <div className="center">
+        <div className="right">
+          <div className="room-name-container">
+            <h3 className="room-name">Room:</h3>
+            <div className="room-name-divider">
+              <h3 className="room-name-text">{event?.event_dates[0]?.room?.label}</h3>
+            </div>
+          </div>
           {status && (
             <Status status={status} attendeeName={'Test Attendee'} />
           )}
-          <p className="large-text">
-            <strong>Room No:</strong> {roomName ? roomName : 'Test-room'}
-          </p>
           <p className="large-text extra-bottom-space">{event?.title}</p>
           <p className="large-text extra-bottom-space">
             Session begins at {sessionStartTime} (CST)
@@ -138,19 +158,17 @@ function CheckIn() {
           <p className="large-text extra-bottom-space">
             Session Information
           </p>
-          <SessionInfo event={event} />
+          <div className="session-info-container">
+            <SessionInfo event={event} />
+            </div>
+            <div className="info-footer">
+              <img className='logo' src="region4header.png" />
+          </div>
+
         </div>
         {event?.notes && event?.notes.trim() && (
           <Notes items={event?.notes} />
         )}
-        <div className="banner-right">
-          <img
-            src="sidebar.png"
-            alt="We've got your back"
-            onClick={fetchEvent}
-            className="banner-image"
-          />
-        </div>
       </div>
     </>
   );

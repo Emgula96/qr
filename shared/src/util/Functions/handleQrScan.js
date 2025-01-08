@@ -12,7 +12,7 @@ export const handleQrScan = async (decodedText, event, beepSound, setStatus, isL
   const { userId, sessionId } = parseScan(decodedText);
   const eventDateId = event?.event_dates[0]?.id;
   try {
-    const checkedIn = await service.checkInUser(sessionId, userId, eventDateId);
+    const checkedIn = await service.checkInUser(userId, sessionId, eventDateId);
     
     if (checkedIn.error) {
       beepSound.play();
@@ -23,9 +23,11 @@ export const handleQrScan = async (decodedText, event, beepSound, setStatus, isL
 
     beepSound.play();
     setStatus(isLate ? 'Late Check-In' : 'Success');
+    return { success: true };
   } catch (err) {
     const errorMessage = mapErrorCodeToStatusMessage(err);
     setStatus(errorMessage);
+    return { success: false };
   } finally {
     setTimeout(() => {
       setStatus(null);
