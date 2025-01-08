@@ -12,7 +12,7 @@ export const handleQrScan = async (decodedText, event, beepSound, setStatus, isL
   const { userId, sessionId } = parseScan(decodedText);
   const eventDateId = event?.event_dates[0]?.id;
   try {
-    const checkedIn = {error: false, statusCode: 200};
+    const checkedIn = await service.checkIn(userId, sessionId, eventDateId);
     
     if (checkedIn.error) {
       beepSound.play();

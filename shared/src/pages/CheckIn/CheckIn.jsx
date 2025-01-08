@@ -77,7 +77,6 @@ function CheckIn() {
   const isSessionFull = useMemo(() => {
     return event && checkedInCount >= event.capacity;
   }, [checkedInCount, event]);
-  console.log(checkedInCount)
   const onNewScanResult = debounce(
     async (decodedText) => {
       if (isSessionFull) {
@@ -85,7 +84,7 @@ function CheckIn() {
         return;
       }
       const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
-      if (scanResult?.success) {
+      if (scanResult?.success && checkedInCount < event?.capacity) {
         setCheckedInCount((prevCount) => {
           return prevCount + 1;
         });
@@ -137,7 +136,7 @@ function CheckIn() {
           <div className="attendee-container">
             <h2>Attendee Count</h2>
             <div className="count">
-              <p>{checkedInCount} / {event?.capacity}</p>
+              <p>{isSessionFull ? "Session at Capacity" : `${checkedInCount} / ${event?.capacity}`}</p>
             </div>
           </div>
         </div>
