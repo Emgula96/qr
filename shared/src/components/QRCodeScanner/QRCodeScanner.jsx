@@ -4,26 +4,25 @@ import { Html5QrcodeScanner } from 'html5-qrcode'
 
 const qrcodeRegionId = 'html5qr-code-full-region'
 
-// Creates the configuration object for Html5QrcodeScanner.
 const createConfig = (props) => {
-  let config = {}
-  if (props.fps) {
-    config.fps = props.fps
+  let config = {
+    // Basic scanner config
+    fps: props.fps || 10,
+    qrbox: props.qrbox || 150,
+    disableFlip: props.disableFlip,
+    
+    // Video constraints to control scanner size
+    videoConstraints: {
+      width: { exact: 540 },
+      height: { exact: 310 },
+      facingMode: "environment"
+    }
   }
-  if (props.qrbox) {
-    config.qrbox = props.qrbox
-  }
-  if (props.aspectRatio) {
-    config.aspectRatio = props.aspectRatio
-  }
-  if (props.disableFlip !== undefined) {
-    config.disableFlip = props.disableFlip
-  }
+  
   return config
 }
 
 const QRCodeScanner = (props) => {
-
   useEffect(() => {
     // when component mounts
     const config = createConfig(props)
@@ -32,6 +31,7 @@ const QRCodeScanner = (props) => {
     if (!(props.qrCodeSuccessCallback)) {
       throw 'qrCodeSuccessCallback is required callback.'
     }
+
     const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, config, verbose)
     html5QrcodeScanner.render(props.qrCodeSuccessCallback, props.qrCodeErrorCallback)
 
@@ -44,18 +44,30 @@ const QRCodeScanner = (props) => {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div id={qrcodeRegionId} />
+    <div 
+      id={qrcodeRegionId} 
+      style={{
+        width: '540px',
+        height: '280px',
+        margin: '0 auto', // Centers the scanner horizontally
+      }} 
+    />
   )
 }
 
 QRCodeScanner.defaultProps = {
   qrCodeErrorCallback: () => {},
+  fps: 10,
+  disableFlip: false,
+  verbose: false
 }
 
 QRCodeScanner.propTypes = {
-  verbose: PropTypes.bool.isRequired,
+  verbose: PropTypes.bool,
   qrCodeSuccessCallback: PropTypes.func.isRequired,
   qrCodeErrorCallback: PropTypes.func,
+  fps: PropTypes.number,
+  disableFlip: PropTypes.bool
 }
 
 export default QRCodeScanner

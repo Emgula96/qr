@@ -15,10 +15,10 @@ import { Notes } from '../../components/Notes/Notes';
 import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
 import { handleQrScan } from '../../util/Functions/handleQrScan';
 
-
 function CheckIn() {
-  const [event, setEvent] = useState();
+  const [event, setEvent] = useState(null);
   const [status, setStatus] = useState(null);
+  const [checkedInCount, setCheckedInCount] = useState(0);
   const [currentTime, setCurrentTime] = useState(() => new Date());
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
@@ -38,7 +38,15 @@ function CheckIn() {
         roomName,
         currentTime.toLocaleDateString('en-CA')
       );
-      setEvent(displaySession(todayEvents));
+      console.log('todayEvents', todayEvents);
+      const newEventData = displaySession(todayEvents);
+      
+      // Only reset attnd count if the event ID has changed
+      if (newEventData?.id !== event?.id) {
+        setCheckedInCount(0);
+      }
+      
+      setEvent(newEventData);
     } catch (error) {
       console.error('Error fetching event:', error);
     }
@@ -52,8 +60,8 @@ function CheckIn() {
     // Fetch event immediately on component mount
     fetchEvent();
 
-    // Set up interval to fetch event every 15 minutes
-    const intervalId = setInterval(fetchEvent, 15 * 60 * 1000);
+    // Set up interval to fetch event every 3 minutes
+    const intervalId = setInterval(fetchEvent, 3 * 60 * 1000);
 
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
@@ -66,8 +74,22 @@ function CheckIn() {
     return () => clearInterval(timerId);
   }, []);
 
+  const isSessionFull = useMemo(() => {
+    return event && checkedInCount >= event.capacity;
+  }, [checkedInCount, event]);
   const onNewScanResult = debounce(
-    (decodedText) => handleQrScan(decodedText, event, beepSound, setStatus, isUserLate),
+    async (decodedText) => {
+      if (isSessionFull) {
+        setStatus('Session Full');
+        return;
+      }
+      const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
+      if (scanResult?.success && checkedInCount < event?.capacity) {
+        setCheckedInCount((prevCount) => {
+          return prevCount + 1;
+        });
+      }
+    },
     500
   );
 
@@ -103,7 +125,7 @@ function CheckIn() {
               <div className="qr-code-scanner">
                 <QRCodeScanner
                   fps={10}
-                  qrbox={354}
+                  qrbox={250}
                   disableFlip={false}
                   qrCodeSuccessCallback={onNewScanResult}
                   verbose={true}
@@ -114,7 +136,7 @@ function CheckIn() {
           <div className="attendee-container">
             <h2>Attendee Count</h2>
             <div className="count">
-              <p>{event?.capacity}</p>
+              <p>{isSessionFull ? "Session at Capacity" : `${checkedInCount} / ${event?.capacity}`}</p>
             </div>
           </div>
         </div>
@@ -137,9 +159,9 @@ function CheckIn() {
           </p>
           <div className="session-info-container">
             <SessionInfo event={event} />
+            </div>
             <div className="info-footer">
               <img className='logo' src="region4header.png" />
-            </div>
           </div>
 
         </div>
