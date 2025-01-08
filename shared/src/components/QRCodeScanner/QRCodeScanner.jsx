@@ -42,6 +42,7 @@ const QRCodeScanner = (props) => {
       props.qrCodeErrorCallback
     );
 
+    // cleanup function when component will unmount
     return () => {
       html5QrcodeScanner.clear().catch((error) => {
         console.error('Failed to clear html5QrcodeScanner. ', error);
