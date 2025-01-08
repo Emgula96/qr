@@ -42,16 +42,6 @@ const QRCodeScanner = (props) => {
       props.qrCodeErrorCallback
     );
 
-    // Expose scanner instance to parent component
-    if (props.onLoad) {
-      props.onLoad(html5QrcodeScanner);
-    }
-
-    // Handle video pausing
-    if (props.shouldPauseVideo) {
-      html5QrcodeScanner.pause(true);
-    }
-
     return () => {
       html5QrcodeScanner.clear().catch((error) => {
         console.error('Failed to clear html5QrcodeScanner. ', error);

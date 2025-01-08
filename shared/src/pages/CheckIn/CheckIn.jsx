@@ -15,6 +15,7 @@ import { Footer } from '../../components/Footer/Footer';
 import { RoomInfo } from '../../components/RoomInfo/RoomInfo';
 import { AttendeeCount } from '../../components/AttendeeCount/AttendeeCount';
 import { useEventData } from './hooks/useEventData';
+import { Scanner } from '../../components/Scanner/Scanner';
 
 function CheckIn() {
   const [status, setStatus] = useState(null);
@@ -29,9 +30,6 @@ function CheckIn() {
     return isLateCheckIn(event);
   }, [event]);
 
-  const [showScanner, setShowScanner] = useState(false);
-  const [scannerInstance, setScannerInstance] = useState(null);
-
   const isSessionFull = useMemo(() => {
     return event && checkedInCount >= event.capacity;
   }, [checkedInCount, event]);
@@ -39,8 +37,8 @@ function CheckIn() {
   useEffect(() => {
     setStatus(isUserLate ? 'Late Check-In' : null);
   }, [isUserLate]);
-  //Fires on new scan from QRCodeScanner
-  const onNewScanResult = debounce(async (decodedText) => {
+
+  const handleScan = debounce(async (decodedText) => {
     if (isSessionFull) {
       setStatus('Session Full');
       return;
@@ -54,28 +52,8 @@ function CheckIn() {
     );
     if (scanResult?.success && checkedInCount < event?.capacity) {
       setCheckedInCount((prevCount) => prevCount + 1);
-    
     }
-  }, 500);
-
-  const handleStartScanning = () => {
-    setShowScanner(true);
-    
-    // Auto-stop after 10 seconds
-    setTimeout(() => {
-      setShowScanner(false);
-      if (scannerInstance) {
-        scannerInstance.stop().catch((err) => {
-          console.error('Failed to stop scanner:', err);
-        });
-      }
-    }, 45000);
-  };
-
-  // Add scanner instance ref callback
-  const onScannerLoad = (instance) => {
-    setScannerInstance(instance);
-  };
+  }, 1000);
 
   if (!event) {
     return (
@@ -93,35 +71,7 @@ function CheckIn() {
       </div>
       <div className="check-in-wrapper">
         <div className="left">
-          <div className="scanner">
-            <div className="scanner-content">
-              <h2>Scan QR Code to Check-In</h2>
-              <p className="scanner-text">
-                <em>
-                  Scan QR Code by holding printed badge in front of camera
-                  located at the top of this device.
-                </em>
-              </p>
-              {!showScanner ? (
-                <div className="scanner-start-container">
-                  <button 
-                    className="scanner-start-button"
-                    onClick={handleStartScanning}
-                  >
-                    Start Scanning
-                  </button>
-                </div>
-              ) : (
-                <QRCodeScanner
-                  fps={10}
-                  qrbox={250}
-                  disableFlip={false}
-                  qrCodeSuccessCallback={onNewScanResult}
-                  verbose={true}
-                />
-              )}
-            </div>
-          </div>
+          <Scanner onScan={handleScan} isSessionFull={isSessionFull} />
           <AttendeeCount
             checkedInCount={checkedInCount}
             capacity={event?.capacity}
