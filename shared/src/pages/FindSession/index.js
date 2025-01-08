@@ -1,3 +1,3 @@
-import FindSession from './FindSession'
+import FindSession from './FindSession';
 
-export default FindSession
+export default FindSession;
