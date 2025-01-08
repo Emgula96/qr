@@ -71,7 +71,7 @@ function CheckIn() {
       </div>
       <div className="check-in-wrapper">
         <div className="left">
-          <Scanner onScan={handleScan} isSessionFull={isSessionFull} />
+          <Scanner onScan={handleScan} />
           <AttendeeCount
             checkedInCount={checkedInCount}
             capacity={event?.capacity}

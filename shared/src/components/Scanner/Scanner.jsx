@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import QRCodeScanner from '../QRCodeScanner';
 import PropTypes from 'prop-types';
+import './scanner.scss';
 
 export function Scanner({ onScan }) {
-  const [showScanner, setShowScanner] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
 
   //Starts timeout when component mounts
   const handleStartScanning = () => {
