@@ -1,0 +1,42 @@
+.scanner {
+  padding: 20px;
+  
+  .scanner-text {
+    font-size: 20px;
+    text-align: center;
+    margin: 0.5rem;
+  }
+  
+  .scanner-content {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+
+    .qr-code-scanner {
+      flex: 1;
+      width: 100%;
+    }
+  }
+}
+
+.scanner-start-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.scanner-start-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #3f738d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #3f738d;
+  }
+}

@@ -73,7 +73,7 @@ SessionInfo.propTypes = {
     certificate_type_id: PropTypes.string,
     event_dates: PropTypes.arrayOf(
       PropTypes.shape({
-        start_time: PropTypes.string
+        start_time: PropTypes.string,
       })
     ),
   }),

@@ -10,7 +10,7 @@ html {
 // Main layout container
 .check-in-wrapper {
   display: flex;
-  height: calc(100vh - 60px); // Accounting for timestamp header
+  height: calc(100vh - 60px);
   width: 100%;
   gap: 4rem;
 }
@@ -27,32 +27,15 @@ html {
 // Left column (40% width)
 .left {
   width: 40%;
+  padding-left: 15px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 2.5rem;
 
   h2 {
     text-align: center;
     margin: 0.5rem;
-  }
-
-  .scanner {
-    padding: 20px;
-    .scanner-text {
-      font-size: 20px;
-      text-align: center;
-      margin: 0.5rem;
-    }
-    .scanner-content {
-      height: 50%;
-      display: flex;
-      flex-direction: column;
-
-      .qr-code-scanner {
-        flex: 1;
-        width: 100%;
-      }
-    }
   }
 
   .attendee-container {
@@ -101,27 +84,7 @@ html {
   align-items: center;
 }
 
-.room-name-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.room-name {
-  font-size: 2em;
-  font-weight: bold;
-  margin: 10px 0 20px;
-}
-
-.room-name-text {
-  font-size: 2em;
-  font-weight: bold;
-  margin: 10px 0 20px;
-  text-transform: uppercase;
-  color: #3f738d;
-}
-//Region 4 logo
+// Region 4 logo
 .region-4-logo {
   height: 15%;
   display: flex;
