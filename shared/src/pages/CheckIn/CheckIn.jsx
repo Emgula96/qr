@@ -14,7 +14,6 @@ import { debounce } from '../../util/Functions/debounce';
 import { Notes } from '../../components/Notes/Notes';
 import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
 import { handleQrScan } from '../../util/Functions/handleQrScan';
-import { dummySession } from './CheckInStatusChecks';
 
 function CheckIn() {
   const [event, setEvent] = useState(null);
@@ -127,7 +126,7 @@ function CheckIn() {
               <div className="qr-code-scanner">
                 <QRCodeScanner
                   fps={10}
-                  qrbox={354}
+                  qrbox={250}
                   disableFlip={false}
                   qrCodeSuccessCallback={onNewScanResult}
                   verbose={true}
@@ -161,9 +160,9 @@ function CheckIn() {
           </p>
           <div className="session-info-container">
             <SessionInfo event={event} />
+            </div>
             <div className="info-footer">
               <img className='logo' src="region4header.png" />
-            </div>
           </div>
 
         </div>

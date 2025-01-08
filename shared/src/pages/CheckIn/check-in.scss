@@ -1,188 +1,120 @@
-body,
-html {
+// Reset and base styles
+body, html {
   margin: 0;
   padding: 0;
+  height: 100vh;
   overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
 }
-//parent div for if no event is found
-.parent-div {
+
+// Main layout container
+.check-in-wrapper {
   display: flex;
-  flex-direction: column;
+  height: calc(100vh - 60px); // Accounting for timestamp header
+  width: 100%;
+  gap: 4rem
+}
+
+// Timestamp header
+.timestamp-container {
+  height: 60px;
+  width: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5rem;
-}
-.check-in-wrapper {
-  gap: 8rem;
-  width: 100%;
-  height: 85vh;
-  display: flex;
-  justify-content: space-between;
 }
 
-.check-in-wrapper-item {
-  display: inline-flex;
-
-  p {
-    margin-left: 5px;
-  }
-}
-
-.check-in-wrapper-list {
-  li {
-    margin-bottom: 1rem;
-  }
-}
-.right {
-  width: 67%;
-  height: 100%;
-  margin-top: 4rem;
-
-  .room-name-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-
-    .room-name-text {
-      font-size: 4em;
-      color: #3F738D;
-    }
-    
-    .room-name {
-      font-size: 4em;
-    }
-  }
-
-  .session-info-container {
-    height: 65vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .info-footer {
-      position: fixed;
-      bottom: 2rem;
-      right: 26rem;
-      z-index: 1000;
-      
-      .region4logo {
-        max-height: 10rem;
-        width: auto;
-      }
-    }
-  }
-}
+// Left column (33% width)
 .left {
-  width: 33%;
-  min-width: 40%;
-  height: 100%;
+  width: 40%;
   display: flex;
   flex-direction: column;
+  gap: 2.5rem;
+  
+  h2{
+    text-align: center;
+    margin: 0.5rem;
+  }
 
   .scanner {
-    height: 80vh;
-
+    padding: 20px;
     .scanner-text {
-      font-size: 1.5em;
-    }
-
-    .scanner-content {
-      height: 100%;
-      margin: 0px 40px;
+      font-size: 20px;
       text-align: center;
+      margin: 0.5rem;
+    }
+    .scanner-content {
+      height: 50%;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       
       .qr-code-scanner {
-        height: 100%;
+        flex: 1;
         width: 100%;
-        object-fit: contain;
       }
     }
   }
 
-.attendee-container {
-  background-color: #ebf0f2;
-  max-height: 300px;
-  min-width: 400px;
+  .attendee-container {
+    background-color: #ebf0f2;
+ max-height: 200px;
+  min-width: 540px;
   margin-right: 40px;
   text-align: center;
   padding: 20px;
-  margin: 20px 40px;
+  margin: 20px 20px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-
+    
     .count {
       height: 75%;
       display: flex;
       justify-content: center;
       align-items: center;
-
+      
       p {
-        font-size: 6em;
+        font-size: 3em;
         font-weight: bold;
         margin: 0;
       }
     }
-
-    h2 {
-      font-size: 28px;
-    }
-}
-}
-
-.badge-wrapper {
-  display: flex;
-  align-items: center;
-
-  .messages {
-    margin-left: 10px;
-
-    .details {
-      margin-top: 10px;
-    }
-
-    p {
-      margin: 0;
-    }
-  }
-
-  .header {
-    font-size: 1.5em;
-    font-weight: bold;
-
-    &.fail {
-      color: #940609;
-    }
-
-    &.success {
-      color: green;
-    }
   }
 }
 
-.timestamp-container {
+// Right column (60% width)
+.right {
+  width: 60%;
+  height: 100%;
+  padding: 20px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+
+  .session-info-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Logo container at bottom
+  .info-footer {
+    height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    
+    .logo {
+      max-height: 100%;
+      width: auto;
+    }
+  }
 }
 
 .large-text {
-  font-size: 36px;
+  font-size: 24px;
   font-weight: normal;
-  margin: 10px 0 20px;
+  margin: 10px 0 15px;
 
   strong {
     font-weight: bold;
   }
-}
-
-.extra-bottom-space {
-  margin-bottom: 30px;
 }
 
 .session-info-grid {
@@ -190,7 +122,7 @@ html {
   grid-template-columns: auto 1fr;
   gap: 10px 20px;
   align-items: start;
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .session-info-item {
@@ -199,14 +131,15 @@ html {
   p {
     margin: 0;
     line-height: 1.5;
-    font-size: 24px;
+    font-size: 20px;
   }
 
   b {
     white-space: nowrap;
-    font-size: 24px;
+    font-size: 20px;
   }
 }
+
 .page-footer {
   height: 50vh;
   display: flex;
@@ -214,41 +147,43 @@ html {
   align-items: center;
 }
 
-.info-footer {
+
+.region4logo {
+  margin-top: 45px;
   display: flex;
-  justify-content: right;
+  justify-content: center;
+  height: 114px;
 }
 
-.region4logo img {
-  width: 250px;
-  height: 114px;
-      }
-  .logo {
-        margin-right: 2rem;
-        max-height: 10rem;
-        margin-bottom: 1rem;
-        width: auto;
-      }
+.logo {
+  max-height: 10rem;
+  width: auto;
+}
 
 .count {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .room-name-container {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 10px;
+  margin-top: 15px
 }
+
 .room-name {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
   margin: 10px 0 20px;
+  
 }
+
 .room-name-text {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: bold;
   margin: 10px 0 20px;
   text-transform: uppercase;
+  color: #3F738D;
 }
