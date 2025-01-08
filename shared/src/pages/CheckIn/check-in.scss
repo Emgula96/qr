@@ -93,71 +93,6 @@ html {
     display: flex;
     flex-direction: column;
   }
-
-  // Logo container at bottom
-  .info-footer {
-    height: 15%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-
-    .logo {
-      max-height: 100%;
-      width: auto;
-    }
-  }
-}
-
-.large-text {
-  font-size: 24px;
-  font-weight: normal;
-  margin: 10px 0 15px;
-
-  strong {
-    font-weight: bold;
-  }
-}
-
-.session-info-grid {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px 20px;
-  align-items: start;
-  font-size: 20px;
-}
-
-.session-info-item {
-  display: contents;
-
-  p {
-    margin: 0;
-    line-height: 1.5;
-    font-size: 20px;
-  }
-
-  b {
-    white-space: nowrap;
-    font-size: 20px;
-  }
-}
-
-.page-footer {
-  height: 50vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.region4logo {
-  margin-top: 45px;
-  display: flex;
-  justify-content: center;
-  height: 114px;
-}
-
-.logo {
-  max-height: 10rem;
-  width: auto;
 }
 
 .count {
@@ -185,4 +120,16 @@ html {
   margin: 10px 0 20px;
   text-transform: uppercase;
   color: #3f738d;
+}
+//Region 4 logo
+.region-4-logo {
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+
+  .logo {
+    max-height: 100%;
+    width: auto;
+  }
 }

@@ -1,0 +1,20 @@
+.room-name-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+
+  .room-name {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0 20px;
+  }
+
+  .room-name-text {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0 20px;
+    text-transform: uppercase;
+    color: #3f738d;
+  }
+}
