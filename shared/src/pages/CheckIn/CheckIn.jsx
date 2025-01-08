@@ -52,7 +52,7 @@ function CheckIn() {
     // Fetch event immediately on component mount
     fetchEvent();
 
-    // Set up interval to fetch event every 15 minutes
+    // Set up interval to fetch event every 3 minutes
     const intervalId = setInterval(fetchEvent, 3 * 60 * 1000);
 
     // Clean up interval on component unmount
