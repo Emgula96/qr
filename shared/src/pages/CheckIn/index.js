@@ -1,3 +1,3 @@
-import CheckIn from './CheckIn'
+import CheckIn from './CheckIn';
 
-export default CheckIn
+export default CheckIn;

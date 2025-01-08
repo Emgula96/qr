@@ -1,3 +1,3 @@
-import QRCodeScanner from './QRCodeScanner'
+import QRCodeScanner from './QRCodeScanner';
 
-export default QRCodeScanner
+export default QRCodeScanner;

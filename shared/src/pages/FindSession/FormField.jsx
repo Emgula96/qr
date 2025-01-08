@@ -1,32 +1,49 @@
-import { useRef, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import { useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-function FormField({ label, note, htmlFor, placeholder, type, required, value, onChange, onFocus }) {
-  const inputRef = useRef(null)
+function FormField({
+  label,
+  note,
+  htmlFor,
+  placeholder,
+  type,
+  required,
+  value,
+  onChange,
+  onFocus,
+}) {
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    const currRef = inputRef.current
+    const currRef = inputRef.current;
     const handleFocus = () => {
-      onFocus(currRef.id)
-    }
+      onFocus(currRef.id);
+    };
 
-    currRef.addEventListener('focus', handleFocus)
+    currRef.addEventListener('focus', handleFocus);
 
     return () => {
-      currRef.removeEventListener('focus', handleFocus)
-    }
-  }, [onFocus])
+      currRef.removeEventListener('focus', handleFocus);
+    };
+  }, [onFocus]);
 
   return (
-    <div className='find-session-form-group'>
+    <div className="find-session-form-group">
       <label htmlFor={htmlFor}>
         <strong>{label} </strong>
-        {required && <span className='text-danger'>*</span>}
+        {required && <span className="text-danger">*</span>}
       </label>
-      <input ref={inputRef} type={type} id={htmlFor} placeholder={placeholder} value={value} onChange={onChange} />
-      {note && <small className='find-session-note'>{note}</small>}
+      <input
+        ref={inputRef}
+        type={type}
+        id={htmlFor}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+      {note && <small className="find-session-note">{note}</small>}
     </div>
-  )
+  );
 }
 
 FormField.defaultProps = {
@@ -34,8 +51,8 @@ FormField.defaultProps = {
   note: '',
   value: '',
   onChange: () => {},
-  onFocus: () => { },
-}
+  onFocus: () => {},
+};
 
 FormField.propTypes = {
   label: PropTypes.string.isRequired,
@@ -47,6 +64,6 @@ FormField.propTypes = {
   onFocus: PropTypes.func,
   onChange: PropTypes.func,
   required: PropTypes.bool,
-}
+};
 
-export default FormField
+export default FormField;

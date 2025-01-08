@@ -1,3 +1,3 @@
-import SessionInfo from './SessionInfo'
+import SessionInfo from './SessionInfo';
 
-export default SessionInfo
+export default SessionInfo;

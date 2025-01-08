@@ -29,40 +29,30 @@ paths:
                 type: object
                 properties:
                   sessionTitle:
-                    type:
-                      string
+                    type: string
                   sessionSubtitle:
-                    type:
-                      string
+                    type: string
                   firstName:
-                    type:
-                      string
+                    type: string
                   lastName:
-                    type: 
-                      string
+                    type: string
                   sessionDescription:
-                    type:
-                      string
+                    type: string
                   qrImageURL:
-                    type:
-                      string
+                    type: string
                   sessionDate:
-                    type:
-                      string
+                    type: string
                   brandImageURL:
-                    type:
-                      string
+                    type: string
                   ctaTitle:
-                    type:
-                      string
+                    type: string
                   ctaButtonText:
-                    type:
-                      string
-                      
+                    type: string
+
   /kiosk/session/{id}:
     get:
       tags:
-        - Session 
+        - Session
       description: Get session information
       parameters:
         - in: path
@@ -81,7 +71,7 @@ paths:
   /kiosk/session/user:
     get:
       tags:
-        - Session 
+        - Session
       description: Get session information
       parameters:
         - in: query
@@ -112,7 +102,7 @@ paths:
   /panel/session/{id}:
     get:
       tags:
-        - Panel 
+        - Panel
       description: Get session information
       parameters:
         - in: path
@@ -146,8 +136,7 @@ paths:
                   notes:
                     type: array
                     items:
-                      type:
-                        string
+                      type: string
                   maxAttendees:
                     type: integer
                   currentCheckedIn:
@@ -158,35 +147,24 @@ components:
       type: object
       properties:
         sessionHeader:
-          type:
-            string
+          type: string
         sessionSubtitle:
-          type:
-            string
+          type: string
         firstName:
-          type:
-            string
+          type: string
         lastName:
-          type: 
-            string
+          type: string
         email:
-          type:
-            string
+          type: string
         phoneNumber:
-          type:
-            string
+          type: string
         region:
-          type:
-            string
+          type: string
         district:
-          type:
-            string
+          type: string
         campus:
-          type:
-            string
+          type: string
         sessionTitle:
-          type:
-            string
+          type: string
         location:
-          type:
-            string
+          type: string

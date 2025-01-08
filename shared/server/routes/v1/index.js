@@ -1,14 +1,14 @@
-import express from 'express'
-import users from './users.route.js'
-import attendence from './attendance.route.js'
-import qr from './qr.route.js'
-import room from './room.route.js'
+import express from 'express';
+import users from './users.route.js';
+import attendence from './attendance.route.js';
+import qr from './qr.route.js';
+import room from './room.route.js';
 
-const router = express.Router()
+const router = express.Router();
 
-router.use('/users', users)
-router.use('/attendence', attendence)
-router.use('/qr', qr)
-router.use('/room', room)
+router.use('/users', users);
+router.use('/attendence', attendence);
+router.use('/qr', qr);
+router.use('/room', room);
 
-export default router
+export default router;

@@ -27,9 +27,9 @@ function CheckIn() {
     return isLateCheckIn(event);
   }, [event]);
 
-  const sessionStartTime = useMemo(() => 
-    militaryToReadable(event?.event_dates[0]?.start_time),
-  [event]
+  const sessionStartTime = useMemo(
+    () => militaryToReadable(event?.event_dates[0]?.start_time),
+    [event]
   );
 
   const fetchEvent = async () => {
@@ -40,12 +40,12 @@ function CheckIn() {
       );
       console.log('todayEvents', todayEvents);
       const newEventData = displaySession(todayEvents);
-      
+
       // Only reset attnd count if the event ID has changed
       if (newEventData?.id !== event?.id) {
         setCheckedInCount(0);
       }
-      
+
       setEvent(newEventData);
     } catch (error) {
       console.error('Error fetching event:', error);
@@ -77,21 +77,24 @@ function CheckIn() {
   const isSessionFull = useMemo(() => {
     return event && checkedInCount >= event.capacity;
   }, [checkedInCount, event]);
-  const onNewScanResult = debounce(
-    async (decodedText) => {
-      if (isSessionFull) {
-        setStatus('Session Full');
-        return;
-      }
-      const scanResult = await handleQrScan(decodedText, event, beepSound, setStatus, isUserLate);
-      if (scanResult?.success && checkedInCount < event?.capacity) {
-        setCheckedInCount((prevCount) => {
-          return prevCount + 1;
-        });
-      }
-    },
-    500
-  );
+  const onNewScanResult = debounce(async (decodedText) => {
+    if (isSessionFull) {
+      setStatus('Session Full');
+      return;
+    }
+    const scanResult = await handleQrScan(
+      decodedText,
+      event,
+      beepSound,
+      setStatus,
+      isUserLate
+    );
+    if (scanResult?.success && checkedInCount < event?.capacity) {
+      setCheckedInCount((prevCount) => {
+        return prevCount + 1;
+      });
+    }
+  }, 500);
 
   if (!event) {
     return (
@@ -136,7 +139,11 @@ function CheckIn() {
           <div className="attendee-container">
             <h2>Attendee Count</h2>
             <div className="count">
-              <p>{isSessionFull ? "Session at Capacity" : `${checkedInCount} / ${event?.capacity}`}</p>
+              <p>
+                {isSessionFull
+                  ? 'Session at Capacity'
+                  : `${checkedInCount} / ${event?.capacity}`}
+              </p>
             </div>
           </div>
         </div>
@@ -144,30 +151,25 @@ function CheckIn() {
           <div className="room-name-container">
             <h3 className="room-name">Room:</h3>
             <div className="room-name-divider">
-              <h3 className="room-name-text">{event?.event_dates[0]?.room?.label}</h3>
+              <h3 className="room-name-text">
+                {event?.event_dates[0]?.room?.label}
+              </h3>
             </div>
           </div>
-          {status && (
-            <Status status={status} attendeeName={'Test Attendee'} />
-          )}
+          {status && <Status status={status} attendeeName={'Test Attendee'} />}
           <p className="large-text extra-bottom-space">{event?.title}</p>
           <p className="large-text extra-bottom-space">
             Session begins at {sessionStartTime} (CST)
           </p>
-          <p className="large-text extra-bottom-space">
-            Session Information
-          </p>
+          <p className="large-text extra-bottom-space">Session Information</p>
           <div className="session-info-container">
             <SessionInfo event={event} />
-            </div>
-            <div className="info-footer">
-              <img className='logo' src="region4header.png" />
           </div>
-
+          <div className="info-footer">
+            <img className="logo" src="region4header.png" />
+          </div>
         </div>
-        {event?.notes && event?.notes.trim() && (
-          <Notes items={event?.notes} />
-        )}
+        {event?.notes && event?.notes.trim() && <Notes items={event?.notes} />}
       </div>
     </>
   );

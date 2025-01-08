@@ -10,4 +10,4 @@ export const debounce = (callback, wait) => {
       callback(...args);
     }, wait);
   };
-}; 
+};

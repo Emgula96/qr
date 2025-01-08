@@ -1,61 +1,60 @@
 body {
-    background-image: url('../imgs/background.jpg');
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    background-size: cover;
-    background-position: center bottom;
-    height: 100vh;
-    background-attachment: fixed;
+  background-image: url('../imgs/background.jpg');
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: cover;
+  background-position: center bottom;
+  height: 100vh;
+  background-attachment: fixed;
 }
 
 .text-danger {
-    color: #dc3545 !important;
+  color: #dc3545 !important;
 }
 
 .qr-inner-content-heading {
-    font-weight: 500;
-    font-size: 2rem;
-    margin-top: 0.5rem;
+  font-weight: 500;
+  font-size: 2rem;
+  margin-top: 0.5rem;
 }
 
 .qr-button {
-    display: flex;
+  display: flex;
 
-    button {
-        cursor: pointer;
-        padding: 1rem;
-        font-weight: 700;
-        font-size: 16px;
-        color: #fff;
-        background-color: rgb(64, 115, 142);
-        border-color: #6c757d;
-        border-radius: 0.25rem;
-        line-height: 1.5;
-        border: 1px solid transparent;
-    }
+  button {
+    cursor: pointer;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fff;
+    background-color: rgb(64, 115, 142);
+    border-color: #6c757d;
+    border-radius: 0.25rem;
+    line-height: 1.5;
+    border: 1px solid transparent;
+  }
 }
 
 .qr-button-start {
-    justify-content: start;
+  justify-content: start;
 }
 
 .qr-button-multi {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .qr-button-center {
-    justify-content: center;
+  justify-content: center;
 }
 
 .qr-button-end {
-    justify-content: end;
+  justify-content: end;
 }
 
 .qr-inner-content-wrapper {
-    width: 100%;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 0.25rem;
-    background-color: #F2F1F1;
-    ;
-    padding: 16px;
+  width: 100%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  background-color: #f2f1f1;
+  padding: 16px;
 }
