@@ -1,5 +1,5 @@
-import Page from '../../components/Page'
-import Content from '../../components/Content'
+import Page from '../../components/Page';
+import Content from '../../components/Content';
 
 function Loading() {
   return (
@@ -8,7 +8,7 @@ function Loading() {
         <div>Loading...</div>
       </Content>
     </Page>
-  )
+  );
 }
 
-export default Loading
+export default Loading;

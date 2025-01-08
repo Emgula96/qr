@@ -10,7 +10,7 @@ services:
     ports:
       - 4173:4173
       - 24678:24678
-  
+
   server:
     build: ./server
     depends_on:

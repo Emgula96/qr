@@ -5,15 +5,21 @@
 import { mapErrorCodeToStatusMessage } from '../../pages/CheckIn/CheckinFunctions';
 import service from './service';
 
-export const parseScan = text => 
-  Object.fromEntries(text.split(',').map(pair => pair.split('=')));
+export const parseScan = (text) =>
+  Object.fromEntries(text.split(',').map((pair) => pair.split('=')));
 
-export const handleQrScan = async (decodedText, event, beepSound, setStatus, isLate) => {
+export const handleQrScan = async (
+  decodedText,
+  event,
+  beepSound,
+  setStatus,
+  isLate
+) => {
   const { userId, sessionId } = parseScan(decodedText);
   const eventDateId = event?.event_dates[0]?.id;
   try {
     const checkedIn = await service.checkInUser(userId, sessionId, eventDateId);
-    
+
     if (checkedIn.error) {
       beepSound.play();
       const errorMessage = mapErrorCodeToStatusMessage(checkedIn.statusCode);
@@ -33,4 +39,4 @@ export const handleQrScan = async (decodedText, event, beepSound, setStatus, isL
       setStatus(null);
     }, 4000);
   }
-}; 
+};

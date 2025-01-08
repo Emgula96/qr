@@ -1,6 +1,7 @@
 # KIOSK and WALL PANEL Front End Applications
 
 ## Table of Contents
+
 - [Environment Configuration](#environment-configuration)
 - [Applications](#applications)
 - [Application Workflow](#application-workflow)
@@ -10,6 +11,7 @@
 ## Environment Configuration
 
 ### Add the following .env under /shared/server
+
 ```
 # DEVELOPMENT
 # ESCWORKS_API_URL=https://dev.escworks.com/api
@@ -25,6 +27,7 @@ ESCWORKS_API_KEY='{"API-KEY":"aB1!cD2@eF3#gH4$iJ5%kL6^mN7&oP8*pQ9(rS0)qT"}'
 ```
 
 ### These are put in .env under /shared/
+
 ```
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
@@ -63,7 +66,9 @@ MSSQL_PORT=1433
 ## Applications
 
 ### 1. Kiosk Check-In System
+
 The kiosk application allows users to check in and receive their QR code badge:
+
 - Initial registration and check-in
 - Find session/workshop information
 - Prints personalized QR code badges for attendees
@@ -72,7 +77,9 @@ The kiosk application allows users to check in and receive their QR code badge:
 - Runs on dedicated touch-screen kiosks
 
 ### 2. Wall Panel Check-In System
+
 Wall panels are mounted displays where users scan their QR code badges to:
+
 - Check into sessions/workshops
 - Document attendance
 - Record professional development hours
@@ -83,30 +90,36 @@ Wall panels are mounted displays where users scan their QR code badges to:
 ## Application Workflow
 
 ### 1. Initial Setup/ Running the application
+
 - Ensure all environment variables are properly configured in `.env`
 - Start the Docker services using `docker compose up`
 - Run `npm run dev` inside /shared to start the frontend application
 - Run `npm run dev inside /shared/server` to start the backend application
 
 ### 2. Authentication Flow
+
 - Application uses AWS Cognito for user authentication
 - Local development uses the configured `VITE_CLIENT_ID` and `VITE_CLIENT_SECRET`
 
 ### 3. API Communication
+
 - Frontend communicates with ESCWorks(NextGen) API using configured endpoints
 - Development: Uses local API at `http://localhost:3030/kiosk-express`
 - Production: Uses deployed API endpoints based on environment
 
 ### 4. Database Interactions
+
 - Application connects to both PostgreSQL and MSSQL databases
 - PostgreSQL: Used for local development and storing application data
 - MSSQL: Connects to ESCWorks system database for core business logic
 
 ### 5. Development Mode
+
 - Set `VITE_ENVIRONMENT=development` for development features
 - Debug mode can be toggled using `VITE_MODE_DEBUG_LOCAL_PROD`
 
 ### 6. QR Check-In Process
+
 1. User scans QR code at kiosk
 2. NextGen(API) validates user credentials if checks pass call lambda function to record attendance
 3. Attendance is recorded in the database
@@ -115,6 +128,7 @@ Wall panels are mounted displays where users scan their QR code badges to:
 ---
 
 ## Supported Environments
+
 - Development
 - QA
 - UAT
@@ -125,9 +139,11 @@ Note: Each environment requires its own API configuration and credentials.
 ---
 
 ## Project Structure
+
 The project follows a modular architecture with clear separation between frontend and backend components.
 
 ### Directory Layout
+
 ```
 /
 ├── shared/              # Main application directory
@@ -156,21 +172,22 @@ The project follows a modular architecture with clear separation between fronten
 ### Directory Descriptions
 
 #### /shared/server
+
 - Contains the Express.js backend application
 - Handles API requests
 - Manages database connections
 - Processes business logic
 
 #### /shared/src
+
 - Contains the React frontend application
 - Manages UI components
 - Handles user interactions
 - Communicates with backend API
 
 #### /shared/public
+
 - Static files and assets
 - Images
 - Fonts
 - Other static resources
-
-

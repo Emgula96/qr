@@ -7,10 +7,11 @@ export const useLwDevManager = () => {
 
   useEffect(() => {
     const $ = window.$; // Access jQuery from the global window object
-    const conn = $.hubConnection("http://localhost:60559/"); // Replace with your actual URL
-    const proxyObj = conn.createHubProxy("deviceManager");
+    const conn = $.hubConnection('http://localhost:60559/'); // Replace with your actual URL
+    const proxyObj = conn.createHubProxy('deviceManager');
 
-    conn.start()
+    conn
+      .start()
       .done(() => {
         setCurrConnState(1); // 'Connected'
         setConnection(conn);
@@ -25,7 +26,7 @@ export const useLwDevManager = () => {
     if (currConnState === 1) {
       callback(proxy);
     } else {
-      errorCallback("Connection not established");
+      errorCallback('Connection not established');
     }
   };
 

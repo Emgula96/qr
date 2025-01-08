@@ -1,3 +1,3 @@
-import TimeStamp from './TimeStamp'
+import TimeStamp from './TimeStamp';
 
-export default TimeStamp
+export default TimeStamp;

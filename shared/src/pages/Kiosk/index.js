@@ -1,3 +1,3 @@
-import Kiosk from './Kiosk'
+import Kiosk from './Kiosk';
 
-export default Kiosk
+export default Kiosk;

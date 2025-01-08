@@ -7,21 +7,23 @@ class LwDevManagerService {
       'Connected',
       'Reconnecting',
       'Disconnecting',
-      'Disconnected'
+      'Disconnected',
     ];
     this.currConnState = 4; // Default to 'Disconnected'
 
-    this.connection = $.hubConnection("http://localhost:60559/");
-    this.proxy = this.connection.createHubProxy("deviceManagerHub");
+    this.connection = $.hubConnection('http://localhost:60559/');
+    this.proxy = this.connection.createHubProxy('deviceManagerHub');
 
     // Register an event before connection.start() is called.
-    this.proxy.on('_a', function() {});
+    this.proxy.on('_a', function () {});
 
     this.connection.stateChanged((t) => {
       this.currConnState = t.newState;
       console.log(
-        'DeviceManager state changed from: ' + this.connState[t.oldState] +
-        ' to ' + this.connState[t.newState]
+        'DeviceManager state changed from: ' +
+          this.connState[t.oldState] +
+          ' to ' +
+          this.connState[t.newState]
       );
     });
 

@@ -5,11 +5,12 @@ export const useTicketPrinter = () => {
 
   const printTicket = (ticketData, isHtml, cb) => {
     getSignalRConn((proxy) => {
-      proxy.invoke("TicketPrinter_Print", ticketData, isHtml)
-        .done(res => {
+      proxy
+        .invoke('TicketPrinter_Print', ticketData, isHtml)
+        .done((res) => {
           cb(res);
         })
-        .fail(err => {
+        .fail((err) => {
           console.error(JSON.stringify(err));
           cb(null);
         });
