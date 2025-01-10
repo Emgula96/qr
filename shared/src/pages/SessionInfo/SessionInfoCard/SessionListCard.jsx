@@ -1,6 +1,6 @@
-import './session-info-card.scss';
+import './session-list-card.scss';
 
-const SessionInfoCard = ({
+const SessionListCard = ({
   name = 'Sonya Test',
   email = 'sonya.test@gmail.com',
   sessionTitle = 'Session Title',
@@ -38,4 +38,4 @@ const SessionInfoCard = ({
   );
 };
 
-export default SessionInfoCard;
+export default SessionListCard;

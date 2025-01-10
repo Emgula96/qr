@@ -4,11 +4,11 @@ import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
 import service from '../../util/Functions/service';
-import './session-info.scss';
-import SessionInfoCard from './SessionInfoCard/SessionInfoCard';
+import './session-list.scss';
+import SessionListCard from './SessionListCard/SessionListCard';
 import Layout from '../FindSession/FindSessionButton/Layout';
 
-function SessionInfo() {
+function SessionList() {
   const [user, setUser] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,7 +51,7 @@ function SessionInfo() {
       <TimeStamp />
       <div className="center-container">
         <h1>Welcome to Region 4</h1>
-        <SessionInfoCard />
+        <SessionListCard />
       </div>
       <Content>
         {/* {!!user && ( */}
@@ -62,4 +62,4 @@ function SessionInfo() {
   );
 }
 
-export default SessionInfo;
+export default SessionList;

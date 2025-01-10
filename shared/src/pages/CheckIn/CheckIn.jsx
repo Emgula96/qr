@@ -2,10 +2,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import TimeStamp from '../../components/TimeStamp';
-import QRCodeScanner from '../../components/QRCodeScanner';
 import beep from '../../assets/sounds/beep.wav';
 import './check-in.scss';
-import Status from '../Status/Status';
+import Status from '../../components/Status/Status';
 import { isLateCheckIn } from './isLateCheckIn';
 import { debounce } from '../../util/Functions/debounce';
 import { SessionInfo } from '../../components/SessionInfo/SessionInfo';
