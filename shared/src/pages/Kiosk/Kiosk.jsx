@@ -4,7 +4,7 @@ import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
 import './kiosk.scss';
 import KioskError from './KioskError';
-import Layout from '../FindSession/FindSessionButton/Layout';
+import FindSessionButton from '../FindSession/FindSessionButton/FindSessionButton';
 
 function Kiosk({ deviceId }) {
   const [errorState, setErrorState] = useState(null);
@@ -47,7 +47,7 @@ function Kiosk({ deviceId }) {
           />
         )}
         <div className="qr-button qr-button-left">
-          <Layout deviceId={deviceId} />
+          <FindSessionButton deviceId={deviceId} />
         </div>
       </Content>
     </Page>
