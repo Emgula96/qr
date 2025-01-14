@@ -47,13 +47,13 @@ function SessionList() {
   const firstSession = user?.event_dates[0];
   const room = firstSession?.room?.name;
   const title = firstSession?.title;
-
+  console.log(user.event_dates)
   return (
     <Page>
       <TimeStamp />
       <div className="center-container">
         <h1>Welcome to Region 4</h1>
-        {!user?.event_dates?.length === 0 ? (
+        {user?.event_dates?.length > 0 ? (
           <SessionListCard
             name={`${firstName} ${lastName}`}
             email={email}
