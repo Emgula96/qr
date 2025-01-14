@@ -5,6 +5,7 @@ const SessionListCard = ({
   email,
   sessionTitle,
   room,
+  deviceId
 }) => {
   return (
     <div className="session-info-card">
@@ -30,7 +31,7 @@ const SessionListCard = ({
         <span className="label">Location:</span>
         <span className="value">{room}</span>
       </div>
-
+      {/* TODO: Add deviceId to the button so that it can be used print to correct device */}
       <div className="button-container">
         <button className="print-badge-button">Print Badge</button>
       </div>
@@ -39,6 +40,7 @@ const SessionListCard = ({
 };
 
 SessionListCard.propTypes = {
+  deviceId: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   sessionTitle: PropTypes.string.isRequired,

@@ -59,6 +59,7 @@ function SessionList() {
             email={email}
             sessionTitle={title}
             room={room}
+            deviceId={deviceId}
           />
         ) : (
           <KioskError
