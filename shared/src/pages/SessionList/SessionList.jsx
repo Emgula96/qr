@@ -6,7 +6,6 @@ import Content from '../../components/Content';
 import service from '../../util/Functions/service';
 import './session-list.scss';
 import SessionListCard from './SessionListCard/SessionListCard';
-import FindSessionButton from '../FindSession/FindSessionButton/FindSessionButton';
 function SessionList() {
   const [user, setUser] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +23,6 @@ function SessionList() {
   useEffect(() => {
     async function fetchData() {
       try {
-        console.log('fetching data');
         setIsLoading(true);
         const userInfo = await service.getUserAndFirstEvent(
           email,
