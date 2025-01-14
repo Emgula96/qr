@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
 import service from '../../util/Functions/service';
-import './session-info.scss';
-import SessionInfoCard from './SessionInfoCard/SessionInfoCard';
-import Layout from '../FindSession/FindSessionButton/Layout';
-
-function SessionInfo() {
+import './session-list.scss';
+import SessionListCard from './SessionListCard/SessionListCard';
+function SessionList() {
   const [user, setUser] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -51,15 +49,15 @@ function SessionInfo() {
       <TimeStamp />
       <div className="center-container">
         <h1>Welcome to Region 4</h1>
-        <SessionInfoCard />
+        <SessionListCard />
       </div>
       <Content>
-        {/* {!!user && ( */}
-        <Layout deviceId={deviceId} />
-        {/* )} */}
+        <Link to="/find-session" className="find-sessions-button">
+          Go Back
+        </Link>
       </Content>
     </Page>
   );
 }
 
-export default SessionInfo;
+export default SessionList;

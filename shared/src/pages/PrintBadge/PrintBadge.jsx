@@ -5,7 +5,7 @@ import Page from '../../components/Page';
 import Content from '../../components/Content';
 import service from '../../util/Functions/service';
 import './print-badge.scss';
-import Layout from '../FindSession/FindSessionButton/Layout';
+import FindSessionButton from '../FindSession/FindSessionButton/FindSessionButton';
 import Map from '../../assets/imgs/maps/1.png';
 const generateImageUrl = (deviceId = '1', zoneId = 'MCC 103') => {
   const bucketUrl = 'https://kiosk-maps.s3.us-east-2.amazonaws.com';
@@ -67,7 +67,7 @@ function PrintBadge() {
           )}
         </div>
         <div className="qr-button qr-button-left">
-          <Layout deviceId={deviceId} />
+          <FindSessionButton deviceId={deviceId} />
         </div>
       </Content>
     </Page>

@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Loading from './pages/Loading';
 const Kiosk = React.lazy(() => import('./pages/Kiosk'));
 const FindSession = React.lazy(() => import('./pages/FindSession'));
-const SessionInfo = React.lazy(() => import('./pages/SessionInfo'));
+const SessionList = React.lazy(() => import('./pages/SessionList'));
 const PrintBadge = React.lazy(() => import('./pages/PrintBadge'));
 const CheckIn = React.lazy(() => import('./pages/CheckIn'));
 const Playground = React.lazy(() => import('./pages/Playground'));
@@ -42,8 +42,8 @@ const Router = () => {
           element={<FindSession deviceId={deviceId} />}
         />
         <Route
-          path="/session-info"
-          element={<SessionInfo deviceId={deviceId} />}
+          path="/session-list"
+          element={<SessionList deviceId={deviceId} />}
         />
         <Route
           path="/print-badge"

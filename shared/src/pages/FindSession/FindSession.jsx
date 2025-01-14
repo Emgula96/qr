@@ -8,7 +8,7 @@ import './find-session.scss';
 
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
-import Layout from './FindSessionButton/Layout';
+import FindSessionButton from './FindSessionButton/FindSessionButton';
 
 function FindSession() {
   const location = useLocation();
@@ -115,7 +115,12 @@ function FindSession() {
             <div className="find-session-submission">
               <div>
                 <div className="qr-button qr-button-left">
-                  <Layout deviceId={deviceId} />
+                  <FindSessionButton 
+                    deviceId={deviceId}
+                    email={email}
+                    firstName={firstName}
+                    lastName={lastName}
+                  />
                 </div>
                 <p className="text-danger">
                   <em>* indicates a required field</em>
