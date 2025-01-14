@@ -46,6 +46,7 @@ function SessionList() {
   if (error) return <p>Error: {error}</p>;
   const firstSession = user?.event_dates[0];
   const room = firstSession?.room?.name;
+  const title = firstSession?.title;
 
   return (
     <Page>
@@ -56,7 +57,7 @@ function SessionList() {
           <SessionListCard
             name={`${firstName} ${lastName}`}
             email={email}
-            sessionTitle={firstSession.sub_title}
+            sessionTitle={title}
             room={room}
           />
         ) : (

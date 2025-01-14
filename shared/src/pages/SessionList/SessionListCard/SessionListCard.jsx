@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const SessionListCard = ({
   name,
   email,
-  label,
+  sessionTitle,
   room,
 }) => {
   return (
@@ -23,7 +23,7 @@ const SessionListCard = ({
 
       <div className="info-item">
         <span className="label">Session Title:</span>
-        <span className="value">{label}</span>
+        <span className="value">{sessionTitle}</span>
       </div>
 
       <div className="info-item">
@@ -41,7 +41,7 @@ const SessionListCard = ({
 SessionListCard.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  sessionTitle: PropTypes.string.isRequired,
   room: PropTypes.string.isRequired,
 };
 
