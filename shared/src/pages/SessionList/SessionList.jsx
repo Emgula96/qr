@@ -43,11 +43,9 @@ function SessionList() {
     fetchData();
   }, [email, firstName, lastName]);
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
   const firstSession = user?.event_dates[0];
   const room = firstSession?.room?.name;
   const title = firstSession?.title;
-  console.log(user.event_dates)
   return (
     <Page>
       <TimeStamp />
