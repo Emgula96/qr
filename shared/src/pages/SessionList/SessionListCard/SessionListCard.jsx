@@ -1,10 +1,10 @@
 import './session-list-card.scss';
-
+import PropTypes from 'prop-types';
 const SessionListCard = ({
-  name = 'Sonya Test',
-  email = 'sonya.test@gmail.com',
-  sessionTitle = 'Session Title',
-  location = 'Location',
+  name,
+  email,
+  label,
+  room,
 }) => {
   return (
     <div className="session-info-card">
@@ -23,12 +23,12 @@ const SessionListCard = ({
 
       <div className="info-item">
         <span className="label">Session Title:</span>
-        <span className="value">{sessionTitle}</span>
+        <span className="value">{label}</span>
       </div>
 
       <div className="info-item">
         <span className="label">Location:</span>
-        <span className="value">{location}</span>
+        <span className="value">{room}</span>
       </div>
 
       <div className="button-container">
@@ -36,6 +36,13 @@ const SessionListCard = ({
       </div>
     </div>
   );
+};
+
+SessionListCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  room: PropTypes.string.isRequired,
 };
 
 export default SessionListCard;

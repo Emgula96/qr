@@ -6,6 +6,8 @@ import Content from '../../components/Content';
 import service from '../../util/Functions/service';
 import './session-list.scss';
 import SessionListCard from './SessionListCard/SessionListCard';
+import KioskError from '../Kiosk/KioskError';
+
 function SessionList() {
   const [user, setUser] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -40,16 +42,29 @@ function SessionList() {
 
     fetchData();
   }, [email, firstName, lastName]);
-
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+  const firstSession = user?.event_dates[0];
+  const room = firstSession?.room?.name;
 
   return (
     <Page>
       <TimeStamp />
       <div className="center-container">
         <h1>Welcome to Region 4</h1>
-        <SessionListCard />
+        {!user?.event_dates?.length === 0 ? (
+          <SessionListCard
+            name={`${firstName} ${lastName}`}
+            email={email}
+            sessionTitle={firstSession.sub_title}
+            room={room}
+          />
+        ) : (
+          <KioskError
+            title="Session or User Not Found"
+            message="We are unable to find this session please double check all spellings. Please visit Registration Services if you are still having issues."
+          />
+        )}
       </div>
       <Content>
         <Link to="/find-session" className="find-sessions-button">
