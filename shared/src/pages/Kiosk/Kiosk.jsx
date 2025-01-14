@@ -5,6 +5,7 @@ import Content from '../../components/Content';
 import './kiosk.scss';
 import KioskError from './KioskError';
 import FindSessionButton from '../FindSession/FindSessionButton/FindSessionButton';
+import { Link } from 'react-router-dom';
 
 function Kiosk({ deviceId }) {
   const [errorState, setErrorState] = useState(null);
@@ -47,7 +48,9 @@ function Kiosk({ deviceId }) {
           />
         )}
         <div className="qr-button qr-button-left">
-          <FindSessionButton deviceId={deviceId} />
+          <Link to="/find-session" className="find-sessions-button">
+          Print Badge
+        </Link>
         </div>
       </Content>
     </Page>

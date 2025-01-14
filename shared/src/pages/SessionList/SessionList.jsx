@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
@@ -54,9 +54,9 @@ function SessionList() {
         <SessionListCard />
       </div>
       <Content>
-        {/* {!!user && ( */}
-        <FindSessionButton deviceId={deviceId} />
-        {/* )} */}
+        <Link to="/find-session" className="find-sessions-button">
+          Go Back
+        </Link>
       </Content>
     </Page>
   );
