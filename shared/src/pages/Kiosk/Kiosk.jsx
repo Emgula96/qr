@@ -49,8 +49,18 @@ function Kiosk({ deviceId }) {
         )}
         <div className="qr-button qr-button-left">
           <Link to="/find-session" className="find-sessions-button">
-          Print Badge
-        </Link>
+            Print Badge
+          </Link>
+        </div>
+        <div className="qr-button">
+          <Link to="/playground" className="find-sessions-button">
+            Playground
+          </Link>
+        </div>
+        <div className="qr-button">
+          <Link to="/print-badge" className="find-sessions-button">
+            Direct to Print
+          </Link>
         </div>
       </Content>
     </Page>
