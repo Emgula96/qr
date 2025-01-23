@@ -2,6 +2,7 @@ import './session-list-card.scss';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDeviceManager } from '../../Playground/useDeviceManager';
+import DeviceManagerAndTicketPrinter from '../../Playground/DeviceManagerAndTicketPrinter';
 const SessionListCard = ({
   name,
   email,
@@ -70,6 +71,7 @@ const SessionListCard = ({
           Print Badge
         </button>
       </div>
+      <DeviceManagerAndTicketPrinter />
     </div>
   );
 };
