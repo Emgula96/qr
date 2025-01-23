@@ -7,6 +7,42 @@ const SessionListCard = ({
   room,
   deviceId
 }) => {
+  console.log('deviceId', deviceId);
+  console.log('name', name);
+  console.log('email', email);
+  console.log('sessionTitle', sessionTitle);
+  console.log('room', room);
+  
+  const handlePrintBadge = () => {
+    // Format the badge content using FGL (Format Generation Language)
+    const badgeContent = `
+      <RC410,10><RTF1,12><SD1>${name}<RL>
+      <RC410,40><RTF1,10><SD1>${email}<RL>
+      <RC410,70><RTF1,10><SD1>${sessionTitle}<RL>
+      <RC410,100><RTF1,10><SD1>${room}<RL>
+    `;
+    
+    console.log('Printing badge with content:', badgeContent);
+
+    // Check if DeviceManager is available
+    if (window.LWDeviceManager) {
+      window.LWDeviceManager.TicketPrinter_PrintTicket(
+        deviceId,
+        "TicketPrinter_Gen2.Boca.Lemur",
+        badgeContent,
+        true,
+        (res) => {
+          console.log('Print successful:', res);
+        },
+        () => {
+          console.error('Failed to print badge');
+        }
+      );
+    } else {
+      console.error('Device Manager not available');
+    }
+  };
+
   return (
     <div className="session-info-card">
       <h2>Session Information</h2>
@@ -33,7 +69,9 @@ const SessionListCard = ({
       </div>
       {/* TODO: Add deviceId to the button so that it can be used print to correct device */}
       <div className="button-container">
-        <button className="print-badge-button">Print Badge</button>
+        <button className="print-badge-button" onClick={handlePrintBadge}>
+          Print Badge
+        </button>
       </div>
     </div>
   );
