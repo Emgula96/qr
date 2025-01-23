@@ -1,5 +1,7 @@
 import './session-list-card.scss';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useDeviceManager } from '../../Playground/useDeviceManager';
 const SessionListCard = ({
   name,
   email,
@@ -7,14 +9,16 @@ const SessionListCard = ({
   room,
   deviceId
 }) => {
-  console.log('deviceId', deviceId);
-  console.log('name', name);
-  console.log('email', email);
-  console.log('sessionTitle', sessionTitle);
-  console.log('room', room);
-  
-  const handlePrintBadge = () => {
-    // Format the badge content using FGL (Format Generation Language)
+  const { isLoaded, isInitialized, initializeDeviceManager, printBadge } = useDeviceManager();
+
+  useEffect(() => {
+    if (isLoaded && !isInitialized) {
+      initializeDeviceManager()
+        .catch(error => console.error('Failed to initialize device manager:', error));
+    }
+  }, [isLoaded, isInitialized, initializeDeviceManager]);
+
+  const handlePrintBadge = async () => {
     const badgeContent = `
       <RC410,10><RTF1,12><SD1>${name}<RL>
       <RC410,40><RTF1,10><SD1>${email}<RL>
@@ -22,26 +26,19 @@ const SessionListCard = ({
       <RC410,100><RTF1,10><SD1>${room}<RL>
     `;
     
-    console.log('Printing badge with content:', badgeContent);
-
-    // Check if DeviceManager is available
-    if (window.LWDeviceManager) {
-      window.LWDeviceManager.TicketPrinter_PrintTicket(
-        deviceId,
-        "TicketPrinter_Gen2.Boca.Lemur",
-        badgeContent,
-        true,
-        (res) => {
-          console.log('Print successful:', res);
-        },
-        () => {
-          console.error('Failed to print badge');
-        }
-      );
-    } else {
-      console.error('Device Manager not available');
+    try {
+      await printBadge(deviceId, badgeContent);
+      console.log('Print successful');
+    } catch (error) {
+      console.error('Failed to print badge:', error);
     }
   };
+
+  console.log('deviceId', deviceId);
+  console.log('name', name);
+  console.log('email', email);
+  console.log('sessionTitle', sessionTitle);
+  console.log('room', room);
 
   return (
     <div className="session-info-card">
