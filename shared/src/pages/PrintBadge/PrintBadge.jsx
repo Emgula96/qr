@@ -67,7 +67,9 @@ function PrintBadge() {
           )}
         </div>
         <div className="qr-button qr-button-left">
-          <FindSessionButton deviceId={deviceId} />
+          <Link to="/kiosk" className="find-sessions-button">
+            Back to Kiosk
+          </Link>
         </div>
       </Content>
     </Page>
