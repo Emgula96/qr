@@ -31,7 +31,7 @@
         console.error('signalR disconnected');
         $('#barcode-conn-status').css({ color: 'red' });
         setTimeout(function () {
-          conn
+          conn  
             .start()
             .done(function () {
               console.log('signalR connected');
