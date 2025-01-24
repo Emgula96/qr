@@ -2,7 +2,7 @@ import './session-list-card.scss';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDeviceManager } from '../../Playground/useDeviceManager';
-import qrCode from '../../../assets/qr-code.png';
+import qrCode from '../../../assets/imgs/qrCode.png';
 
 const SessionListCard = ({
   name,
