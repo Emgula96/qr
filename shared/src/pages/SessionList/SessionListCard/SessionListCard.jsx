@@ -21,9 +21,9 @@ const SessionListCard = ({
   const badgeContent = `
       <RC410,10><RTF1,12><SD1> <RL>
       <RC640,200><RTF1,12><SD1>${name}<RU>
-    <RC640,70><RTF1,10><SD1>${sessionTitle}<RL>
-    <RC640,100><RTF1,10><SD1>${room}<RL>
-    <RC100,100><BQ2,2>https://example.com/session/${encodeURIComponent(sessionTitle)}<ET>
+    <RC640,200><RTF1,10><SD1>${sessionTitle}<RL>
+    <RC640,205><RTF1,10><SD1>${room}<RL>
+    <RC100,210><BQ2,2>https://example.com/session/${encodeURIComponent(sessionTitle)}<ET>
   `;
 
   const handlePrintBadge = () => {
