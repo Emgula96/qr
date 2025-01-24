@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const DeviceManagerAndTicketPrinter = () => {
+const TicketPrintTEST = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -96,4 +96,4 @@ const DeviceManagerAndTicketPrinter = () => {
   );
 };
 
-export default DeviceManagerAndTicketPrinter;
+export default TicketPrintTEST;

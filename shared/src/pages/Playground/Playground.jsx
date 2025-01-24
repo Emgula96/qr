@@ -1,7 +1,7 @@
 /* eslint-disable indent */
 import './playground.scss';
 import { Link } from 'react-router-dom';
-import TicketPrinter from './TicketPrinter';
+import TicketPrinter from './TicketPrintTEST';
 const generateImageUrl = (deviceId, zoneId) => {
   const bucketUrl = 'https://kiosk-maps.s3.us-east-2.amazonaws.com';
   const kiosk = `k${deviceId.trim()}`;
