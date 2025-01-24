@@ -10,7 +10,7 @@ const SessionListCard = ({
   room,
   deviceId
 }) => {
-  const { isLoaded, isInitialized, initializeDeviceManager, printBadge } = useDeviceManager();
+  const { isLoaded, isInitialized, initializeDeviceManager, printTicket } = useDeviceManager();
 
   useEffect(() => {
     if (isLoaded && !isInitialized) {
@@ -19,27 +19,16 @@ const SessionListCard = ({
     }
   }, [isLoaded, isInitialized, initializeDeviceManager]);
 
-  const handlePrintBadge = async () => {
-    const badgeContent = `
-      <RC410,10><RTF1,12><SD1>${name}<RL>
-      <RC410,40><RTF1,10><SD1>${email}<RL>
-      <RC410,70><RTF1,10><SD1>${sessionTitle}<RL>
-      <RC410,100><RTF1,10><SD1>${room}<RL>
-    `;
-    
-    try {
-      await printBadge(deviceId, badgeContent);
-      console.log('Print successful');
-    } catch (error) {
-      console.error('Failed to print badge:', error);
-    }
-  };
+  const badgeContent = `
+    <RC410,10><RTF1,12><SD1>${name}<RL>
+    <RC410,40><RTF1,10><SD1>${email}<RL>
+    <RC410,70><RTF1,10><SD1>${sessionTitle}<RL>
+    <RC410,100><RTF1,10><SD1>${room}<RL>
+  `;
 
-  console.log('deviceId', deviceId);
-  console.log('name', name);
-  console.log('email', email);
-  console.log('sessionTitle', sessionTitle);
-  console.log('room', room);
+  const handlePrintBadge = () => {
+    printTicket(badgeContent);
+  };
 
   return (
     <div className="session-info-card">
@@ -65,13 +54,9 @@ const SessionListCard = ({
         <span className="label">Location:</span>
         <span className="value">{room}</span>
       </div>
-      {/* TODO: Add deviceId to the button so that it can be used print to correct device */}
       <div className="button-container">
-        <button className="print-badge-button" onClick={handlePrintBadge}>
-          Print Badge
-        </button>
+        <button onClick={handlePrintBadge}>Print Badge</button>
       </div>
-      <DeviceManagerAndTicketPrinter />
     </div>
   );
 };
