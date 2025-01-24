@@ -92,7 +92,6 @@ const DeviceManagerAndTicketPrinter = () => {
         <button onClick={getLowStatus}>Get Low Status</button>
         <button onClick={printTicket}>Print Ticket</button>
       </p>
-      <
     </div>
   );
 };
