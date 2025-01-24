@@ -2,7 +2,6 @@ import './session-list-card.scss';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDeviceManager } from '../../Playground/useDeviceManager';
-import qrCode from '../../../assets/imgs/qrCode.png';
 
 const SessionListCard = ({
   name,
@@ -24,10 +23,9 @@ const SessionListCard = ({
       <RC410,10><RTF1,12><SD1> <RL>
       <RC640,200><RTF1,12><SD1>${name}<RU>
       <RC410,10><RTF1,12><SD1> <RL>
-    <RC740,200><RTF1,10><SD1>${sessionTitle}<RL>
+    <RC440,400><RTF1,10><SD1>${sessionTitle}<RL>
     <RC410,10><RTF1,12><SD1> <RL>
-    <RC840,200><RTF1,10><SD1>${room}<RL>
-    <RC410,10><RTF1,12><SD1><QR40,40>${qrCode}</QR><RL>
+    <RC440,600><RTF1,10><SD1>${room}<RL>
   `;
 
   const handlePrintBadge = () => {
