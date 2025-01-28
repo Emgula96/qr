@@ -26,16 +26,13 @@ const SessionListCard = ({
         userId: email,
         sessionId: 859
       };
-      
+      // <RC100,100><QR6>{userId=ethan.gula@esc4.net, sessionId=859} 
+      // <RC300,100><QR4>{userId=ethan.gula@esc4.net, sessionId=859} 
+      // <RC150,150>with{}<QR8>{${JSON.stringify(qrData)}}
       // Create badge content with a single, properly formatted QR code
       const badgeContent = `
-      <HW1,1><RC10,10>123 barcode<RC40,60><QR4>{123456}
         <QRV7>
-        <RC20,100><F11>Ver 2
-        <RC100,100><QR6>{userId=ethan.gula@esc4.net, sessionId=859} 
-        <RC300,100><QR4>{userId=ethan.gula@esc4.net, sessionId=859} 
-        <RC150,150>with{}<QR8>{${JSON.stringify(qrData)}}
-        <RC150,150>no{}<QR8>${JSON.stringify(qrData)}
+        <RC150,150><QR8>${JSON.stringify(qrData)}
       `;
 
       console.log('badgeContent', badgeContent);
