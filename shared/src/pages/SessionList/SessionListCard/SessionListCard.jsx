@@ -53,7 +53,7 @@ const SessionListCard = ({
         <RC440,400><RTF1,10><SD1>${sessionTitle}<RL>
         <RC410,10><RTF1,12><SD1> <RL>
         <RC440,600><RTF1,10><SD1>${room}<RL>
-        <RC410,800><QRCODE>${qrData}</QRCODE><RL>
+        <HW1,1><RC10,10>Hello World<RC40,60><QR4>{123456}
       `;
 
       console.log('badgeContent', badgeContent);
