@@ -21,28 +21,24 @@ const SessionListCard = ({
 
   const handlePrintBadge = async () => {
     try {
-      // Generate QR code data
-      const qrData = `Name: ${name}\nSession: ${sessionTitle}\nRoom: ${room}`;
-   //    <RC410,10><RTF1,12><SD1> <RL>
-//         <RC640,200><RTF1,12><SD1>${name}<RU>
-//         <RC410,10><RTF1,12><SD1> <RL>
-//         <RC440,400><RTF1,10><SD1>${sessionTitle}<RL>
-//         <RC410,10><RTF1,12><SD1> <RL>
-//         <RC440,600><RTF1,10><SD1>${room}<RL>
-      // Create badge content with QR code
+      // Generate QR code data with all required information
+      const qrData = {
+        userId: email,
+        sessionId: 859
+      };
+      
+      // Create badge content with a single, properly formatted QR code
       const badgeContent = `
-      <HW1,1><RC10,10>Hello World<RC40,60><QR4>{123456}
-        <NR><HW2,2><RC450,150><F11>This is a QR text test<RC150,150><QR8>{userId=ethan.gula@esc4.net, sessionId=859}<p>
-        <QRV2>
+      <HW1,1><RC10,10>123 barcode<RC40,60><QR4>{123456}
+        <QRV7>
         <RC20,100><F11>Ver 2
         <RC100,100><QR6>{userId=ethan.gula@esc4.net, sessionId=859} 
-        <RC300,100><QR6>{userId=ethan.gula@esc4.net, sessionId=859} 
+        <RC300,100><QR4>{userId=ethan.gula@esc4.net, sessionId=859} 
+        <RC150,150>with{}<QR8>{${JSON.stringify(qrData)}}
+        <RC150,150>no{}<QR8>${JSON.stringify(qrData)}
       `;
 
       console.log('badgeContent', badgeContent);
-      console.log('name', name);
-      console.log('sessionTitle', sessionTitle);
-      console.log('room', room);
       await printTicket(badgeContent);
     } catch (error) {
       console.error('Error printing badge:', error);
