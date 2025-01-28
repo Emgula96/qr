@@ -31,15 +31,8 @@ const SessionListCard = ({
 //         <RC440,600><RTF1,10><SD1>${room}<RL>
       // Create badge content with QR code
       const badgeContent = `
-        <HW1,1><RC10,10>Hello World<RC40,60><QR6>{$qrData}
-        <RC100,100><QR6>{This is a QR Barcode test.}
         <QRV2>
-        <RC300,100><QR6>{userId=ethan.gula@esc4.net,sessionId=859} <RL>
-        <NR><HW2,2><RC450,150><F11>This is a QR text test<RC150,150><QR8>{This is a barcode test}<p>
-        <QRV2>
-        <RC20,100><F11>Ver 2
-        <RC100,100><QR6>{This is a QR Barcode test.}
-        <RC300,100><QR6>{www.bocasystems.com}
+        <RC300,100><QR6>{userId=ethan.gula@esc4.net, sessionId=859}
       `;
 
       console.log('badgeContent', badgeContent);
