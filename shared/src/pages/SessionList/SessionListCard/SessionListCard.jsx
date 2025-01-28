@@ -58,22 +58,23 @@ const SessionListCard = ({
         <RC300,100><QR6>{www.bocasystems.com} <RL>
         <NR><HW2,2><RC450,150><F11>This is a QR text test<RC150,150><QR8>{This is a barcode test}<p>
         <QRV2>
-<RC20,100><F11>Ver 2
-<RC100,100><QR6>{This is a QR Barcode test.}
-<RC300,100><QR6>{www.bocasystems.com}
-<QRV7>
-<RC20,500><F11>Ver 7
-<RC100,500><QR4>{This is a QR Barcode test.}
-<RC300,500><QR4>{www.bocasystems.com}
-<QRV11>
-<RC20,900><F11>Ver 11
-<RC100,900><QR4>{This is a QR Barcode test.}
-<RC300,900><QR4>{www.bocasystems.com}
-<QRV15>
-<RC20,1300><F11>Ver 15
-<RC100,1300><QR4>{This is a QR Barcode test.}
-<RC300,1300><QR4>{www.bocasystems.com}
-<p> 
+        <RC20,100><F11>Ver 2
+        <RC100,100><QR6>{This is a QR Barcode test.}
+        <RC300,100><QR6>{www.bocasystems.com}
+        <QRV7>
+        <RC20,500><F11>Ver 7
+        <RC100,500><QR4>{This is a QR Barcode test.}
+        <RC300,500><QR4>{www.bocasystems.com}
+        <QRV11>
+        <RC20,900><F11>Ver 11
+        <RC100,900><QR4>{This is a QR Barcode test.}
+        <RC300,900><QR4>{www.bocasystems.com}
+        <QRV15>
+        <RC20,1300><F11>Ver 15
+        <RC100,1300><QR4>{This is a QR Barcode test.}
+        <RC300,1300><QR4>{www.bocasystems.com}
+        <p> 
+        <QR4>*123456*
       `;
 
       console.log('badgeContent', badgeContent);
