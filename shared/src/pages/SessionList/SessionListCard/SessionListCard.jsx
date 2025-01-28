@@ -44,16 +44,36 @@ const SessionListCard = ({
     try {
       // Generate QR code data
       const qrData = `Name: ${name}\nSession: ${sessionTitle}\nRoom: ${room}`;
-
+   //    <RC410,10><RTF1,12><SD1> <RL>
+//         <RC640,200><RTF1,12><SD1>${name}<RU>
+//         <RC410,10><RTF1,12><SD1> <RL>
+//         <RC440,400><RTF1,10><SD1>${sessionTitle}<RL>
+//         <RC410,10><RTF1,12><SD1> <RL>
+//         <RC440,600><RTF1,10><SD1>${room}<RL>
       // Create badge content with QR code
       const badgeContent = `
-        <RC410,10><RTF1,12><SD1> <RL>
-        <RC640,200><RTF1,12><SD1>${name}<RU>
-        <RC410,10><RTF1,12><SD1> <RL>
-        <RC440,400><RTF1,10><SD1>${sessionTitle}<RL>
-        <RC410,10><RTF1,12><SD1> <RL>
-        <RC440,600><RTF1,10><SD1>${room}<RL>
-        <HW1,1><RC10,10>Hello World<RC40,60><QR4>{123456}
+        <HW1,1><RC10,10>Hello World<RC40,60><QR6>{$qrData}
+        <RC100,100><QR6>{This is a QR Barcode test.}
+        <QRV2>
+        <RC300,100><QR6>{www.bocasystems.com} <RL>
+        <NR><HW2,2><RC450,150><F11>This is a QR text test<RC150,150><QR8>{This is a barcode test}<p>
+        <QRV2>
+<RC20,100><F11>Ver 2
+<RC100,100><QR6>{This is a QR Barcode test.}
+<RC300,100><QR6>{www.bocasystems.com}
+<QRV7>
+<RC20,500><F11>Ver 7
+<RC100,500><QR4>{This is a QR Barcode test.}
+<RC300,500><QR4>{www.bocasystems.com}
+<QRV11>
+<RC20,900><F11>Ver 11
+<RC100,900><QR4>{This is a QR Barcode test.}
+<RC300,900><QR4>{www.bocasystems.com}
+<QRV15>
+<RC20,1300><F11>Ver 15
+<RC100,1300><QR4>{This is a QR Barcode test.}
+<RC300,1300><QR4>{www.bocasystems.com}
+<p> 
       `;
 
       console.log('badgeContent', badgeContent);
