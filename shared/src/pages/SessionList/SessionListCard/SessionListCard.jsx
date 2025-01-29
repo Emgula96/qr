@@ -26,8 +26,8 @@ const SessionListCard = ({
       
       // Create badge content with properly formatted QR code
       const badgeContent = `
-        <QRV6>
-        <RC150,150><QR6>${qrString}
+        <QRV7>
+        <RC150,150><QR8>${qrString}
       `;
 
       console.log('badgeContent', badgeContent);
