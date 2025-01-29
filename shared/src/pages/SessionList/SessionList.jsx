@@ -9,7 +9,7 @@ import SessionListCard from './SessionListCard/SessionListCard';
 import KioskError from '../Kiosk/KioskError';
 
 function SessionList() {
-  const [user, setUser] = useState(false);
+  const [event, setEvent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,7 +20,7 @@ function SessionList() {
   const email = queryParams.get('email');
   const firstName = queryParams.get('firstName');
   const lastName = queryParams.get('lastName');
-  const deviceId = queryParams.get('deviceId');
+  // const deviceId = queryParams.get('deviceId');
 
   useEffect(() => {
     async function fetchData() {
@@ -31,7 +31,7 @@ function SessionList() {
           firstName,
           lastName
         );
-        setUser(userInfo);
+        setEvent(userInfo);
       } catch (err) {
         setError('Failed to fetch user data');
         console.error(err);
@@ -43,21 +43,22 @@ function SessionList() {
     fetchData();
   }, [email, firstName, lastName]);
   if (isLoading) return <p>Loading...</p>;
-  const firstSession = user?.event_dates?.[0] ?? null;
+  const sessionId = event?.id ?? null;
+  const firstSession = event?.event_dates?.[0] ?? null;
   const room = firstSession?.room?.name ?? '';
-  const title = firstSession?.title ?? '';
+  const title = event?.sub_title ?? '';
   return (
     <Page>
       <TimeStamp />
       <div className="center-container">
         <h1>Welcome to Region 4</h1>
-        {user?.event_dates?.length > 0 ? (
+        {event?.event_dates?.length > 0 ? (
           <SessionListCard
             name={`${firstName} ${lastName}`}
             email={email}
             sessionTitle={title}
             room={room}
-            deviceId={deviceId}
+            sessionId={sessionId}
           />
         ) : (
           <KioskError
