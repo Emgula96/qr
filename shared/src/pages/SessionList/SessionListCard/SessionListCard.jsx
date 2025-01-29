@@ -21,18 +21,13 @@ const SessionListCard = ({
 
   const handlePrintBadge = async () => {
     try {
-      // Generate QR code data with all required information
-      const qrData = {
-        userId: email,
-        sessionId: 859
-      };
-      // <RC100,100><QR6>{userId=ethan.gula@esc4.net, sessionId=859} 
-      // <RC300,100><QR4>{userId=ethan.gula@esc4.net, sessionId=859} 
-      // <RC150,150>with{}<QR8>{${JSON.stringify(qrData)}}
-      // Create badge content with a single, properly formatted QR code
+      // Format the QR data string in the required format
+      const qrString = `userId=${email},sessionId=826`;
+      
+      // Create badge content with properly formatted QR code
       const badgeContent = `
         <QRV7>
-        <RC150,150><QR8>${JSON.stringify(qrData)}
+        <RC150,150><QR8>${qrString}
       `;
 
       console.log('badgeContent', badgeContent);
