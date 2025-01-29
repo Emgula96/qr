@@ -20,15 +20,12 @@ const SessionListCard = ({
   }, [isLoaded, isInitialized, initializeDeviceManager]);
 
   const handlePrintBadge = async () => {
-    try {
-      // Format the QR data string in the required format
-      const qrString = `userId=${email},sessionId=826`;
-      
+    try {     
       // Create badge content with properly formatted QR code
       const badgeContent = `
 
         <QRV7><RC300,300><QR8,1,0,0>
-      {userId~061ethan~046gula~064esc4~046net~044sessionId~061826}
+      {userId~061${email}~044sessionId~061826}
       `;
 
       console.log('badgeContent', badgeContent);
