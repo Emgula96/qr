@@ -37,7 +37,7 @@ async function generateQrCode(eventId, userId) {
   return data;
 }
 
-async function checkInUser(eventId, userId, sessionDateTimeId) {
+async function checkInUser(userId, eventId, sessionDateTimeId) {
   const data = await rest.put(`${host}/v1/attendence/check-in`, {
     userId,
     eventId,
