@@ -27,7 +27,7 @@ const SessionListCard = ({
     try {     
       // Create badge content with properly formatted QR code
       const badgeContent = `
-       // <QRV7><RC300,1300><QR8,1,0,0>
+      <QRV7><RC300,1300><QR8,1,0,0>
       {userId~061${email}~044sessionId~061${sessionId}}
       `;
 
