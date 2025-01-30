@@ -29,8 +29,8 @@ const SessionListCard = ({
     try {     
       // Create badge content with properly formatted QR code
       const badgeContent = `
-      <RC410,10><RTF1,12><RR>
-      <RC171,1170><F10><SD1>Ethan Gula
+   <RC10,10><F2><SD1><RC60,10><F9><SD1><RC110,10><F3><SD1><RC160,10><F11><SD1><RC210,10><F10><SD1><RC260,10><F6><SD1><RC310,10><F12><SD1><RC410,10><RTF1,12><RR>
+   <RC171,1170><F10><SD1>Ethan Gula
       <RC256,1110><F9><SD1>Room : 101A
       <RC256,1060><SD1>TEST Kiosk - 682
       <QRV7><RC27,1061><QR8,1,0,0>
