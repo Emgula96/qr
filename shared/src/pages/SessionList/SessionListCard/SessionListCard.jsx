@@ -1,6 +1,6 @@
 import './session-list-card.scss';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDeviceManager } from '../../Playground/useDeviceManager';
 
 const SessionListCard = ({
@@ -19,25 +19,18 @@ const SessionListCard = ({
     }
   }, [isLoaded, isInitialized, initializeDeviceManager]);
 
-  const handlePrintBadge = async () => {
-    // <RC640,200><RTF1,12><SD1>${name}<RU>
-    // <RC640,230><RTF1,10><SD1>${sessionTitle} - ${sessionId}<RU>
-    // <RC640,260><RTF1,10><SD1>${room}<RU>
-      //     <QRV7><RC300,1300><QR8,1,0,0>
-      // {userId~061${email}~044sessionId~061${sessionId}}
-   
+  const handlePrintBadge = async () => { 
     try {     
       // Create badge content with properly formatted QR code
+      //fgl formatting found in confluence docs
       const badgeContent = `
    <RC10,10><F2><SD1><RC60,10><F9><SD1><RC110,10><F3><SD1><RC160,10><F11><SD1><RC210,10><F10><SD1><RC260,10><F6><SD1><RC310,10><F12><SD1><RC410,10><RTF1,12><RR>
-   <RC250,1670><F12><SD1>Ethan Gula
-      <RC250,1580><F6><SD1>Room : 101A
-      <RC250,1530><SD1>TEST Kiosk - 682
+   <RC250,1670><F12><SD1>${name}
+      <RC250,1580><F6><SD1>Room : ${room}
+      <RC250,1530><SD1>${sessionTitle} - ${sessionId}
       <QRV7><RC300,1440><QR8,1,0,0>
       {userId~061${email}~044sessionId~061${sessionId}}
       `;
-
-      console.log('badgeContent', badgeContent);
       await printTicket(badgeContent);
     } catch (error) {
       console.error('Error printing badge:', error);
