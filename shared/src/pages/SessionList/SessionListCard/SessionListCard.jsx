@@ -29,10 +29,11 @@ const SessionListCard = ({
     try {     
       // Create badge content with properly formatted QR code
       const badgeContent = `
-   <RC200,1870><F12><SD1>Ethan Gula
-      <RC300,2010><F11><SD1>Room : 101A
-      <RC300,1960><F11><SD1>TEST Kiosk - 682
-      <QRV7><RC300,1661><QR8,1,0,0>
+   <RC10,10><F2><SD1><RC60,10><F9><SD1><RC110,10><F3><SD1><RC160,10><F11><SD1><RC210,10><F10><SD1><RC260,10><F6><SD1><RC310,10><F12><SD1><RC410,10><RTF1,12><RR>
+   <RC200,1470><F10><SD1>Ethan Gula
+      <RC300,1410><F9><SD1>Room : 101A
+      <RC300,1360><SD1>TEST Kiosk - 682
+      <QRV7><RC300,1261><QR8,1,0,0>
       {userId~061${email}~044sessionId~061${sessionId}}
       `;
 
