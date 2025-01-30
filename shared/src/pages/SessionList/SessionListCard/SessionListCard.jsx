@@ -20,13 +20,14 @@ const SessionListCard = ({
   }, [isLoaded, isInitialized, initializeDeviceManager]);
 
   const handlePrintBadge = async () => {
+    // <RC640,200><RTF1,12><SD1>${name}<RU>
+    // <RC640,230><RTF1,10><SD1>${sessionTitle} - ${sessionId}<RU>
+    // <RC640,260><RTF1,10><SD1>${room}<RU>
+   
     try {     
       // Create badge content with properly formatted QR code
       const badgeContent = `
-      <RC640,200><RTF1,12><SD1>${name}<RU>
-      <RC640,230><RTF1,10><SD1>${sessionTitle} - ${sessionId}<RU>
-      <RC640,260><RTF1,10><SD1>${room}<RU>
-      <QRV7><RC300,300><QR8,1,0,0>
+       // <QRV7><RC300,1300><QR8,1,0,0>
       {userId~061${email}~044sessionId~061${sessionId}}
       `;
 
