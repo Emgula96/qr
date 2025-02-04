@@ -4,7 +4,6 @@ import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
 import './kiosk.scss';
 import KioskError from './KioskError';
-import FindSessionButton from '../FindSession/FindSessionButton/FindSessionButton';
 import { Link } from 'react-router-dom';
 
 function Kiosk({ deviceId }) {
@@ -27,39 +26,15 @@ function Kiosk({ deviceId }) {
     <Page>
       <TimeStamp />
       <Content>
-        <div className="error-state-toggle">
-          {/* remove this button after we have working error states */}
-          <button
-            onClick={() =>
-              setErrorState(
-                errorState === 'printerError'
-                  ? 'sessionNotFound'
-                  : 'printerError'
-              )
-            }
-          >
-            Toggle Error State
-          </button>
-        </div>
         {errorState && (
           <KioskError
             title={errorStates[errorState].title}
             message={errorStates[errorState].message}
           />
         )}
-        <div className="qr-button qr-button-left">
-          <Link to="/find-session" className="find-sessions-button">
-            Print Badge
-          </Link>
-        </div>
         <div className="qr-button">
-          <Link to="/playground" className="find-sessions-button">
-            Playground
-          </Link>
-        </div>
-        <div className="qr-button">
-          <Link to="/print-badge" className="find-sessions-button">
-            Direct to Print
+          <Link to="/find-session" className="get-started-button">
+            Get Started
           </Link>
         </div>
       </Content>

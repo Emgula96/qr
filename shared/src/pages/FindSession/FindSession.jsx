@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Page from '../../components/Page';
 import TimeStamp from '../../components/TimeStamp';
 import Content from '../../components/Content';
@@ -78,6 +78,9 @@ function FindSession() {
         <p>
           <strong>Print QR Code here or go to session room to check-in.</strong>
         </p>
+      <Link to="/" className="find-sessions-button" style={{ alignSelf: 'flex-start', marginLeft: '3rem', fontSize: '1.5rem' }}>
+        Go Back
+      </Link>
       </div>
       <Content>
         <div className="qr-inner-content-wrapper">
@@ -135,6 +138,7 @@ function FindSession() {
         layoutName={layout}
         onChange={onChange}
         onKeyPress={onKeyPress}
+        theme={"hg-theme-default custom-keyboard"}
       />
     </Page>
   );

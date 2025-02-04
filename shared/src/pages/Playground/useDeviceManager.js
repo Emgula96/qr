@@ -10,7 +10,7 @@ export const useDeviceManager = () => {
     // Set up interval for reconnection attempts
     const intervalId = setInterval(() => {
       initConnection();
-    }, 5000);
+    }, 10000);
 
     // Cleanup on unmount
     return () => clearInterval(intervalId);

@@ -49,9 +49,18 @@ function SessionList() {
   const title = event?.sub_title ?? '';
   return (
     <Page>
+      
       <TimeStamp />
       <div className="center-container">
         <h1>Welcome to Region 4</h1>
+        <Content>
+        <Link to="/find-session" className="find-sessions-button">
+          Go Back
+        </Link>
+        <Link to="/" className="find-sessions-button">
+          Home
+        </Link>
+      </Content>
         {event?.event_dates?.length > 0 ? (
           <SessionListCard
             name={`${firstName} ${lastName}`}
@@ -67,11 +76,6 @@ function SessionList() {
           />
         )}
       </div>
-      <Content>
-        <Link to="/find-session" className="find-sessions-button">
-          Go Back
-        </Link>
-      </Content>
     </Page>
   );
 }
