@@ -38,12 +38,12 @@ router.put('/check-in', async (req, res) => {
 
     res.status(200).json(response.data);
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.error('An error occurred:', error, apiKey);
 
     // Extract the error code from the error message
     const errorCode = extractErrorCode(error.message);
     // Map error codes to HTTP status codes and messages
-    const { statusCode, responseMessage } = mapErrorCodeToResponse(errorCode);
+    const { statusCode, responseMessage, apiKey } = mapErrorCodeToResponse(errorCode);
     res.status(statusCode).json(responseMessage);
   }
 
