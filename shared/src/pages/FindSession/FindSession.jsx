@@ -135,6 +135,7 @@ function FindSession() {
         layoutName={layout}
         onChange={onChange}
         onKeyPress={onKeyPress}
+        theme={"hg-theme-default custom-keyboard"}
       />
     </Page>
   );
