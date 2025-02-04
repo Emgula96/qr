@@ -1,7 +1,8 @@
 import './session-list-card.scss';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDeviceManager } from '../../Playground/useDeviceManager';
+import PrintStatus from './PrintStatus';
 
 const SessionListCard = ({
   name,
@@ -11,6 +12,7 @@ const SessionListCard = ({
   sessionId,
 }) => {
   const { isLoaded, isInitialized, initializeDeviceManager, printTicket } = useDeviceManager();
+  const [printStatus, setPrintStatus] = useState(null);
 
   useEffect(() => {
     if (isLoaded && !isInitialized) {
@@ -21,6 +23,11 @@ const SessionListCard = ({
 
   const handlePrintBadge = async () => { 
     try {     
+      if (!isInitialized) {
+        setPrintStatus('not-connected');
+        return;
+      }
+
       // Create badge content with properly formatted QR code
       //fgl formatting found in confluence docs
       const badgeContent = `
@@ -31,11 +38,39 @@ const SessionListCard = ({
       <QRV7><RC300,1440><QR8,1,0,0>
       {userId~061${email}~044sessionId~061${sessionId}}
       `;
-      await printTicket(badgeContent);
+      
+      const printResult = await printTicket(badgeContent);
+      
+      if (printResult.outofpaper) {
+        setPrintStatus('out-of-paper');
+      } else if (!printResult.printed) {
+        setPrintStatus('error');
+      } else {
+        setPrintStatus('success');
+      }
     } catch (error) {
       console.error('Error printing badge:', error);
+      setPrintStatus('error');
     }
   };
+
+  const handleTryAgain = () => {
+    setPrintStatus(null);
+  };
+
+  const handleGoHome = () => {
+    window.location.href = '/';
+  };
+
+  if (printStatus) {
+    return (
+      <PrintStatus 
+        status={printStatus}
+        onTryAgain={handleTryAgain}
+        onGoHome={handleGoHome}
+      />
+    );
+  }
 
   return (
     <div className="session-info-card">
