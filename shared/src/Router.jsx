@@ -4,7 +4,6 @@ import Loading from './pages/Loading';
 const Kiosk = React.lazy(() => import('./pages/Kiosk'));
 const FindSession = React.lazy(() => import('./pages/FindSession'));
 const SessionList = React.lazy(() => import('./pages/SessionList'));
-const PrintBadge = React.lazy(() => import('./pages/PrintBadge'));
 const CheckIn = React.lazy(() => import('./pages/CheckIn'));
 const Playground = React.lazy(() => import('./pages/Playground'));
 import service from './util/Functions/service';
@@ -44,10 +43,6 @@ const Router = () => {
         <Route
           path="/session-list"
           element={<SessionList deviceId={deviceId} />}
-        />
-        <Route
-          path="/print-badge"
-          element={<PrintBadge deviceId={deviceId} />}
         />
         <Route path="/check-in" element={<CheckIn deviceId={deviceId} />} />
         <Route

@@ -63,7 +63,9 @@ const SessionListCard = ({
       </div>
 
       <div className="button-container">
-        <button onClick={handlePrintBadge}>Print Badge</button>
+        <button className="print-badge-button" onClick={handlePrintBadge}>
+          Print Badge
+        </button>
       </div>
     </div>
   );
@@ -74,7 +76,7 @@ SessionListCard.propTypes = {
   email: PropTypes.string.isRequired,
   sessionTitle: PropTypes.string.isRequired,
   room: PropTypes.string.isRequired,
-  sessionId: PropTypes.string.isRequired,
+  sessionId: PropTypes.number.isRequired,
 };
 
 export default SessionListCard;

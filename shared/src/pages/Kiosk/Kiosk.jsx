@@ -32,9 +32,9 @@ function Kiosk({ deviceId }) {
             message={errorStates[errorState].message}
           />
         )}
-        <div className="qr-button qr-button-left">
-          <Link to="/find-session" className="find-sessions-button">
-            Print Badge
+        <div className="qr-button">
+          <Link to="/find-session" className="get-started-button">
+            Get Started
           </Link>
         </div>
       </Content>
