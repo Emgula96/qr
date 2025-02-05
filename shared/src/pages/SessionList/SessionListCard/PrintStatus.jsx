@@ -15,13 +15,15 @@ const PrintStatus = ({ status, onTryAgain }) => {
       title: 'Badge Print Successful',
       message: 'Your badge has been printed successfully.',
       iconUrl: '../../assets/imgs/success-icon.png',
-      showTryAgain: false
+      showTryAgain: true,
+      buttonText: 'Print Another'
     },
     'false': {
       title: 'Print Error',
       message: 'There was an error printing your badge. Please try again.',
       iconUrl: '',
-      showTryAgain: true
+      showTryAgain: true,
+      buttonText: 'Try Again'
     },
     'out-of-paper': {
       title: 'Printer Out of Paper',
@@ -60,7 +62,7 @@ const PrintStatus = ({ status, onTryAgain }) => {
       <div className="button-container">
         {config.showTryAgain && (
           <button className="print-badge-button" onClick={onTryAgain}>
-            Try Again
+            {config.buttonText || 'Try Again'}
           </button>
         )}
       </div>
