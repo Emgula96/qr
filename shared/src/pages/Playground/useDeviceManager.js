@@ -62,18 +62,23 @@ export const useDeviceManager = () => {
   };
 
   const printTicket = (fgl) => {
-    window.LWDeviceManager.TicketPrinter_PrintTicket(
-      1,
-      "TicketPrinter_Gen2.Boca.Lemur",
-      fgl,
-      true,
-      (res) => {
-        console.log(res);
-      },
-      () => {
-        console.error('Failed to invoke method on Device Manager');
-      }
-    );
+    return new Promise((resolve, reject) => {
+      window.LWDeviceManager.TicketPrinter_PrintTicket(
+        1,
+        "TicketPrinter_Gen2.Boca.Lemur",
+        fgl,
+        true,
+        (res) => {
+          console.log(res);
+          resolve(res);
+        },
+        () => {
+          const error = 'Failed to invoke method on Device Manager';
+          console.error(error);
+          reject(error);
+        }
+      );
+    });
   };
 
   return {

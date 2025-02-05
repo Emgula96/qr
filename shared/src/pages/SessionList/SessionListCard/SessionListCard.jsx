@@ -1,7 +1,8 @@
 import './session-list-card.scss';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDeviceManager } from '../../Playground/useDeviceManager';
+import PrintStatus from './PrintStatus';
 
 const SessionListCard = ({
   name,
@@ -11,6 +12,7 @@ const SessionListCard = ({
   sessionId,
 }) => {
   const { isLoaded, isInitialized, initializeDeviceManager, printTicket } = useDeviceManager();
+  const [printStatus, setPrintStatus] = useState(null);
 
   useEffect(() => {
     if (isLoaded && !isInitialized) {
@@ -31,7 +33,9 @@ const SessionListCard = ({
       <QRV7><RC300,1440><QR8,1,0,0>
       {userId~061${email}~044sessionId~061${sessionId}}
       `;
-      await printTicket(badgeContent);
+      const status = await printTicket(badgeContent);
+      setPrintStatus(status);
+      console.log('Print status:', status);
     } catch (error) {
       console.error('Error printing badge:', error);
     }
@@ -39,34 +43,43 @@ const SessionListCard = ({
 
   return (
     <div className="session-info-card">
-      <h2>Session Information</h2>
-      <p className="review-text">Review information below for accuracy.</p>
+      {printStatus ? (
+        <PrintStatus 
+          status={printStatus} 
+          onTryAgain={() => setPrintStatus(null)}
+        />
+      ) : (
+        <>
+          <h2>Session Information</h2>
+          <p className="review-text">Review information below for accuracy.</p>
 
-      <div className="info-item">
-        <span className="label">Name:</span>
-        <span className="value">{name}</span>
-      </div>
+          <div className="info-item">
+            <span className="label">Name:</span>
+            <span className="value">{name}</span>
+          </div>
 
-      <div className="info-item">
-        <span className="label">E-mail:</span>
-        <span className="value">{email}</span>
-      </div>
+          <div className="info-item">
+            <span className="label">E-mail:</span>
+            <span className="value">{email}</span>
+          </div>
 
-      <div className="info-item">
-        <span className="label">Session Title:</span>
-        <span className="value">{sessionTitle}</span>
-      </div>
+          <div className="info-item">
+            <span className="label">Session Title:</span>
+            <span className="value">{sessionTitle}</span>
+          </div>
 
-      <div className="info-item">
-        <span className="label">Location:</span>
-        <span className="value">{room}</span>
-      </div>
+          <div className="info-item">
+            <span className="label">Location:</span>
+            <span className="value">{room}</span>
+          </div>
 
-      <div className="button-container">
-        <button className="print-badge-button" onClick={handlePrintBadge}>
-          Print Badge
-        </button>
-      </div>
+          <div className="button-container">
+            <button className="print-badge-button" onClick={handlePrintBadge}>
+              Print Badge
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

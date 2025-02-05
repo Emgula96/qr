@@ -34,10 +34,16 @@ const PrintStatus = ({ status, onTryAgain }) => {
       message: 'The printer is not connected. Please check the connection and try again. If the issue persists, please contact staff for assistance.',
       iconUrl: '',
       showTryAgain: true
+    },
+    'null': {
+      title: 'Printer Not Connected',
+      message: 'The printer is not connected. Please check the connection and try again. If the issue persists, please contact staff for assistance.',
+      iconUrl: '',
+      showTryAgain: true
     }
   };
 
-  const config = statusConfig[status];
+  const config = statusConfig[status.Printed];
   if (!config) return null;
 
   return (
