@@ -11,13 +11,13 @@ const PrintStatus = ({ status, onTryAgain }) => {
   }, []);
 
   const statusConfig = {
-    success: {
+    'true': {
       title: 'Badge Print Successful',
       message: 'Your badge has been printed successfully.',
       iconUrl: '../../assets/imgs/success-icon.png',
       showTryAgain: false
     },
-    error: {
+    'false': {
       title: 'Print Error',
       message: 'There was an error printing your badge. Please try again.',
       iconUrl: '',
@@ -43,7 +43,8 @@ const PrintStatus = ({ status, onTryAgain }) => {
     }
   };
 
-  const config = statusConfig[status.Printed];
+  const config = statusConfig[status.Printed] || 
+    (status.OutOfPaper === false ? statusConfig['out-of-paper'] : null);
   if (!config) return null;
 
   return (
