@@ -41,11 +41,13 @@ const SessionListCard = ({
       
       const printResult = await printTicket(badgeContent);
       
-      if (printResult.outofpaper) {
+      // Update error handling logic for null values
+      if (printResult.OutOfPaper === true) {
         setPrintStatus('out-of-paper');
-      } else if (!printResult.printed) {
+      } else if (printResult.Printed === false) {
         setPrintStatus('error');
       } else {
+        // If both values are null or Printed is true, consider it a success
         setPrintStatus('success');
       }
     } catch (error) {
