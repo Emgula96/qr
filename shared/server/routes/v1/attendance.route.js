@@ -43,7 +43,7 @@ router.put('/check-in', async (req, res) => {
     // Extract the error code from the error message
     const errorCode = extractErrorCode(error.message);
     // Map error codes to HTTP status codes and messages
-    const { statusCode, responseMessage, apiKey } = mapErrorCodeToResponse(errorCode);
+    const { statusCode, responseMessage } = mapErrorCodeToResponse(errorCode);
     res.status(statusCode).json(responseMessage);
   }
 
