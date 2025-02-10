@@ -11,11 +11,11 @@ async function getUserInfo(email, firstName, lastName) {
   );
 }
 
-async function getUserAndFirstEvent(email, firstName, lastName) {
+async function getUserEvents(email, firstName, lastName) {
   const { data } = await rest.get(
     `${host}/v1/users?userId=${email}&first_name=${firstName}&last_name=${lastName}`
   );
-  return data[0];
+  return data;
 }
 
 async function getEventByRoomAndTime(roomName, time) {
@@ -77,7 +77,7 @@ async function getAccessToken(code) {
 
 export default {
   getUserInfo,
-  getUserAndFirstEvent,
+  getUserEvents,
   generateQrCode,
   getAccessToken,
   getEventByRoomAndTime,

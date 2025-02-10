@@ -9,9 +9,11 @@ import SessionListCard from './SessionListCard/SessionListCard';
 import KioskError from '../Kiosk/KioskError';
 
 function SessionList() {
-  const [event, setEvent] = useState(false);
+  const [eventList, setEventList] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [date, setDate] = useState(null);
+  const [filteredEvents, setFilteredEvents] = useState([]);
 
   const location = useLocation();
 
@@ -26,12 +28,25 @@ function SessionList() {
     async function fetchData() {
       try {
         setIsLoading(true);
-        const userInfo = await service.getUserAndFirstEvent(
+        const userInfo = await service.getUserEvents(
           email,
           firstName,
           lastName
         );
-        setEvent(userInfo);
+        setEventList(userInfo);
+        
+        // Set date to today's date in YYYY-MM-DD format
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        setDate(formattedDate);
+        
+        // Filter events by today's date
+        const eventsForDate = userInfo.filter(event => 
+          event.event_dates.some(eventDate => 
+            eventDate.event_date === formattedDate
+          )
+        );
+        setFilteredEvents(eventsForDate);
       } catch (err) {
         setError('Failed to fetch user data');
         console.error(err);
@@ -43,10 +58,15 @@ function SessionList() {
     fetchData();
   }, [email, firstName, lastName]);
   if (isLoading) return <p>Loading...</p>;
-  const sessionId = event?.id ?? null;
-  const firstSession = event?.event_dates?.[0] ?? null;
-  const room = firstSession?.room?.name ?? '';
-  const title = event?.sub_title ?? '';
+  
+  // Find first event where the first event date matches today's date
+  const firstEvent = eventList ? eventList.find(event => 
+    event.event_dates[0].event_date === date
+  ) ?? null : null;
+
+  console.log(eventList);
+  console.log(firstEvent);
+  console.log(date);
   return (
     <Page>
       
@@ -61,14 +81,15 @@ function SessionList() {
           Home
         </Link>
       </Content>
-        {event?.event_dates?.length > 0 ? (
-          <SessionListCard
-            name={`${firstName} ${lastName}`}
-            email={email}
-            sessionTitle={title}
-            room={room}
-            sessionId={sessionId}
-          />
+        {filteredEvents.length > 0 ? (
+          filteredEvents.map(session => (
+            <SessionListCard
+              key={session.id}
+              event={session}
+              name={`${firstName} ${lastName}`}
+              email={email}
+            />
+          ))
         ) : (
           <KioskError
             title="Session or User Not Found"
