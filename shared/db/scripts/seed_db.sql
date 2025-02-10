@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS attendees;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
 
--- CreateTable Attendence
+-- CreateTable Attendance
 CREATE TABLE attendees (
   "id" SERIAL PRIMARY KEY,
   "user_id" TEXT NOT NULL,

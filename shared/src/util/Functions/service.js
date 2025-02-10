@@ -25,8 +25,8 @@ async function getEventByRoomAndTime(roomName, time) {
   return data;
 }
 
-async function getAttendence(id) {
-  const { data } = await rest.get(`${host}/v1/attendence?eventId=${id}`);
+async function getAttendance(id) {
+  const { data } = await rest.get(`${host}/v1/attendance?eventId=${id}`);
   return data;
 }
 
@@ -38,7 +38,7 @@ async function generateQrCode(eventId, userId) {
 }
 
 async function checkInUser(userId, eventId, sessionDateTimeId) {
-  const data = await rest.put(`${host}/v1/attendence/check-in`, {
+  const data = await rest.put(`${host}/v1/attendance/check-in`, {
     userId,
     eventId,
     sessionDateTimeId,
@@ -81,6 +81,6 @@ export default {
   generateQrCode,
   getAccessToken,
   getEventByRoomAndTime,
-  getAttendence,
+  getAttendance,
   checkInUser,
 };

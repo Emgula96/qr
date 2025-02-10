@@ -6,14 +6,14 @@ server {
     proxy_pass https://kiosk.auth.us-east-1.amazoncognito.com/oauth2/token;
   }
 
-  location /api/v1/attendence/event {
+  location /api/v1/attendance/event {
     proxy_set_header Authorization $http_x_amzn_oidc_accesstoken;
-    proxy_pass ${API_URL}/v1/attendence/event;
+    proxy_pass ${API_URL}/v1/attendance/event;
   }
 
-  location /api/v1/attendence {
+  location /api/v1/attendance {
     proxy_set_header Authorization $http_x_amzn_oidc_accesstoken;
-    proxy_pass ${API_URL}/v1/attendence;
+    proxy_pass ${API_URL}/v1/attendance;
   }
 
   location /api/v1/check-in {
