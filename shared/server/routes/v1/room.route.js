@@ -11,7 +11,17 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const { time, roomname } = req.query;
-
+    
+    if (!roomname) {
+      console.error('Request details: Missing roomname parameter');
+      return res.status(400).json({
+        error: 'Missing roomname parameter',
+        details: 'The roomname query parameter is required'
+      });
+    }
+    
+    console.log(roomname);
+    
     const response = await axios.get(
       `${baseUrl}/rooms/${roomname}/session-events/${time}`,
       {

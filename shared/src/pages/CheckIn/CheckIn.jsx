@@ -21,6 +21,7 @@ function CheckIn() {
   const [checkedInCount, setCheckedInCount] = useState(0);
   const location = useLocation();
   const roomName = new URLSearchParams(location.search).get('roomname');
+  console.log(roomName);
   const beepSound = useMemo(() => new Audio(beep), []);
 
   const { event } = useEventData(roomName);
