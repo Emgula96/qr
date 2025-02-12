@@ -3,7 +3,7 @@ import rest from './rest.js';
 const host =
   import.meta.env.VITE_ENVIRONMENT === 'development'
     ? import.meta.env.VITE_API_ROOT_URL
-    : '';
+    : '/api';
   
 
 async function getUserInfo(email, firstName, lastName) {
@@ -41,12 +41,17 @@ async function generateQrCode(eventId, userId) {
 }
 
 async function checkInUser(userId, eventId, sessionDateTimeId) {
+  const apiKey = JSON.parse(import.meta.env.VITE_API_KEY)['API-KEY'];
   const data = await rest.put(`${host}/v1/attendance/check-in`, {
     userId,
     eventId,
     sessionDateTimeId,
-  }, 
-  );
+  }, {
+    headers: {
+      'Content-Type': 'application/json',
+      'API-KEY': apiKey
+    }
+  });
   return data;
 }
 
