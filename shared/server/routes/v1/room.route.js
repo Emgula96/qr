@@ -8,7 +8,7 @@ const baseUrl = process.env.ESCWORKS_API_URL;
 const apiKey = process.env.ESCWORKS_API_KEY;
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/event', async (req, res) => {
   try {
     const { time, roomname } = req.query;
     

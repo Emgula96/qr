@@ -20,7 +20,7 @@ async function getUserEvents(email, firstName, lastName) {
 
 async function getEventByRoomAndTime(roomName, time) {
   const { data } = await rest.get(
-    `${host}/v1/room?roomname=${roomName}&time=${time}`
+    `${host}/v1/room/event?roomname=${roomName}&time=${time}`
   );
   return data;
 }
