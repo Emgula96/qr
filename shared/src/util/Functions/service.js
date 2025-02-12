@@ -3,7 +3,7 @@ import rest from './rest.js';
 const host =
   import.meta.env.VITE_ENVIRONMENT === 'development'
     ? import.meta.env.VITE_API_ROOT_URL
-    : '/api';
+    : '';
   
 
 async function getUserInfo(email, firstName, lastName) {
@@ -45,11 +45,8 @@ async function checkInUser(userId, eventId, sessionDateTimeId) {
     userId,
     eventId,
     sessionDateTimeId,
-  }, {
-    headers: {
-      'Content-Type': 'application/json',
-    }
-  });
+  }, 
+  );
   return data;
 }
 
