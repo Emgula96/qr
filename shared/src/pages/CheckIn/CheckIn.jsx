@@ -55,6 +55,26 @@ function CheckIn() {
     }
   }, 1000);
 
+  const handleManualCheckIn = async () => {
+    if (isSessionFull) {
+      setStatus('Session Full');
+      return;
+    }
+    
+    const manualPayload = "sessionId=397,sessionDateTimeId=242,userId=ethan.gula@esc4.net";
+
+    const scanResult = await handleQrScan(
+      manualPayload,
+      event,
+      beepSound,
+      setStatus,
+      isUserLate
+    );
+    if (scanResult?.success && checkedInCount < event?.capacity) {
+      setCheckedInCount((prevCount) => prevCount + 1);
+    }
+  };
+
   if (!event) {
     return (
       <div className="parent-div">
@@ -72,6 +92,13 @@ function CheckIn() {
       <div className="check-in-wrapper">
         <div className="left">
           <Scanner onScan={handleScan} />
+          <button 
+            className="manual-check-in-btn"
+            onClick={handleManualCheckIn}
+            disabled={isSessionFull}
+          >
+            Manual Check-In
+          </button>
           <AttendeeCount
             checkedInCount={checkedInCount}
             capacity={event?.capacity}
