@@ -45,6 +45,10 @@ async function checkInUser(userId, eventId, sessionDateTimeId) {
     userId,
     eventId,
     sessionDateTimeId,
+  }, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
   });
   return data;
 }
