@@ -3,7 +3,8 @@ import rest from './rest.js';
 const host =
   import.meta.env.VITE_ENVIRONMENT === 'development'
     ? import.meta.env.VITE_API_ROOT_URL
-    : '/api';
+    : '/kiosk-express';
+  
 
 async function getUserInfo(email, firstName, lastName) {
   return await rest.get(
@@ -19,6 +20,8 @@ async function getUserEvents(email, firstName, lastName) {
 }
 
 async function getEventByRoomAndTime(roomName, time) {
+  console.log('fetching event service FILE');
+  console.log(roomName)
   const { data } = await rest.get(
     `${host}/v1/room/event?roomname=${roomName}&time=${time}`
   );
