@@ -3,7 +3,7 @@ import rest from './rest.js';
 const host =
   import.meta.env.VITE_ENVIRONMENT === 'development'
     ? import.meta.env.VITE_API_ROOT_URL
-    : '/kiosk-express';
+    : '/api';
   
 
 async function getUserInfo(email, firstName, lastName) {
