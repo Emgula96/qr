@@ -46,7 +46,7 @@ async function checkInUser(userId, eventId, sessionDateTimeId) {
     const apiKey = JSON.parse(import.meta.env.VITE_API_KEY)['API-KEY'];
     console.log('API Key present:', !!apiKey);
     
-    const response = await rest.put(`${host}/v1/attendance/check-in`, {
+    const data = await rest.put(`${host}/v1/attendance/check-in`, {
       userId,
       eventId,
       sessionDateTimeId,
@@ -58,11 +58,10 @@ async function checkInUser(userId, eventId, sessionDateTimeId) {
     });
     
     console.log('Check-in response:', response);
-    return response;
+    return data;
   } catch (error) {
     console.error('Check-in error:', error);
     // Rethrow the error to be handled by the caller
-    throw error;
   }
 }
 
