@@ -41,28 +41,12 @@ async function generateQrCode(eventId, userId) {
 }
 
 async function checkInUser(userId, eventId, sessionDateTimeId) {
-  try {
-    console.log('Attempting check-in with:', { userId, eventId, sessionDateTimeId });
-    const apiKey = JSON.parse(import.meta.env.VITE_API_KEY)['API-KEY'];
-    console.log('API Key present:', !!apiKey);
-    
-    const data = await rest.put(`${host}/v1/attendance/check-in`, {
-      userId,
-      eventId,
-      sessionDateTimeId,
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        'API-KEY': apiKey
-      }
-    });
-    
-    console.log('Check-in response:', response);
-    return data;
-  } catch (error) {
-    console.error('Check-in error:', error);
-    // Rethrow the error to be handled by the caller
-  }
+  const data = await rest.put(`${host}/v1/attendance/check-in`, {
+    userId,
+    eventId,
+    sessionDateTimeId,
+  });
+  return data;
 }
 
 // This should only be used for local debugging with the application in a development mode
