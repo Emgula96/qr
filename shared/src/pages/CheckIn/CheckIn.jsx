@@ -25,7 +25,7 @@ function CheckIn() {
   const beepSound = useMemo(() => new Audio(beep), []);
 
   const { event } = useEventData(roomName);
-
+  console.log(event);
   const isUserLate = useMemo(() => {
     return isLateCheckIn(event);
   }, [event]);
@@ -61,7 +61,7 @@ function CheckIn() {
       return;
     }
     
-    const manualPayload = "sessionId=397,sessionDateTimeId=242,userId=ethan.gula@esc4.net";
+    const manualPayload = 'sessionId=397,sessionDateTimeId=242,userId=ethan.gula@esc4.net';
 
     const scanResult = await handleQrScan(
       manualPayload,
@@ -74,7 +74,7 @@ function CheckIn() {
       setCheckedInCount((prevCount) => prevCount + 1);
     }
   };
-
+  console.log(event);
   if (!event) {
     return (
       <div className="parent-div">

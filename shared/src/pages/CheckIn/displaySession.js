@@ -13,6 +13,23 @@ const parseEventDateTime = (eventDate, eventTime) => {
 
 // Main function to display a session based on the rules
 const displaySession = (sessions) => {
+  console.log('Input sessions:', sessions);
+  
+  if (!sessions) {
+    console.log('No sessions provided');
+    return null;
+  }
+
+  // Handle both direct array and response object with data property
+  const sessionsArray = Array.isArray(sessions) ? sessions : sessions.data || sessions;
+  
+  if (!Array.isArray(sessionsArray) || sessionsArray.length === 0) {
+    console.log('Invalid sessions array:', sessionsArray);
+    return null;
+  }
+
+  console.log('Processing sessions array:', sessionsArray);
+
   const currentDate = new Date();
   const localCurrentTime = new Date(
     currentDate.getFullYear(),
@@ -23,19 +40,46 @@ const displaySession = (sessions) => {
     currentDate.getSeconds()
   ).getTime();
 
-  for (const session of sessions) {
+  console.log('Current time:', new Date(localCurrentTime));
+
+  // Sort sessions by start time to ensure we get the most relevant one
+  const sortedSessions = [...sessionsArray].sort((a, b) => {
+    const aTime = parseEventDateTime(a.event_dates[0].event_date, a.event_dates[0].start_time).getTime();
+    const bTime = parseEventDateTime(b.event_dates[0].event_date, b.event_dates[0].start_time).getTime();
+    return aTime - bTime;
+  });
+
+  for (const session of sortedSessions) {
+    console.log('Processing session:', session);
+    
+    if (!session.event_dates || !Array.isArray(session.event_dates)) {
+      console.log('Invalid session event_dates:', session);
+      continue;
+    }
+
     for (const eventDate of session.event_dates) {
+      console.log('Processing event date:', eventDate);
+      
+      if (!eventDate.event_date || !eventDate.start_time) {
+        console.log('Invalid event date:', eventDate);
+        continue;
+      }
+
       const startTime = parseEventDateTime(
         eventDate.event_date,
         eventDate.start_time
       ).getTime();
+
+      console.log('Session start time:', new Date(startTime));
+      console.log('Time difference:', getTimeDifference(startTime, localCurrentTime));
 
       // Rule 1: Display session information 30 minutes before the scheduled session start time
       if (
         localCurrentTime < startTime &&
         getTimeDifference(startTime, localCurrentTime) <= 30
       ) {
-        return session; // Return the session that is within 30 minutes of starting
+        console.log('Found session within 30 minutes of start');
+        return session;
       }
 
       const lateThreshold = session.late_threshold || 0;
@@ -46,7 +90,8 @@ const displaySession = (sessions) => {
         localCurrentTime >= startTime &&
         localCurrentTime <= lateThresholdTime
       ) {
-        return session; // Return the session if it's in progress or within the late threshold
+        console.log('Found session in progress within late threshold');
+        return session;
       }
 
       // Rule 3: If no sessions are scheduled within 1 hour, continue checking the next session
@@ -54,7 +99,7 @@ const displaySession = (sessions) => {
         localCurrentTime < startTime &&
         getTimeDifference(startTime, localCurrentTime) > 60
       ) {
-        continue; // Continue to the next session instead of returning an empty array
+        continue;
       }
 
       // Rule 4: If no previous sessions before a scheduled session, display session information 1 hour before start
@@ -62,12 +107,22 @@ const displaySession = (sessions) => {
         localCurrentTime < startTime &&
         getTimeDifference(startTime, localCurrentTime) <= 60
       ) {
-        return session; // Return session within 1 hour of starting
+        console.log('Found session within 1 hour of start');
+        return session;
       }
     }
   }
 
+  // If no session matches the rules, return the first session
+  if (sortedSessions.length > 0) {
+    console.log('No matching session found, returning first session');
+    return sortedSessions[0];
+  }
+
+  console.log('No sessions available');
   return null;
 };
 
 export default displaySession;
+
+
