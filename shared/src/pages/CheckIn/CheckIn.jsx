@@ -61,7 +61,7 @@ function CheckIn() {
       return;
     }
     
-    const manualPayload = 'sessionId=397,sessionDateTimeId=242,userId=ethan.gula@esc4.net';
+    const manualPayload = 'sessionId=148666,sessionDateTimeId=242,userId=ethan.gula@esc4.net';
 
     const scanResult = await handleQrScan(
       manualPayload,

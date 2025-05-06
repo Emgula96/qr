@@ -7,8 +7,9 @@ export default defineConfig({
   },
   plugins: [react()],
   server: {
+    host: '0.0.0.0',
     hmr: {
-      host: '0.0.0.0',
+      host: 'localhost', // 👈 change this
     },
     watch: {
       usePolling: true,
