@@ -28,10 +28,13 @@ function SessionList() {
     async function fetchData() {
       try {
         setIsLoading(true);
+        //lowercase the first name and last name
+        const lowerFirstName = firstName.toLowerCase();
+        const lowerLastName = lastName.toLowerCase();
         const userInfo = await service.getUserEvents(
           email,
-          firstName,
-          lastName
+          lowerFirstName,
+          lowerLastName
         );
         setEventList(userInfo);
         
