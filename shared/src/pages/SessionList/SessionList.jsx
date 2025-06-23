@@ -69,7 +69,6 @@ function SessionList() {
 
   console.log(eventList);
   console.log(firstEvent);
-  console.log(date);
   return (
     <Page>
       
