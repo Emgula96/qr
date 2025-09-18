@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 function Kiosk({ deviceId }) {
   const [errorState, setErrorState] = useState(null);
-
+  console.log('testing');
   const errorStates = {
     sessionNotFound: {
       title: 'Session Not Found',
