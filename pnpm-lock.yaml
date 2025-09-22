@@ -21,7 +21,7 @@ importers:
         specifier: 4.1.0
         version: 4.1.0
       html5-qrcode:
-        specifier: latest
+        specifier: 2.3.8
         version: 2.3.8
       lucide-react:
         specifier: ^0.454.0
@@ -30,7 +30,7 @@ importers:
         specifier: 15.2.4
         version: 15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(sass@1.93.0)
       prop-types:
-        specifier: latest
+        specifier: 15.8.1
         version: 15.8.1
       react:
         specifier: ^19
