@@ -1,43 +1,44 @@
 {
+  "name": "kiosk-checkin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
+  },
   "dependencies": {
     "@storybook/testing-library": "latest",
-    "@vitejs/plugin-react": "5.0.3",
-    "aws-serverless-express": "3.4.0",
     "axios": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "compression": "1.8.1",
-    "cors": "2.8.5",
     "date-fns": "latest",
     "dotenv": "latest",
     "express": "latest",
+    "geist": "latest",
     "html5-qrcode": "latest",
-    "jquery": "^3.7.1",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
     "pg": "latest",
     "pg-native": "latest",
     "prop-types": "latest",
     "qrcode": "latest",
-    "qrcode.react": "^4.2.0",
     "react": "^19",
     "react-dom": "^19",
     "react-router-dom": "latest",
     "react-simple-keyboard": "latest",
-    "sirv": "3.0.2",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7",
-    "underscore": "^1.13.7",
-    "vite": "7.1.7"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "jest": "^29.7.0",
+    "eslint": "^8",
+    "eslint-config-next": "15.5.3",
     "postcss": "^8.5",
-    "prettier": "^3.4.2",
-    "tailwindcss": "4.1.13",
+    "tailwindcss": "^4.1.9",
     "typescript": "^5"
   }
 }

@@ -10,6 +10,7 @@ declare global {
 
 export const useDeviceManager = () => {
   const [isConnected, setIsConnected] = useState(false)
+  const [deviceInfo, setDeviceInfo] = useState<any>(null)
 
   useEffect(() => {
     // Initial connection
@@ -31,6 +32,7 @@ export const useDeviceManager = () => {
           checkConnection(() => {
             console.log("Connected to the service!")
             setIsConnected(true)
+            fetchDeviceInfo()
           })
         },
         (err: any) => {
@@ -51,6 +53,19 @@ export const useDeviceManager = () => {
           checkConnection(readyCb)
         }, 500)
       }
+    }
+  }
+
+  const fetchDeviceInfo = () => {
+    if (typeof window !== "undefined" && window.LWDeviceManager) {
+      window.LWDeviceManager.getDeviceInfo(
+        (info: any) => {
+          setDeviceInfo(info)
+        },
+        (err: any) => {
+          console.error("Failed to fetch device info:", err)
+        },
+      )
     }
   }
 
@@ -83,5 +98,6 @@ export const useDeviceManager = () => {
     checkConnection,
     printTicket,
     isConnected,
+    deviceInfo,
   }
 }

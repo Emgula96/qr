@@ -9,6 +9,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    turbo: {
+      rules: {
+        '*.css': {
+          loaders: ['css-loader'],
+        },
+      },
+    },
+  },
 }
 
 export default nextConfig
