@@ -2,40 +2,18 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import Keyboard from "react-simple-keyboard"
-import "react-simple-keyboard/build/css/index.css"
 
 export default function CheckInPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
-  const [layout, setLayout] = useState("default")
   const [isLoading, setIsLoading] = useState(false)
-  const keyboard = useRef<any>()
-
-  const onChange = (input: string) => {
-    setEmail(input)
-  }
-
-  const handleShift = () => {
-    const newLayoutName = layout === "default" ? "shift" : "default"
-    setLayout(newLayoutName)
-  }
-
-  const onKeyPress = (button: string) => {
-    if (button === "{shift}" || button === "{lock}") handleShift()
-  }
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
     setEmail(value)
-    keyboard.current?.setInput(value)
-  }
-
-  const onFocusInput = () => {
-    keyboard.current?.setInput(email)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -91,7 +69,6 @@ export default function CheckInPage() {
                 placeholder="Enter E-mail"
                 value={email}
                 onChange={onChangeInput}
-                onFocus={onFocusInput}
                 required
               />
               <small className="find-session-note">We'll never share your email with anyone else.</small>
@@ -110,14 +87,6 @@ export default function CheckInPage() {
           </form>
         </div>
       </div>
-
-      <Keyboard
-        keyboardRef={(r: any) => (keyboard.current = r)}
-        layoutName={layout}
-        onChange={onChange}
-        onKeyPress={onKeyPress}
-        theme="hg-theme-default custom-keyboard"
-      />
     </div>
   )
 }

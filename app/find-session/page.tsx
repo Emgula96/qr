@@ -2,11 +2,9 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import Keyboard from "react-simple-keyboard"
-import "react-simple-keyboard/build/css/index.css"
 
 interface FormFieldProps {
   label: string
@@ -16,10 +14,9 @@ interface FormFieldProps {
   note?: string
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  onFocus: (id: string) => void
 }
 
-function FormField({ label, htmlFor, placeholder, type, note, value, onChange, onFocus }: FormFieldProps) {
+function FormField({ label, htmlFor, placeholder, type, note, value, onChange }: FormFieldProps) {
   return (
     <div className="mb-6">
       <label htmlFor={htmlFor} className="block text-sm font-medium text-gray-700 mb-2">
@@ -31,7 +28,6 @@ function FormField({ label, htmlFor, placeholder, type, note, value, onChange, o
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        onFocus={() => onFocus(htmlFor)}
         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
         required
       />
@@ -42,53 +38,20 @@ function FormField({ label, htmlFor, placeholder, type, note, value, onChange, o
 
 export default function FindSessionPage() {
   const router = useRouter()
-  const [currentInput, setCurrentInput] = useState("")
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [layout, setLayout] = useState("default")
-  const keyboard = useRef<any>()
-
-  const onChange = (input: string) => {
-    if (currentInput === "email-field") {
-      setEmail(input)
-    } else if (currentInput === "fname-field") {
-      setFirstName(input)
-    } else if (currentInput === "lname-field") {
-      setLastName(input)
-    }
-  }
-
-  const handleShift = () => {
-    const newLayoutName = layout === "default" ? "shift" : "default"
-    setLayout(newLayoutName)
-  }
-
-  const onKeyPress = (button: string) => {
-    if (button === "{shift}" || button === "{lock}") handleShift()
-  }
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    keyboard.current?.setInput(event.target.value)
-
-    if (currentInput === "email-field") {
-      setEmail(event.target.value)
-    } else if (currentInput === "fname-field") {
-      setFirstName(event.target.value)
-    } else if (currentInput === "lname-field") {
-      setLastName(event.target.value)
-    }
-  }
-
-  const onFocusInput = (id: string) => {
-    setCurrentInput(id)
+    const value = event.target.value
+    const id = event.target.id
 
     if (id === "email-field") {
-      keyboard.current?.setInput(email)
+      setEmail(value)
     } else if (id === "fname-field") {
-      keyboard.current?.setInput(firstName)
+      setFirstName(value)
     } else if (id === "lname-field") {
-      keyboard.current?.setInput(lastName)
+      setLastName(value)
     }
   }
 
@@ -136,7 +99,6 @@ export default function FindSessionPage() {
                 note="We'll never share your email with anyone else."
                 value={email}
                 onChange={onChangeInput}
-                onFocus={onFocusInput}
               />
               <FormField
                 label="First Name"
@@ -145,7 +107,6 @@ export default function FindSessionPage() {
                 type="text"
                 value={firstName}
                 onChange={onChangeInput}
-                onFocus={onFocusInput}
               />
               <FormField
                 label="Last Name"
@@ -154,7 +115,6 @@ export default function FindSessionPage() {
                 type="text"
                 value={lastName}
                 onChange={onChangeInput}
-                onFocus={onFocusInput}
               />
 
               <div className="flex items-center justify-between">
@@ -172,16 +132,6 @@ export default function FindSessionPage() {
             </form>
           </div>
         </div>
-      </div>
-
-      <div className="mt-8">
-        <Keyboard
-          keyboardRef={(r: any) => (keyboard.current = r)}
-          layoutName={layout}
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-          theme="hg-theme-default"
-        />
       </div>
     </div>
   )
