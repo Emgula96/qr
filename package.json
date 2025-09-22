@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@storybook/testing-library": "latest",
+    "@storybook/testing-library": "0.2.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "latest",
@@ -19,7 +19,6 @@
     "prop-types": "latest",
     "react": "^19",
     "react-dom": "^19",
-    "react-simple-keyboard": "3.8.122",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"
   },
