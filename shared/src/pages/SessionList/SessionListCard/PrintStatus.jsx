@@ -75,4 +75,4 @@ PrintStatus.propTypes = {
   onTryAgain: PropTypes.func.isRequired,
 };
 
-export default PrintStatus; 
+export default PrintStatus;

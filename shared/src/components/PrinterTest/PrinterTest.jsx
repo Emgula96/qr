@@ -34,4 +34,4 @@ const PrinterTest = () => {
   );
 };
 
-export default PrinterTest; 
+export default PrinterTest;

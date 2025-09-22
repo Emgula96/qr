@@ -124,5 +124,3 @@ const displaySession = (sessions) => {
 };
 
 export default displaySession;
-
-
