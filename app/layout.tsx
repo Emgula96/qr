@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import Script from "next/script"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans">
+        <Script src="/scripts/jquery-1.6.4.min.js" strategy="beforeInteractive" />
+        <Script src="/scripts/jquery.signalR-2.0.3.min.js" strategy="beforeInteractive" />
+        <Script src="/scripts/devmgr-wrapper-r2.min.js" strategy="beforeInteractive" />
         {children}
-        <script src="https://dev.escworks.com/js/LWDeviceManager.js" async />
       </body>
     </html>
   )
