@@ -28,8 +28,9 @@ export default function CheckInPage() {
     setIsLoading(true)
     try {
       const dbName = process.env.NEXT_PUBLIC_DB_NAME || "tx_esc_04"
-      const encodedEmail = encodeURIComponent(email.trim())
-      const response = await fetch(`https://dev.escworks.com/api/session/user/${encodedEmail}/today?dbName=${dbName}`)
+      const response = await fetch(`/api/sessions?email=${encodeURIComponent(email.trim())}&dbName=${encodeURIComponent(dbName)}`, {
+        cache: "no-store",
+      })
 
       if (response.ok) {
         const data = await response.json()

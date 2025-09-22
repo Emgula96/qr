@@ -60,54 +60,45 @@ export default function SessionsPage() {
 
       try {
         setIsLoading(true)
-        const mockSessions: Session[] = [
-          {
-            sessionId: "12345",
-            attendeeId: "ATT001",
-            title: "Introduction to Next.js",
-            subtitle: null,
-            date: new Date().toISOString(),
-            startDate: new Date().toISOString(),
-            endDate: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-            location: "Room A",
-            schedule: "9:00 AM - 11:00 AM",
-            campus: "Main Campus",
-            eventTypeId: "WORKSHOP",
-            confirmation: "Confirmed",
-            fee: 0,
-            onlineCategory: null,
-            onlineType: null,
-            creditType: null,
-            creditHour: null,
-            paymentStatus: "Paid",
-          },
-          {
-            sessionId: "12346",
-            attendeeId: "ATT002",
-            title: "Advanced React Patterns",
-            subtitle: "Deep dive into React",
-            date: new Date().toISOString(),
-            startDate: new Date().toISOString(),
-            endDate: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
-            location: "Room B",
-            schedule: "1:00 PM - 4:00 PM",
-            campus: "North Campus",
-            eventTypeId: "SEMINAR",
-            confirmation: "Confirmed",
-            fee: 25,
-            onlineCategory: null,
-            onlineType: null,
-            creditType: "CEU",
-            creditHour: "3",
-            paymentStatus: "Paid",
-          },
-        ]
+        // Prefer data set by the check-in page
+        let storedSessions: any[] | null = null
+        try {
+          const raw = sessionStorage.getItem("sessionData")
+          if (raw) {
+            const parsed = JSON.parse(raw)
+            storedSessions = Array.isArray(parsed)
+              ? parsed
+              : (parsed?.sessions ?? parsed?.data ?? null)
+          }
+        } catch {}
+
+        if (storedSessions) {
+          setSessionData({
+            email,
+            firstName,
+            lastName,
+            sessions: storedSessions as unknown as Session[],
+          })
+          return
+        }
+
+        // Otherwise, fetch using email query param
+        const dbName = process.env.NEXT_PUBLIC_DB_NAME || "tx_esc_04"
+        const response = await fetch(`/api/sessions?email=${encodeURIComponent(email)}&dbName=${encodeURIComponent(dbName)}`, {
+          cache: "no-store",
+        })
+
+        if (!response.ok) {
+          throw new Error(`API error ${response.status}`)
+        }
+        const json = await response.json()
+        const sessions: any[] = Array.isArray(json) ? json : (json?.sessions ?? json?.data ?? [])
 
         setSessionData({
           email,
           firstName,
           lastName,
-          sessions: mockSessions,
+          sessions: (sessions || []) as unknown as Session[],
         })
       } catch (err) {
         setError("Failed to fetch sessions")
