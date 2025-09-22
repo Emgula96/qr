@@ -47,6 +47,8 @@ export default function FindSessionPage() {
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [layout, setLayout] = useState("default")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const keyboard = useRef<any>()
 
   const onChange = (input: string) => {
@@ -92,11 +94,50 @@ export default function FindSessionPage() {
     }
   }
 
-  const handleFindSessions = () => {
-    if (email && firstName && lastName) {
-      router.push(
-        `/sessions?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`,
-      )
+  const handleFindSessions = async () => {
+    if (!email || !firstName || !lastName) {
+      setError("Please fill in all required fields")
+      return
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address")
+      return
+    }
+
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const dbName = process.env.NEXT_PUBLIC_DB_NAME || "tx_esc_04"
+      const encodedEmail = encodeURIComponent(email.trim())
+      const response = await fetch(`https://dev.escworks.com/api/session/user/${encodedEmail}/today?dbName=${dbName}`)
+
+      if (response.ok) {
+        const data = await response.json()
+
+        if (!data.sessions || data.sessions.length === 0) {
+          setError(
+            `No sessions found for ${firstName} ${lastName} today. Please check your information or contact registration.`,
+          )
+          return
+        }
+
+        sessionStorage.setItem("sessionData", JSON.stringify(data))
+        router.push(
+          `/sessions?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`,
+        )
+      } else if (response.status === 404) {
+        setError(`User not found. Please check your name and email address, or contact registration for assistance.`)
+      } else {
+        setError("Unable to search for sessions. Please try again or contact support.")
+      }
+    } catch (error) {
+      console.error("Error fetching sessions:", error)
+      setError("Connection error. Please check your internet connection and try again.")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -121,6 +162,25 @@ export default function FindSessionPage() {
 
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Search for Session</h2>
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm text-red-800">{error}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <form
               onSubmit={(e) => {
@@ -160,10 +220,10 @@ export default function FindSessionPage() {
               <div className="flex items-center justify-between">
                 <button
                   type="submit"
-                  disabled={!email || !firstName || !lastName}
+                  disabled={!email || !firstName || !lastName || isLoading}
                   className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200"
                 >
-                  Find Sessions
+                  {isLoading ? "Searching..." : "Find Sessions"}
                 </button>
                 <p className="text-sm text-red-600">
                   <em>* indicates a required field</em>

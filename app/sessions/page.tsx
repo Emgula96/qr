@@ -54,64 +54,50 @@ export default function SessionsPage() {
   useEffect(() => {
     async function fetchSessions() {
       if (!email || !firstName || !lastName) {
-        router.push("/find-session")
+        setError("Missing required information. Please search again.")
+        setIsLoading(false)
         return
       }
 
       try {
         setIsLoading(true)
-        const mockSessions: Session[] = [
-          {
-            sessionId: "12345",
-            attendeeId: "ATT001",
-            title: "Introduction to Next.js",
-            subtitle: null,
-            date: new Date().toISOString(),
-            startDate: new Date().toISOString(),
-            endDate: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
-            location: "Room A",
-            schedule: "9:00 AM - 11:00 AM",
-            campus: "Main Campus",
-            eventTypeId: "WORKSHOP",
-            confirmation: "Confirmed",
-            fee: 0,
-            onlineCategory: null,
-            onlineType: null,
-            creditType: null,
-            creditHour: null,
-            paymentStatus: "Paid",
-          },
-          {
-            sessionId: "12346",
-            attendeeId: "ATT002",
-            title: "Advanced React Patterns",
-            subtitle: "Deep dive into React",
-            date: new Date().toISOString(),
-            startDate: new Date().toISOString(),
-            endDate: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
-            location: "Room B",
-            schedule: "1:00 PM - 4:00 PM",
-            campus: "North Campus",
-            eventTypeId: "SEMINAR",
-            confirmation: "Confirmed",
-            fee: 25,
-            onlineCategory: null,
-            onlineType: null,
-            creditType: "CEU",
-            creditHour: "3",
-            paymentStatus: "Paid",
-          },
-        ]
+        setError(null)
 
-        setSessionData({
-          email,
-          firstName,
-          lastName,
-          sessions: mockSessions,
-        })
+        const storedData = sessionStorage.getItem("sessionData")
+        if (storedData) {
+          const parsedData = JSON.parse(storedData)
+          setSessionData({
+            email,
+            firstName,
+            lastName,
+            sessions: parsedData.sessions || [],
+          })
+          setIsLoading(false)
+          return
+        }
+
+        const dbName = process.env.NEXT_PUBLIC_DB_NAME || "tx_esc_04"
+        const encodedEmail = encodeURIComponent(email)
+        const response = await fetch(`https://dev.escworks.com/api/session/user/${encodedEmail}/today?dbName=${dbName}`)
+
+        if (response.ok) {
+          const data = await response.json()
+          setSessionData({
+            email,
+            firstName,
+            lastName,
+            sessions: data.sessions || [],
+          })
+        } else if (response.status === 404) {
+          setError(
+            `No sessions found for ${firstName} ${lastName}. Please verify your information or contact registration.`,
+          )
+        } else {
+          setError("Unable to load sessions. Please try searching again.")
+        }
       } catch (err) {
-        setError("Failed to fetch sessions")
-        console.error(err)
+        console.error("Error fetching sessions:", err)
+        setError("Connection error. Please check your internet connection and try again.")
       } finally {
         setIsLoading(false)
       }
@@ -131,24 +117,82 @@ export default function SessionsPage() {
     )
   }
 
-  if (error || !sessionData) {
+  if (error) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Error Loading Sessions</h2>
-          <p className="text-gray-600 mb-6">{error || "Unable to load session data"}</p>
-          <Link
-            href="/find-session"
-            className="inline-block bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-          >
-            Search Again
-          </Link>
-          <Link
-            href="/"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-          >
-            Home
-          </Link>
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <div className="flex justify-center mb-4">
+              <svg className="h-12 w-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Session Search Error</h2>
+            <p className="text-gray-600 mb-6">{error}</p>
+            <div className="space-y-3">
+              <Link
+                href="/find-session"
+                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+              >
+                Search Again
+              </Link>
+              <Link
+                href="/"
+                className="block w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+              >
+                Go Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!sessionData || !sessionData.sessions || sessionData.sessions.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto px-6">
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <div className="flex justify-center mb-4">
+              <svg className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">No Sessions Found</h2>
+            <p className="text-gray-600 mb-2">
+              No sessions were found for{" "}
+              <strong>
+                {firstName} {lastName}
+              </strong>{" "}
+              today.
+            </p>
+            <p className="text-sm text-gray-500 mb-6">This could mean:</p>
+            <ul className="text-sm text-gray-500 text-left mb-6 space-y-1">
+              <li>• Your sessions are on a different date</li>
+              <li>• There may be a spelling error in your name</li>
+              <li>• Your registration may not be complete</li>
+            </ul>
+            <div className="space-y-3">
+              <Link
+                href="/find-session"
+                className="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+              >
+                Try Another Search
+              </Link>
+              <p className="text-xs text-gray-500">Need help? Contact Registration Services on the first floor.</p>
+            </div>
+          </div>
         </div>
       </div>
     )
