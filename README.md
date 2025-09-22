@@ -12,7 +12,7 @@
 
 ### Add the following .env under /shared/server
 
-```
+\`\`\`
 # DEVELOPMENT
 # ESCWORKS_API_URL=https://dev.escworks.com/api
 # ESCWORKS_API_KEY={"API-KEY":"b-728yT-92EnUmyQ"}
@@ -24,11 +24,11 @@
 # UAT
 ESCWORKS_API_URL=https://uat.escworks.com/api
 ESCWORKS_API_KEY='{"API-KEY":"aB1!cD2@eF3#gH4$iJ5%kL6^mN7&oP8*pQ9(rS0)qT"}'
-```
+\`\`\`
 
 ### These are put in .env under /shared/
 
-```
+\`\`\`
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=postgres
@@ -59,7 +59,7 @@ MSSQL_PASSWORD=H0ll1ster~
 MSSQL_SERVER=R04HOUSQL82A\ESCDB
 MSSQL_DATABASE=escworks.system
 MSSQL_PORT=1433
-```
+\`\`\`
 
 ---
 
@@ -144,7 +144,7 @@ The project follows a modular architecture with clear separation between fronten
 
 ### Directory Layout
 
-```
+\`\`\`
 /
 ├── shared/              # Main application directory
 │   ├── server/         # Backend Express.js application
@@ -167,7 +167,7 @@ The project follows a modular architecture with clear separation between fronten
 ├── docker-compose.yml  # Docker services configuration
 ├── package.json       # Project dependencies and scripts
 └── README.md         # Project documentation
-```
+\`\`\`
 
 ### Directory Descriptions
 
