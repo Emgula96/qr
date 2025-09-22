@@ -13,12 +13,24 @@ interface EventDate {
 }
 
 interface Session {
-  id: number
+  sessionId: string
+  attendeeId: string
   title: string
-  event_dates: EventDate[]
-  capacity?: number
-  instructor?: string
-  description?: string
+  subtitle: string | null
+  date: string
+  startDate: string
+  endDate: string
+  location: string
+  schedule: string
+  campus: string
+  eventTypeId: string
+  confirmation: string
+  fee: number
+  onlineCategory: string | null
+  onlineType: string | null
+  creditType: string | null
+  creditHour: string | null
+  paymentStatus: string
 }
 
 interface SessionData {
@@ -50,30 +62,44 @@ export default function SessionsPage() {
         setIsLoading(true)
         const mockSessions: Session[] = [
           {
-            id: 1,
+            sessionId: "12345",
+            attendeeId: "ATT001",
             title: "Introduction to Next.js",
-            event_dates: [
-              {
-                event_date: new Date().toISOString().split("T")[0],
-                room: { label: "Room A" },
-              },
-            ],
-            capacity: 30,
-            instructor: "John Doe",
-            description: "Learn the basics of Next.js framework",
+            subtitle: null,
+            date: new Date().toISOString(),
+            startDate: new Date().toISOString(),
+            endDate: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(),
+            location: "Room A",
+            schedule: "9:00 AM - 11:00 AM",
+            campus: "Main Campus",
+            eventTypeId: "WORKSHOP",
+            confirmation: "Confirmed",
+            fee: 0,
+            onlineCategory: null,
+            onlineType: null,
+            creditType: null,
+            creditHour: null,
+            paymentStatus: "Paid",
           },
           {
-            id: 2,
+            sessionId: "12346",
+            attendeeId: "ATT002",
             title: "Advanced React Patterns",
-            event_dates: [
-              {
-                event_date: new Date().toISOString().split("T")[0],
-                room: { label: "Room B" },
-              },
-            ],
-            capacity: 25,
-            instructor: "Jane Smith",
-            description: "Deep dive into advanced React patterns",
+            subtitle: "Deep dive into React",
+            date: new Date().toISOString(),
+            startDate: new Date().toISOString(),
+            endDate: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+            location: "Room B",
+            schedule: "1:00 PM - 4:00 PM",
+            campus: "North Campus",
+            eventTypeId: "SEMINAR",
+            confirmation: "Confirmed",
+            fee: 25,
+            onlineCategory: null,
+            onlineType: null,
+            creditType: "CEU",
+            creditHour: "3",
+            paymentStatus: "Paid",
           },
         ]
 
@@ -113,9 +139,15 @@ export default function SessionsPage() {
           <p className="text-gray-600 mb-6">{error || "Unable to load session data"}</p>
           <Link
             href="/find-session"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+            className="inline-block bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
           >
-            Try Again
+            Search Again
+          </Link>
+          <Link
+            href="/"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+          >
+            Home
           </Link>
         </div>
       </div>
@@ -154,12 +186,7 @@ export default function SessionsPage() {
           {sessionData.sessions.length > 0 ? (
             <div className="grid gap-6">
               {sessionData.sessions.map((session) => (
-                <SessionListCard
-                  key={session.id}
-                  event={session}
-                  name={`${sessionData.firstName} ${sessionData.lastName}`}
-                  email={sessionData.email}
-                />
+                <SessionListCard key={session.sessionId} session={session} email={sessionData.email} />
               ))}
             </div>
           ) : (

@@ -27,12 +27,20 @@ interface Session {
 
 interface SessionListCardProps {
   email: string
-  session: Session
+  session: Session | null
 }
 
 const SessionListCard = ({ email, session }: SessionListCardProps) => {
   const { isConnected, printTicket } = useDeviceManager()
   const [printStatus, setPrintStatus] = useState<any>(null)
+
+  if (!session) {
+    return (
+      <div className="session-info-card">
+        <p>Session data not available</p>
+      </div>
+    )
+  }
 
   const handlePrintBadge = async () => {
     try {
@@ -78,40 +86,40 @@ const SessionListCard = ({ email, session }: SessionListCardProps) => {
 
           <div className="info-item">
             <span className="label">Session Title:</span>
-            <span className="value">{session.title}</span>
+            <span className="value">{session.title || "N/A"}</span>
           </div>
 
           <div className="info-item">
             <span className="label">Session ID:</span>
-            <span className="value">{session.sessionId}</span>
+            <span className="value">{session.sessionId || "N/A"}</span>
           </div>
 
           <div className="info-item">
             <span className="label">Attendee ID:</span>
-            <span className="value">{session.attendeeId}</span>
+            <span className="value">{session.attendeeId || "N/A"}</span>
           </div>
 
           <div className="info-item">
             <span className="label">Location:</span>
-            <span className="value">{session.location}</span>
+            <span className="value">{session.location || "N/A"}</span>
           </div>
 
           <div className="info-item">
             <span className="label">Campus:</span>
-            <span className="value">{session.campus}</span>
+            <span className="value">{session.campus || "N/A"}</span>
           </div>
 
           <div className="info-item">
             <span className="label">Schedule:</span>
-            <span className="value">{session.schedule}</span>
+            <span className="value">{session.schedule || "N/A"}</span>
           </div>
 
           <div className="info-item">
             <span className="label">Date:</span>
-            <span className="value">{formatDate(session.date)}</span>
+            <span className="value">{session.date ? formatDate(session.date) : "N/A"}</span>
           </div>
 
-          {session.fee > 0 && (
+          {session.fee && session.fee > 0 && (
             <div className="info-item">
               <span className="label">Fee:</span>
               <span className="value">${session.fee}</span>
