@@ -18,7 +18,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       date-fns:
-        specifier: latest
+        specifier: 4.1.0
         version: 4.1.0
       html5-qrcode:
         specifier: latest
