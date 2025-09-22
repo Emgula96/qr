@@ -12,10 +12,10 @@ importers:
         specifier: latest
         version: 0.2.2
       '@vitejs/plugin-react':
-        specifier: latest
+        specifier: 5.0.3
         version: 5.0.3(vite@7.1.7(@types/node@22.0.0)(jiti@2.6.0)(less@4.4.1)(lightningcss@1.30.1)(sass-embedded@1.93.0)(sass@1.93.0)(stylus@0.64.0)(sugarss@5.0.1(postcss@8.5.0))(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1))
       aws-serverless-express:
-        specifier: latest
+        specifier: 3.4.0
         version: 3.4.0
       axios:
         specifier: latest
@@ -27,10 +27,10 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       compression:
-        specifier: latest
+        specifier: 1.8.1
         version: 1.8.1
       cors:
-        specifier: latest
+        specifier: 2.8.5
         version: 2.8.5
       date-fns:
         specifier: latest
@@ -44,18 +44,9 @@ importers:
       html5-qrcode:
         specifier: latest
         version: 2.3.8
-      jiti:
-        specifier: latest
-        version: 2.6.0
       jquery:
         specifier: ^3.7.1
         version: 3.7.1
-      less:
-        specifier: latest
-        version: 4.4.1
-      lightningcss:
-        specifier: latest
-        version: 1.30.1
       lucide-react:
         specifier: ^0.454.0
         version: 0.454.0(react@19.0.0)
@@ -89,42 +80,21 @@ importers:
       react-simple-keyboard:
         specifier: latest
         version: 3.8.122(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      sass:
-        specifier: latest
-        version: 1.93.0
-      sass-embedded:
-        specifier: latest
-        version: 1.93.0
       sirv:
-        specifier: latest
+        specifier: 3.0.2
         version: 3.0.2
-      stylus:
-        specifier: latest
-        version: 0.64.0
-      sugarss:
-        specifier: latest
-        version: 5.0.1(postcss@8.5.0)
       tailwind-merge:
         specifier: ^2.5.5
         version: 2.5.5
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@4.1.13)
-      terser:
-        specifier: latest
-        version: 5.44.0
-      tsx:
-        specifier: latest
-        version: 4.20.5
       underscore:
         specifier: ^1.13.7
         version: 1.13.7
       vite:
-        specifier: latest
+        specifier: 7.1.7
         version: 7.1.7(@types/node@22.0.0)(jiti@2.6.0)(less@4.4.1)(lightningcss@1.30.1)(sass-embedded@1.93.0)(sass@1.93.0)(stylus@0.64.0)(sugarss@5.0.1(postcss@8.5.0))(terser@5.44.0)(tsx@4.20.5)(yaml@2.8.1)
-      yaml:
-        specifier: latest
-        version: 2.8.1
     devDependencies:
       '@types/node':
         specifier: ^22
@@ -3124,7 +3094,8 @@ packages:
 
 snapshots:
 
-  '@adobe/css-tools@4.3.3': {}
+  '@adobe/css-tools@4.3.3':
+    optional: true
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -3327,7 +3298,8 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@bufbuild/protobuf@2.9.0': {}
+  '@bufbuild/protobuf@2.9.0':
+    optional: true
 
   '@codegenie/serverless-express@3.4.1':
     dependencies:
@@ -3500,6 +3472,7 @@ snapshots:
       strip-ansi-cjs: strip-ansi@6.0.1
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
+    optional: true
 
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
@@ -3689,6 +3662,7 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
+    optional: true
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
@@ -3976,7 +3950,8 @@ snapshots:
       mime-types: 3.0.1
       negotiator: 1.0.0
 
-  acorn@8.15.0: {}
+  acorn@8.15.0:
+    optional: true
 
   ansi-escapes@4.3.2:
     dependencies:
@@ -3984,7 +3959,8 @@ snapshots:
 
   ansi-regex@5.0.1: {}
 
-  ansi-regex@6.2.2: {}
+  ansi-regex@6.2.2:
+    optional: true
 
   ansi-styles@4.3.0:
     dependencies:
@@ -3992,7 +3968,8 @@ snapshots:
 
   ansi-styles@5.2.0: {}
 
-  ansi-styles@6.2.3: {}
+  ansi-styles@6.2.3:
+    optional: true
 
   anymatch@3.1.3:
     dependencies:
@@ -4119,6 +4096,7 @@ snapshots:
   brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
+    optional: true
 
   braces@3.0.3:
     dependencies:
@@ -4136,7 +4114,8 @@ snapshots:
     dependencies:
       node-int64: 0.4.0
 
-  buffer-builder@0.2.0: {}
+  buffer-builder@0.2.0:
+    optional: true
 
   buffer-from@1.1.2: {}
 
@@ -4181,6 +4160,7 @@ snapshots:
   chokidar@4.0.3:
     dependencies:
       readdirp: 4.1.2
+    optional: true
 
   ci-info@3.9.0: {}
 
@@ -4228,13 +4208,15 @@ snapshots:
       color-string: 1.9.1
     optional: true
 
-  colorjs.io@0.5.2: {}
+  colorjs.io@0.5.2:
+    optional: true
 
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
 
-  commander@2.20.3: {}
+  commander@2.20.3:
+    optional: true
 
   compressible@2.0.18:
     dependencies:
@@ -4271,6 +4253,7 @@ snapshots:
   copy-anything@2.0.6:
     dependencies:
       is-what: 3.14.1
+    optional: true
 
   cors@2.8.5:
     dependencies:
@@ -4356,7 +4339,8 @@ snapshots:
   detect-libc@1.0.3:
     optional: true
 
-  detect-libc@2.1.0: {}
+  detect-libc@2.1.0:
+    optional: true
 
   detect-newline@3.1.0: {}
 
@@ -4374,7 +4358,8 @@ snapshots:
       es-errors: 1.3.0
       gopd: 1.2.0
 
-  eastasianwidth@0.2.0: {}
+  eastasianwidth@0.2.0:
+    optional: true
 
   ee-first@1.1.1: {}
 
@@ -4384,7 +4369,8 @@ snapshots:
 
   emoji-regex@8.0.0: {}
 
-  emoji-regex@9.2.2: {}
+  emoji-regex@9.2.2:
+    optional: true
 
   encodeurl@2.0.0: {}
 
@@ -4559,6 +4545,7 @@ snapshots:
     dependencies:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
+    optional: true
 
   form-data@4.0.4:
     dependencies:
@@ -4610,6 +4597,7 @@ snapshots:
   get-tsconfig@4.10.1:
     dependencies:
       resolve-pkg-maps: 1.0.0
+    optional: true
 
   glob@10.4.5:
     dependencies:
@@ -4619,6 +4607,7 @@ snapshots:
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
+    optional: true
 
   glob@7.2.3:
     dependencies:
@@ -4676,7 +4665,8 @@ snapshots:
   image-size@0.5.5:
     optional: true
 
-  immutable@5.1.3: {}
+  immutable@5.1.3:
+    optional: true
 
   import-local@3.2.0:
     dependencies:
@@ -4792,7 +4782,8 @@ snapshots:
       call-bound: 1.0.4
       get-intrinsic: 1.3.0
 
-  is-what@3.14.1: {}
+  is-what@3.14.1:
+    optional: true
 
   isarray@2.0.5: {}
 
@@ -4844,6 +4835,7 @@ snapshots:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+    optional: true
 
   jest-changed-files@29.7.0:
     dependencies:
@@ -5153,7 +5145,8 @@ snapshots:
       - supports-color
       - ts-node
 
-  jiti@2.6.0: {}
+  jiti@2.6.0:
+    optional: true
 
   jquery@3.7.1: {}
 
@@ -5185,6 +5178,7 @@ snapshots:
       mime: 1.6.0
       needle: 3.3.1
       source-map: 0.6.1
+    optional: true
 
   leven@3.1.0: {}
 
@@ -5237,6 +5231,7 @@ snapshots:
       lightningcss-linux-x64-musl: 1.30.1
       lightningcss-win32-arm64-msvc: 1.30.1
       lightningcss-win32-x64-msvc: 1.30.1
+    optional: true
 
   lines-and-columns@1.2.4: {}
 
@@ -5248,7 +5243,8 @@ snapshots:
     dependencies:
       js-tokens: 4.0.0
 
-  lru-cache@10.4.3: {}
+  lru-cache@10.4.3:
+    optional: true
 
   lru-cache@5.1.1:
     dependencies:
@@ -5313,8 +5309,10 @@ snapshots:
   minimatch@9.0.5:
     dependencies:
       brace-expansion: 2.0.2
+    optional: true
 
-  minipass@7.1.2: {}
+  minipass@7.1.2:
+    optional: true
 
   mrmime@2.0.1: {}
 
@@ -5425,7 +5423,8 @@ snapshots:
 
   p-try@2.2.0: {}
 
-  package-json-from-dist@1.0.1: {}
+  package-json-from-dist@1.0.1:
+    optional: true
 
   parse-json@5.2.0:
     dependencies:
@@ -5434,7 +5433,8 @@ snapshots:
       json-parse-even-better-errors: 2.3.1
       lines-and-columns: 1.2.4
 
-  parse-node-version@1.0.1: {}
+  parse-node-version@1.0.1:
+    optional: true
 
   parseurl@1.3.3: {}
 
@@ -5450,6 +5450,7 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
       minipass: 7.1.2
+    optional: true
 
   path-to-regexp@8.3.0: {}
 
@@ -5635,7 +5636,8 @@ snapshots:
 
   react@19.0.0: {}
 
-  readdirp@4.1.2: {}
+  readdirp@4.1.2:
+    optional: true
 
   regexp.prototype.flags@1.5.4:
     dependencies:
@@ -5656,7 +5658,8 @@ snapshots:
 
   resolve-from@5.0.0: {}
 
-  resolve-pkg-maps@1.0.0: {}
+  resolve-pkg-maps@1.0.0:
+    optional: true
 
   resolve.exports@2.0.3: {}
 
@@ -5707,6 +5710,7 @@ snapshots:
   rxjs@7.8.2:
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   safe-buffer@5.2.1: {}
 
@@ -5805,6 +5809,7 @@ snapshots:
       sass-embedded-unknown-all: 1.93.0
       sass-embedded-win32-arm64: 1.93.0
       sass-embedded-win32-x64: 1.93.0
+    optional: true
 
   sass@1.93.0:
     dependencies:
@@ -5813,8 +5818,10 @@ snapshots:
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.1
+    optional: true
 
-  sax@1.4.1: {}
+  sax@1.4.1:
+    optional: true
 
   scheduler@0.25.0: {}
 
@@ -5935,7 +5942,8 @@ snapshots:
 
   signal-exit@3.0.7: {}
 
-  signal-exit@4.1.0: {}
+  signal-exit@4.1.0:
+    optional: true
 
   simple-swizzle@0.2.4:
     dependencies:
@@ -5963,10 +5971,12 @@ snapshots:
     dependencies:
       buffer-from: 1.1.2
       source-map: 0.6.1
+    optional: true
 
   source-map@0.6.1: {}
 
-  source-map@0.7.6: {}
+  source-map@0.7.6:
+    optional: true
 
   split2@4.2.0: {}
 
@@ -6003,6 +6013,7 @@ snapshots:
       eastasianwidth: 0.2.0
       emoji-regex: 9.2.2
       strip-ansi: 7.1.2
+    optional: true
 
   strip-ansi@6.0.1:
     dependencies:
@@ -6011,6 +6022,7 @@ snapshots:
   strip-ansi@7.1.2:
     dependencies:
       ansi-regex: 6.2.2
+    optional: true
 
   strip-bom@4.0.0: {}
 
@@ -6034,10 +6046,12 @@ snapshots:
       source-map: 0.7.6
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   sugarss@5.0.1(postcss@8.5.0):
     dependencies:
       postcss: 8.5.0
+    optional: true
 
   supports-color@7.2.0:
     dependencies:
@@ -6052,8 +6066,10 @@ snapshots:
   sync-child-process@1.0.2:
     dependencies:
       sync-message-port: 1.1.3
+    optional: true
 
-  sync-message-port@1.1.3: {}
+  sync-message-port@1.1.3:
+    optional: true
 
   tailwind-merge@2.5.5: {}
 
@@ -6069,6 +6085,7 @@ snapshots:
       acorn: 8.15.0
       commander: 2.20.3
       source-map-support: 0.5.21
+    optional: true
 
   test-exclude@6.0.0:
     dependencies:
@@ -6101,6 +6118,7 @@ snapshots:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   type-detect@4.0.8: {}
 
@@ -6137,7 +6155,8 @@ snapshots:
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
 
-  varint@6.0.0: {}
+  varint@6.0.0:
+    optional: true
 
   vary@1.1.2: {}
 
@@ -6215,6 +6234,7 @@ snapshots:
       ansi-styles: 6.2.3
       string-width: 5.1.2
       strip-ansi: 7.1.2
+    optional: true
 
   wrappy@1.0.2: {}
 
@@ -6231,7 +6251,8 @@ snapshots:
 
   yallist@3.1.1: {}
 
-  yaml@2.8.1: {}
+  yaml@2.8.1:
+    optional: true
 
   yargs-parser@18.1.3:
     dependencies:
