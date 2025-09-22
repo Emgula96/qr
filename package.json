@@ -9,21 +9,21 @@
     "start": "next start"
   },
   "dependencies": {
-    "@storybook/testing-library": "latest",
+    "@storybook/testing-library": "0.2.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "date-fns": "latest",
-    "html5-qrcode": "latest",
+    "date-fns": "4.1.0",
+    "html5-qrcode": "2.3.8",
     "lucide-react": "^0.454.0",
     "next": "15.2.4",
-    "prop-types": "latest",
+    "prop-types": "15.8.1",
     "react": "^19",
     "react-dom": "^19",
-    "react-simple-keyboard": "latest",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
