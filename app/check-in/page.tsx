@@ -5,6 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import OnScreenKeyboard from "../../components/OnScreenKeyboard"
 
 export default function CheckInPage() {
   const router = useRouter()
@@ -14,6 +15,10 @@ export default function CheckInPage() {
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
     setEmail(value)
+  }
+
+  const clearForm = () => {
+    setEmail("")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,28 +68,61 @@ export default function CheckInPage() {
 
             <div className="find-session-form-group">
               <label htmlFor="email-field">E-mail Address *</label>
-              <input
-                id="email-field"
-                type="email"
-                placeholder="Enter E-mail"
-                value={email}
-                onChange={onChangeInput}
-                required
-              />
+              <div className="relative">
+                <input
+                  id="email-field"
+                  type="email"
+                  placeholder="Enter E-mail"
+                  value={email}
+                  onChange={onChangeInput}
+                  className="pr-12"
+                  required
+                />
+                {email && (
+                  <button
+                    type="button"
+                    onClick={clearForm}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xl font-bold bg-white px-1"
+                    style={{ fontSize: '20px', lineHeight: '1' }}
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
               <small className="find-session-note">We'll never share your email with anyone else.</small>
             </div>
 
             <div className="find-session-submission">
-              <div>
-                <button type="submit" className="qr-button qr-button-left" disabled={isLoading || !email.trim()}>
-                  {isLoading ? "Searching..." : "Find Sessions"}
-                </button>
-                <p className="text-danger">
+              <div className="flex gap-4 items-start">
+                <div>
+                  <button type="submit" className="qr-button qr-button-left" disabled={isLoading || !email.trim()}>
+                    {isLoading ? "Searching..." : "Find Sessions"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={clearForm}
+                    className="qr-button ml-4"
+                    style={{ backgroundColor: '#dc3545' }}
+                  >
+                    Clear Form
+                  </button>
+                </div>
+                <p className="text-danger mt-3">
                   <em>* indicates a required field</em>
                 </p>
               </div>
             </div>
           </form>
+
+          <OnScreenKeyboard
+            value={email}
+            onChange={setEmail}
+            onEnter={() => {
+              const form = document.querySelector("form") as HTMLFormElement | null
+              if (form) form.requestSubmit()
+            }}
+            mode="email"
+          />
         </div>
       </div>
     </div>

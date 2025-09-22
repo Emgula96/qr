@@ -2,9 +2,10 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import OnScreenKeyboard from "../../components/OnScreenKeyboard"
 
 interface FormFieldProps {
   label: string
@@ -14,23 +15,37 @@ interface FormFieldProps {
   note?: string
   value: string
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onFocus: () => void
+  onClear: () => void
 }
 
-function FormField({ label, htmlFor, placeholder, type, note, value, onChange }: FormFieldProps) {
+function FormField({ label, htmlFor, placeholder, type, note, value, onChange, onFocus, onClear }: FormFieldProps) {
   return (
     <div className="mb-6">
       <label htmlFor={htmlFor} className="block text-sm font-medium text-gray-700 mb-2">
         {label} *
       </label>
-      <input
-        id={htmlFor}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
-        required
-      />
+      <div className="relative">
+        <input
+          id={htmlFor}
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onFocus={onFocus}
+          className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+          required
+        />
+        {value && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xl font-bold"
+          >
+            ×
+          </button>
+        )}
+      </div>
       {note && <p className="text-sm text-gray-500 mt-1">{note}</p>}
     </div>
   )
@@ -41,6 +56,7 @@ export default function FindSessionPage() {
   const [email, setEmail] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
+  const [activeField, setActiveField] = useState<"email" | "firstName" | "lastName">("email")
 
   const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
@@ -61,6 +77,26 @@ export default function FindSessionPage() {
         `/sessions?email=${encodeURIComponent(email)}&firstName=${encodeURIComponent(firstName)}&lastName=${encodeURIComponent(lastName)}`,
       )
     }
+  }
+
+  const clearForm = () => {
+    setEmail("")
+    setFirstName("")
+    setLastName("")
+    setActiveField("email")
+  }
+
+  const activeValue = useMemo(() => {
+    if (activeField === "email") return email
+    if (activeField === "firstName") return firstName
+    if (activeField === "lastName") return lastName
+    return ""
+  }, [activeField, email, firstName, lastName])
+
+  const updateActiveValue = (next: string) => {
+    if (activeField === "email") setEmail(next)
+    if (activeField === "firstName") setFirstName(next)
+    if (activeField === "lastName") setLastName(next)
   }
 
   return (
@@ -99,6 +135,8 @@ export default function FindSessionPage() {
                 note="We'll never share your email with anyone else."
                 value={email}
                 onChange={onChangeInput}
+                onFocus={() => setActiveField("email")}
+                onClear={() => setEmail("")}
               />
               <FormField
                 label="First Name"
@@ -107,6 +145,8 @@ export default function FindSessionPage() {
                 type="text"
                 value={firstName}
                 onChange={onChangeInput}
+                onFocus={() => setActiveField("firstName")}
+                onClear={() => setFirstName("")}
               />
               <FormField
                 label="Last Name"
@@ -115,21 +155,41 @@ export default function FindSessionPage() {
                 type="text"
                 value={lastName}
                 onChange={onChangeInput}
+                onFocus={() => setActiveField("lastName")}
+                onClear={() => setLastName("")}
               />
 
               <div className="flex items-center justify-between">
-                <button
-                  type="submit"
-                  disabled={!email || !firstName || !lastName}
-                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200"
-                >
-                  Find Sessions
-                </button>
+                <div className="flex gap-4">
+                  <button
+                    type="submit"
+                    disabled={!email || !firstName || !lastName}
+                    className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 px-8 rounded-lg text-lg transition-colors duration-200"
+                  >
+                    Find Sessions
+                  </button>
+                  <button
+                    type="button"
+                    onClick={clearForm}
+                    className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg text-lg transition-colors duration-200"
+                  >
+                    Clear Form
+                  </button>
+                </div>
                 <p className="text-sm text-red-600">
                   <em>* indicates a required field</em>
                 </p>
               </div>
             </form>
+
+            <OnScreenKeyboard
+              value={activeValue}
+              onChange={updateActiveValue}
+              onEnter={() => {
+                if (email && firstName && lastName) handleFindSessions()
+              }}
+              mode={activeField === "email" ? "email" : "text"}
+            />
           </div>
         </div>
       </div>
